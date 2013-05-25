@@ -19,3 +19,18 @@ Admin will be able to retrieve their loginID(which is also their NRIC/FIN) and t
 
 -> AdminPasswordChange
 Admin will be able to change their password after verifying themselves via email and LoginID(NRIC/FIN) verification.
+
+Zhi Guang
+
+-> createCustomer
+
+-> updateCustomer
+
+-> retrieveCustomer
+
+-> retrieveInventoryItem
+Retrieve specific inventory item quantity
+
+-> createReservation
+
+-> retrieveReservation
