@@ -1,9 +1,4 @@
-DroidShop
-=========
-
-Android e-commerce and inventory management app
-
-Pearly's Sales Team(Admin) Login 
+Sales Team(Admin) Login 
 
 -> RetrieveAdminLocation
 Admin will be able to retrieve the location/countries from where they are logged in from.
