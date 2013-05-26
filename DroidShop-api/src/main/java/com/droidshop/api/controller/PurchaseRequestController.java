@@ -5,6 +5,7 @@ import com.droidshop.api.model.error.WebServiceError;
 import com.droidshop.api.model.error.WebServiceException;
 import com.droidshop.api.model.purchase.PurchaseRequest;
 import com.droidshop.api.model.purchase.PurchaseSearchCriteria;
+import com.droidshop.api.model.user.User;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,13 @@ public class PurchaseRequestController {
         PurchaseRequest response = purchaseRequestManager.update(id, purchaseRequest);
         return response;
     }
+    
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public PurchaseRequest delete(@PathVariable String id, @RequestBody PurchaseRequest purchaseRequest) throws Exception {
+        return purchaseRequestManager.delete(id, purchaseRequest);
+    }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

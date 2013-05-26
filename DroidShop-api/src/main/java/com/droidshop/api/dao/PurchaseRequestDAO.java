@@ -45,6 +45,17 @@ public class PurchaseRequestDAO {
         }
         return updatedRequest;
     }
+    
+    public PurchaseRequest delete(String id, PurchaseRequest purchaseRequest) throws WebServiceException 
+    {
+    	 try {
+    		 mongoBroker.getTemplate().remove(get(id));
+         } catch(Exception exception) {
+             System.out.println("Exception [" + exception.getMessage() + "]");
+             throw new WebServiceException(500, exception.getMessage());
+         }
+    	 return new PurchaseRequest();
+    }
 
     public PurchaseRequest get(String id) throws WebServiceException {
         System.out.println("AuthorizationRequestDAO.get");
