@@ -1,5 +1,7 @@
 package com.droidshop.api.util;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,35 +14,43 @@ import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
-public class HibernateUtil {
+import com.droidshop.api.Logger;
+
+public class HibernateUtil
+{
 	private static final SessionFactory sessionFactory;
 
 	private static final String configFile = "hibernate.cfg.xml";
-	
-	static {
-		try {
+
+	static
+	{
+		try
+		{
 			Configuration configuration = new Configuration();
 			configuration.configure(configFile);
-			ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
-					.applySettings(configuration.getProperties())
+			ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties())
 					.buildServiceRegistry();
 			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-		} catch (Throwable ex) {
+		}
+		catch (Throwable ex)
+		{
 			System.err.println("Initial SessionFactory creation failed." + ex);
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
 
-	public static SessionFactory getSessionFactory() {
+	public static SessionFactory getSessionFactory()
+	{
 		return sessionFactory;
 	}
 
-	public static void shutdown() {
+	public static void shutdown()
+	{
 		// Close caches and connection pools
 		getSessionFactory().close();
 	}
-	
-	public void updateSchema()
+
+	public void generateUpdateScript()
 	{
 		Configuration configuration = new Configuration();
 		configuration.configure(configFile);
@@ -48,26 +58,48 @@ public class HibernateUtil {
 		Connection connection = null;
 		try
 		{
-			connection = DriverManager
-					.getConnection("jdbc:mysql://fittrdb.ch30tsalfl52.ap-southeast-1.rds.amazonaws.com/fittr?user=root&password=fittr12345");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost/droidshop?user=root&password=1234567");
 			String[] sql = configuration.generateSchemaUpdateScript(dialect, new DatabaseMetadata(connection, dialect));
 
-			for(String query : sql)
+			PrintWriter writer = null;
+			try
 			{
-				System.out.println(query);
+				writer = new PrintWriter("src/main/resources/database/schema-update.sql");
+				for (String query : sql)
+				{
+					System.out.println(query);
+					writer.println(query);
+				}
 			}
+			catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				writer.close();
+			}
+
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
+		Logger.info(this.getClass(), "Update script generated");
+
 	}
-	
-	public void dumpSchema()
+
+	public void generateCreateScript()
 	{
 		Configuration configuration = new Configuration();
 		configuration.configure(configFile);
 		SchemaExport export = new SchemaExport(configuration);
 		export.execute(true, false, false, false);
+	}
+
+	public static void main(String args[])
+	{
+		HibernateUtil util = new HibernateUtil();
+		util.generateUpdateScript();
 	}
 }

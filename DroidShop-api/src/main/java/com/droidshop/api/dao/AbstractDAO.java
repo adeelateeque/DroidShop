@@ -30,8 +30,6 @@ public abstract class AbstractDAO<T>
 
 	private Class<T> entityClass;
 
-	private DAOFactory daoFactory;
-	
 	public AbstractDAO(Class<T> entityClass)
 	{
 		this.entityClass = entityClass;
@@ -206,11 +204,6 @@ public abstract class AbstractDAO<T>
 		return getMetaData().getIdentifierPropertyName();
 	}
 
-	public DAOFactory getFactory()
-	{
-		return daoFactory;
-	}
-	
 	public List<T> getAll()
 	{
 		return (List<T>) session.createQuery("from " + entityClass.getSimpleName()).list();

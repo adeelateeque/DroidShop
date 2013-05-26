@@ -2,32 +2,30 @@ package com.droidshop.api;
 
 public class Logger
 {
-	private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(Application.class);
-	
 	private Logger(){}
 	
-	public static void trace(String message)
+	public static void trace(Class<?> entity, String message)
 	{
-		log.trace(message);
+		org.slf4j.LoggerFactory.getLogger(entity).trace(message);
 	}
 
-	public static void debug(String message)
+	public static void debug(Class<?> entity, String message)
 	{
-		log.debug(message);
+		org.slf4j.LoggerFactory.getLogger(entity).debug(message);
 	}
 
-	public static void info(String message)
+	public static void info(Class<?> entity, String message)
 	{
-		log.info(message);
+		org.slf4j.LoggerFactory.getLogger(entity).info(message);
 	}
 
-	public static void warn(String message)
+	public static void warn(Class<?> entity, String message)
 	{
-		log.warn(message);
+		org.slf4j.LoggerFactory.getLogger(entity).warn(message);
 	}
 
-	public static void error(String message)
+	public static void error(Class<?> entity, String message)
 	{
-		log.error(message);
+		org.slf4j.LoggerFactory.getLogger(entity).error(message);
 	}
 }

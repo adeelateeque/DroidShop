@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
 
-    <changeSet author="swapnildipankar" id="1">
+    <changeSet author="adeeldhedhi" id="1">
         <comment>Schema - Creating User Table</comment>
         <sql>
             DROP TABLE IF EXISTS `user`;
@@ -25,6 +25,28 @@
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         </sql>
     </changeSet>
-
+    
+    
+    <changeSet author="adeeldhedhi" id="2">
+        <comment>Schema - Creating User Table</comment>
+        <sql>
+            DROP TABLE IF EXISTS `user`;
+            CREATE TABLE `user` (
+              `id` INT(30) UNSIGNED NOT NULL AUTO_INCREMENT,
+              `firstName` VARCHAR(30) NOT NULL,
+              `middleName` VARCHAR(10),
+              `lastName` VARCHAR(30) NOT NULL,
+              `userName` VARCHAR(32) NOT NULL,
+              `password` VARCHAR(64) NOT NULL,
+              `statusCode` VARCHAR(1) NOT NULL,
+              `dateOfBirth` DATE NOT NULL,
+              `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              `updatedAt` TIMESTAMP,
+              PRIMARY KEY (`id`) USING BTREE,
+              UNIQUE KEY `uni_username` (`userName`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        </sql>
+    </changeSet>
+    
 </databaseChangeLog>
 
