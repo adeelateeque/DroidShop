@@ -24,12 +24,12 @@ public class UserDAO extends AbstractDAO<User> {
         System.out.println("UserDAO: add");
         System.out.println("UserDAO: START - adding user to the database");
 
-        user.setUserStatus(UserStatus.PENDING);
+        user.setStatus(UserStatus.PENDING);
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
 
         beginTransaction();
-        user.setPassword(PasswordEncoder.getEncodedPassword(user.getUsername(), user.getPassword()));
+        user.setPassword(PasswordEncoder.getEncodedPassword(user.getUserName(), user.getPassword()));
         save(user);
         commitAndCloseTransaction();
         
@@ -45,30 +45,24 @@ public class UserDAO extends AbstractDAO<User> {
         beginTransaction();
         User fetchedUser = fetch(userID);
 
-        if(user.getNameFirst() != null && !fetchedUser.getNameFirst().equals(user.getNameFirst())) {
-            fetchedUser.setNameFirst(user.getNameFirst());
+        if(user.getFirstName() != null && !fetchedUser.getFirstName().equals(user.getFirstName())) {
+            fetchedUser.setFirstName(user.getFirstName());
         }
-        if(user.getNameMiddle() != null && !fetchedUser.getNameMiddle().equals(user.getNameMiddle())) {
-            fetchedUser.setNameMiddle(user.getNameMiddle());
+        if(user.getMiddleName() != null && !fetchedUser.getMiddleName().equals(user.getMiddleName())) {
+            fetchedUser.setMiddleName(user.getMiddleName());
         }
-        if(user.getNameLast() != null && !fetchedUser.getNameLast().equals(user.getNameLast())) {
-            fetchedUser.setNameLast(user.getNameLast());
+        if(user.getLastName() != null && !fetchedUser.getLastName().equals(user.getLastName())) {
+            fetchedUser.setLastName(user.getLastName());
         }
-        String currentEncodedPassword = PasswordEncoder.getEncodedPassword(user.getUsername(), user.getPassword());
+        String currentEncodedPassword = PasswordEncoder.getEncodedPassword(user.getUserName(), user.getPassword());
         if(user.getPassword() != null && !fetchedUser.getPassword().equals(currentEncodedPassword)) {
             fetchedUser.setPassword(currentEncodedPassword);
         }
-        if(user.getUserStatus() != null && fetchedUser.getUserStatus() != user.getUserStatus()) {
-            fetchedUser.setUserStatus(user.getUserStatus());
+        if(user.getStatus() != null && fetchedUser.getStatus() != user.getStatus()) {
+            fetchedUser.setStatus(user.getStatus());
         }
         if(user.getDateOfBirth() != null && fetchedUser.getDateOfBirth() != user.getDateOfBirth()) {
             fetchedUser.setDateOfBirth(user.getDateOfBirth());
-        }
-        if(user.getMonthOfBirth() != null && fetchedUser.getMonthOfBirth() != user.getMonthOfBirth()) {
-            fetchedUser.setMonthOfBirth(user.getMonthOfBirth());
-        }
-        if(user.getYearOfBirth() != null && fetchedUser.getYearOfBirth() != user.getYearOfBirth()) {
-            fetchedUser.setYearOfBirth(user.getYearOfBirth());
         }
         fetchedUser.setUpdatedAt(new Date());
 
@@ -83,11 +77,9 @@ public class UserDAO extends AbstractDAO<User> {
         System.out.println("UserDAO: fetch");
         System.out.println("UserDAO: START - fetching user from the database by user ID");
         
-        beginTransaction();
         User fetchedUser = find(userID);
         System.out.println("UserDAO: END - fetching user from the database by user ID");
-        closeTransaction();
-
+        
         return fetchedUser;
     }
 
@@ -116,10 +108,10 @@ public class UserDAO extends AbstractDAO<User> {
             Iterator<User> iterator = fetchedUsers.iterator();
             while(iterator.hasNext()) {
                 User currentUser = (User) iterator.next();
-                String userStatusCode = currentUser.getUserStatusCode();
+                String userStatusCode = currentUser.getStatusCode();
                 System.out.println("DEBUG: User Status Code [" + userStatusCode + "]");
                 if(!userStatusCode.equals("A")) {
-                    System.out.println("DEBUG: Removing User [" + currentUser.getUsername() + "]");
+                    System.out.println("DEBUG: Removing User [" + currentUser.getUserName() + "]");
                     iterator.remove();
                 }
             }
@@ -137,7 +129,7 @@ public class UserDAO extends AbstractDAO<User> {
         
         beginTransaction();
         User fetchedUser = fetch(userID);
-        fetchedUser.setUserStatus(UserStatus.DELETED);
+        fetchedUser.setStatus(UserStatus.DELETED);
         fetchedUser.setUpdatedAt(new Date());
         update(fetchedUser);
         commitAndCloseTransaction();

@@ -42,6 +42,15 @@ public class PurchaseRequestManager {
         PurchaseRequest response = purchaseRequestDAO.update(id, purchaseRequest);
         return response;
     }
+    
+    public PurchaseRequest delete(String id, PurchaseRequest purchaseRequest) throws WebServiceException 
+    {
+        if(!purchaseRequest.getId().equals(id)) {
+            throw new WebServiceException(400, "PurchaseRequest ID Mismatch");
+        }
+        PurchaseRequest response = purchaseRequestDAO.delete(id, purchaseRequest);
+        return response;
+    }
 
     public PurchaseRequest get(String id) throws WebServiceException {
         System.out.println("AuthorizationRequestManager.get");

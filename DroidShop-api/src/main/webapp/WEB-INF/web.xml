@@ -6,7 +6,7 @@
     <display-name>DroidShop API</display-name>
 
     <servlet>
-        <servlet-name>demo</servlet-name>
+        <servlet-name>droidshop</servlet-name>
         <servlet-class>
             org.springframework.web.servlet.DispatcherServlet
         </servlet-class>
@@ -14,7 +14,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>demo</servlet-name>
+        <servlet-name>droidshop</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 </web-app>
