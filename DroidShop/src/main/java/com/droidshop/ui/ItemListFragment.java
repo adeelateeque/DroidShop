@@ -114,10 +114,8 @@ public abstract class ItemListFragment<E> extends SherlockFragment
 
         listView = (ListView) view.findViewById(android.R.id.list);
         listView.setOnItemClickListener(new OnItemClickListener() {
-
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 onListItemClick((ListView) parent, view, position, id);
             }
         });
