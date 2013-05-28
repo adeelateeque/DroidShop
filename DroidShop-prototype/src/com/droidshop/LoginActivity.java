@@ -6,22 +6,22 @@ import android.view.Menu;
 
 public class LoginActivity extends FragmentActivity {
 	
-	private MainFragment mainFragment;
+	private FacebookFragment facebookFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-
+	    findViewById(R.id.sign_in_button).setOnClickListener(this);
 	    if (savedInstanceState == null) {
 	        // Add the fragment on initial activity setup
-	        mainFragment = new MainFragment();
+	        facebookFragment = new FacebookFragment();
 	        getSupportFragmentManager()
 	        .beginTransaction()
-	        .add(android.R.id.content, mainFragment)
+	        .add(android.R.id.content, facebookFragment)
 	        .commit();
 	    } else {
 	        // Or set the fragment from restored state info
-	        mainFragment = (MainFragment) getSupportFragmentManager()
+	        facebookFragment = (FacebookFragment) getSupportFragmentManager()
 	        .findFragmentById(android.R.id.content);
 	    }
 	}

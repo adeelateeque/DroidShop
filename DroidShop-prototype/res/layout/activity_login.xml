@@ -11,11 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp" />
-
-    <TextView
-        android:id="@+id/tvUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="testing" />
+    
+    <com.google.android.gms.common.SignInButton
+    	android:id="@+id/sign_in_button"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content" />
     
 </LinearLayout>

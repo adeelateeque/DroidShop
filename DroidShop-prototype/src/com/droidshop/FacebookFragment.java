@@ -5,22 +5,18 @@ import java.util.Arrays;
 import com.facebook.*;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainFragment extends Fragment {
+public class FacebookFragment extends Fragment {
 	
-	private static final String TAG = "MainFragment";
+	private static final String TAG = "FacebookFragment";
 	private UiLifecycleHelper uiHelper;
-	private TextView tvUser;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +30,6 @@ public class MainFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_login, container, false);
 		LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
-		tvUser = (TextView) view.findViewById(R.id.tvUser);
 		authButton.setFragment(this);
 		authButton.setReadPermissions(Arrays.asList("user_likes", "user_status"));
 	    return view;
@@ -42,19 +37,17 @@ public class MainFragment extends Fragment {
 	
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
 	    if (state.isOpened()) {
-	    	Toast.makeText(getActivity(), TAG, Toast.LENGTH_LONG).show();
 	    	Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-
 	            @Override
 	            public void onCompleted(GraphUser user, Response response) {
 	                if (user != null) {
 	                    // Display the parsed user info
-	                    tvUser.setText(user(user));
+	                	Toast.makeText(getActivity(), user(user).toString(), Toast.LENGTH_LONG).show();
 	                }
 	            }
 	        });
 	    } else if (state.isClosed()) {
-	        Log.i(TAG, "Logged out...");
+	    	
 	    }
 	}
 	
@@ -106,6 +99,7 @@ public class MainFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 	    super.onSaveInstanceState(outState);
+	    Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
 	    uiHelper.onSaveInstanceState(outState);
 	}
 
