@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">DroidShop</string>
+    <string name="app_id">132785496918903</string>
     <string name="admin_login">Login as admin</string>
     <string name="hello_world">Hello world!</string>
-    <string name="app_id">132785496918903</string>
 
 </resources>
