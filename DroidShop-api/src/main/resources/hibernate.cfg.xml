@@ -13,5 +13,7 @@
         <property name="show_sql">true</property>
         
         <mapping class="com.droidshop.api.model.user.User" />
+        <mapping class="com.droidshop.api.model.product.Product" />
+        <mapping class="com.droidshop.api.model.product.Category" />
     </session-factory>
 </hibernate-configuration> 

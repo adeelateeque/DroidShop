@@ -1,8 +1,8 @@
 package com.droidshop.api.manager;
 
-import com.droidshop.api.dao.PurchaseRequestDAO;
+import com.droidshop.api.dao.PurchaseDAO;
 import com.droidshop.api.model.error.WebServiceException;
-import com.droidshop.api.model.purchase.PurchaseRequest;
+import com.droidshop.api.model.purchase.Purchase;
 import com.droidshop.api.model.purchase.PurchaseSearchCriteria;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,63 +22,63 @@ import java.util.Set;
 @Component
 public class PurchaseRequestManager {
     @Autowired
-	PurchaseRequestDAO purchaseRequestDAO;
+	PurchaseDAO purchaseDAO;
 
-    public PurchaseRequest add(PurchaseRequest purchaseRequest) throws WebServiceException {
+    public Purchase add(Purchase purchase) throws WebServiceException {
         System.out.println("AuthorizationRequestManager.add");
-        validate(purchaseRequest, POST.class);
+        validate(purchase, POST.class);
 
-        PurchaseRequest response = purchaseRequestDAO.add(purchaseRequest);
+        Purchase response = purchaseDAO.add(purchase);
         return response;
     }
 
-    public PurchaseRequest update(String id, PurchaseRequest purchaseRequest) throws WebServiceException {
+    public Purchase update(String id, Purchase purchase) throws WebServiceException {
         System.out.println("AuthorizationRequestManager.update");
-        validate(purchaseRequest, PUT.class);
+        validate(purchase, PUT.class);
 
-        if(!purchaseRequest.getId().equals(id)) {
-            throw new WebServiceException(400, "PurchaseRequest ID Mismatch");
+        if(!purchase.getId().equals(id)) {
+            throw new WebServiceException(400, "Purchase ID Mismatch");
         }
-        PurchaseRequest response = purchaseRequestDAO.update(id, purchaseRequest);
+        Purchase response = purchaseDAO.update(id, purchase);
         return response;
     }
     
-    public PurchaseRequest delete(String id, PurchaseRequest purchaseRequest) throws WebServiceException 
+    public Purchase delete(String id, Purchase purchase) throws WebServiceException 
     {
-        if(!purchaseRequest.getId().equals(id)) {
-            throw new WebServiceException(400, "PurchaseRequest ID Mismatch");
+        if(!purchase.getId().equals(id)) {
+            throw new WebServiceException(400, "Purchase ID Mismatch");
         }
-        PurchaseRequest response = purchaseRequestDAO.delete(id, purchaseRequest);
+        Purchase response = purchaseDAO.delete(id, purchase);
         return response;
     }
 
-    public PurchaseRequest get(String id) throws WebServiceException {
+    public Purchase get(String id) throws WebServiceException {
         System.out.println("AuthorizationRequestManager.get");
-        PurchaseRequest response = purchaseRequestDAO.get(id);
+        Purchase response = purchaseDAO.get(id);
         return response;
     }
 
-    public List<PurchaseRequest> getAll() throws WebServiceException {
+    public List<Purchase> getAll() throws WebServiceException {
         System.out.println("AuthorizationRequestManager.getAll");
-        List<PurchaseRequest> response = purchaseRequestDAO.getAll();
+        List<Purchase> response = purchaseDAO.getAll();
         return response;
     }
 
-    public List<PurchaseRequest> search(PurchaseSearchCriteria purchaseSearchCriteria) throws WebServiceException {
+    public List<Purchase> search(PurchaseSearchCriteria purchaseSearchCriteria) throws WebServiceException {
         System.out.println("AuthorizationRequestManager.search");
-        List<PurchaseRequest> response = purchaseRequestDAO.search(purchaseSearchCriteria);
+        List<Purchase> response = purchaseDAO.search(purchaseSearchCriteria);
         return response;
     }
 
-    private <T> void validate(PurchaseRequest request, Class<T> T) throws WebServiceException {
+    private <T> void validate(Purchase request, Class<T> T) throws WebServiceException {
         System.out.println("PurchaseRequestManager.validate");
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<PurchaseRequest>> violationSet = validator.validate(request, T);
+        Set<ConstraintViolation<Purchase>> violationSet = validator.validate(request, T);
         if(violationSet.size() > 0) {
             List<String> violationMessageList = new ArrayList<String>();
-            for(ConstraintViolation<PurchaseRequest> violation : violationSet) {
+            for(ConstraintViolation<Purchase> violation : violationSet) {
                 System.out.println("Violation [" + violation.getMessage() + "]");
                 violationMessageList.add(violation.getMessage());
             }
