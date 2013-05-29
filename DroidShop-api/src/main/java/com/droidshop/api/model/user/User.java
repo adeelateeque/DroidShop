@@ -29,8 +29,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Document
 @JsonIgnoreProperties(ignoreUnknown = true)
-@MappedSuperclass
-public class User implements Serializable
+@MappedSuperclass 
+class User implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -70,10 +70,8 @@ public class User implements Serializable
 	protected GenderType gender;
 
 	@JsonProperty
+	@Enumerated(EnumType.STRING)
 	protected UserStatus status;
-
-	@JsonProperty
-	protected String statusCode;
 
 	@NotNull(groups = POST.class, message = "dateOfBirth: Missing Required Field")
 	@JsonProperty
@@ -189,17 +187,6 @@ public class User implements Serializable
 	public void setStatus(UserStatus status)
 	{
 		this.status = status;
-		this.statusCode = status.getStatusCode();
-	}
-
-	public String getStatusCode()
-	{
-		return statusCode;
-	}
-
-	public void setStatusCode(String statusCode)
-	{
-		this.statusCode = statusCode;
 	}
 
 	public Date getDateOfBirth()
@@ -355,7 +342,7 @@ public class User implements Serializable
 	{
 		return "User{" + "id=" + id + ", nameFirst='" + firstName + '\'' + ", nameMiddle='" + middleName + '\''
 				+ ", nameLast='" + lastName + '\'' + ", username='" + userName + '\'' + ", password='" + password + '\''
-				+ ", userStatus=" + status + ", userStatusCode='" + statusCode + '\'' + ", dateOfBirth=" + dateOfBirth
+				+ ", userStatus=" + status + ", userStatusCode='" + '\'' + ", dateOfBirth=" + dateOfBirth
 				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + '}';
 	}
 }

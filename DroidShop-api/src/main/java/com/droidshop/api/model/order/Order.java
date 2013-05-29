@@ -25,7 +25,6 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
 import com.droidshop.api.model.user.Customer;
-import com.droidshop.api.model.user.User;
 
 @Entity
 @Table(name = "customer_order")
@@ -140,11 +139,6 @@ public class Order implements Serializable
 	public void setCustomer(Customer customer)
 	{
 		this.customer = customer;
-	}
-
-	public void setCustomer(User user)
-	{
-		this.customer = (Customer) user;
 	}
 
 	public List<OrderDetail> getOrderDetails()

@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import com.droidshop.api.model.product.Product;
+import com.droidshop.api.model.product.ProductStatus;
 
 @Component
 public class ProductDAO extends AbstractDAO<Product>
@@ -48,7 +49,7 @@ public class ProductDAO extends AbstractDAO<Product>
 
 		update(fetchedProduct);
 		commitAndCloseTransaction();
-		
+
 		System.out.println("ProductDAO: END - updating product to the database");
 
 		return fetchedProduct;
@@ -95,9 +96,9 @@ public class ProductDAO extends AbstractDAO<Product>
 			while (iterator.hasNext())
 			{
 				Product currentProduct = (Product) iterator.next();
-				String productStatusCode = currentProduct.getStatus().toString();
-				System.out.println("DEBUG: Product Status Code [" + productStatusCode + "]");
-				if (!productStatusCode.equals("INSTOCK"))
+				ProductStatus productStatus = currentProduct.getStatus();
+				System.out.println("DEBUG: Product Status Code [" + productStatus + "]");
+				if (!productStatus.equals(ProductStatus.INSTOCK))
 				{
 					System.out.println("DEBUG: Removing Product [" + currentProduct.getName() + "]");
 					iterator.remove();
