@@ -95,9 +95,9 @@ public class ProductDAO extends AbstractDAO<Product>
 			while (iterator.hasNext())
 			{
 				Product currentProduct = (Product) iterator.next();
-				String productStatusCode = currentProduct.getStatusCode();
+				String productStatusCode = currentProduct.getStatus().toString();
 				System.out.println("DEBUG: Product Status Code [" + productStatusCode + "]");
-				if (!productStatusCode.equals("E"))
+				if (!productStatusCode.equals("INSTOCK"))
 				{
 					System.out.println("DEBUG: Removing Product [" + currentProduct.getName() + "]");
 					iterator.remove();

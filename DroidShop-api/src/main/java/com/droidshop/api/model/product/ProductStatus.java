@@ -2,7 +2,7 @@ package com.droidshop.api.model.product;
 
 public enum ProductStatus
 {
-	INSTOCK("I"), OUTOFSTOCK("O");
+	INSTOCK("INSTOCK"), OUTOFSTOCK("OUTOFSTOCK");
 
 	private String statusCode;
 
@@ -11,7 +11,8 @@ public enum ProductStatus
 		this.statusCode = statusCode;
 	}
 
-	public String getStatusCode()
+	@Override
+	public String toString()
 	{
 		return this.statusCode;
 	}

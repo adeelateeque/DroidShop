@@ -85,9 +85,9 @@ public class CategoryDAO extends AbstractDAO<Category> {
             Iterator<Category> iterator = fetchedCategorys.iterator();
             while(iterator.hasNext()) {
                 Category currentCategory = (Category) iterator.next();
-                String categoryStatusCode = currentCategory.getStatusCode();
+                String categoryStatusCode = currentCategory.getStatus().toString();
                 System.out.println("DEBUG: Category Status Code [" + categoryStatusCode + "]");
-                if(!categoryStatusCode.equals("D")) {
+                if(!categoryStatusCode.equals("ENABLED")) {
                     System.out.println("DEBUG: Removing Category [" + currentCategory.getName() + "]");
                     iterator.remove();
                 }

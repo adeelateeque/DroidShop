@@ -3,14 +3,19 @@ package com.droidshop.api.model.product;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
@@ -39,9 +44,12 @@ public class Category implements Serializable
 
 	@NotNull(groups = POST.class, message = "name: Missing Required Field")
 	@JsonProperty
-	@Column(length = 30, nullable = false)
+	@Column(length = 30, nullable = false, unique = true)
 	@Basic(optional = false)
 	private String name;
+
+	@ManyToMany(mappedBy = "categories")
+	private List<Product> products;
 
 	@JsonProperty("created_at")
 	@Temporal(TIMESTAMP)
@@ -52,13 +60,29 @@ public class Category implements Serializable
 	private Date updatedAt;
 
 	@JsonProperty
-	private ProductStatus status;
-
-	@JsonProperty
-	private String statusCode;
+	@Enumerated(EnumType.STRING)
+	private CategoryStatus status;
 
 	public Category()
 	{
+		this.products = new ArrayList<Product>();
+	}
+
+	public Category(String name)
+	{
+		this.name = name;
+		this.products = new ArrayList<Product>();
+	}
+
+	public Category(Long id)
+	{
+		this.id = id;
+	}
+
+	public Category(Long id, String name)
+	{
+		this.id = id;
+		this.name = name;
 	}
 
 	public Long getId()
@@ -80,6 +104,17 @@ public class Category implements Serializable
 	{
 		this.name = name;
 	}
+	
+	public List<Product> getProducts()
+	{
+		return products;
+	}
+
+	public void setProducts(List<Product> productList)
+	{
+		this.products = productList;
+	}
+
 
 	public Date getCreatedAt()
 	{
@@ -101,25 +136,41 @@ public class Category implements Serializable
 		this.updatedAt = updatedAt;
 	}
 
-	public ProductStatus getStatus()
+	public CategoryStatus getStatus()
 	{
 		return status;
 	}
 
-	public void setStatus(ProductStatus status)
+	public void setStatus(CategoryStatus status)
 	{
 		this.status = status;
-		this.statusCode = status.getStatusCode();
 	}
 
-	public String getStatusCode()
+	@Override
+	public int hashCode()
 	{
-		return statusCode;
+		int hash = 0;
+		hash += ((id != null) ? id.hashCode() : 0);
+
+		return hash;
 	}
 
-	public void setStatusCode(String statusCode)
+	@Override
+	public boolean equals(Object object)
 	{
-		this.statusCode = statusCode;
+		if (!(object instanceof Category))
+		{
+			return false;
+		}
+
+		Category other = (Category) object;
+
+		if (((this.id == null) && (other.id != null)) || ((this.id != null) && !this.id.equals(other.id)))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override

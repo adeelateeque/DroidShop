@@ -2,7 +2,7 @@ package com.droidshop.api.model.product;
 
 public enum CategoryStatus
 {
-	ENABLED("E"), DISABLED("D");
+	ENABLED("ENABLED"), DISABLED("DISABLED");
 
 	private String statusCode;
 
@@ -11,7 +11,8 @@ public enum CategoryStatus
 		this.statusCode = statusCode;
 	}
 
-	public String getStatusCode()
+	@Override
+	public String toString()
 	{
 		return this.statusCode;
 	}
