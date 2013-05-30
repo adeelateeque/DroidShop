@@ -2,7 +2,6 @@ package com.droidshop.api.controller;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,57 +14,57 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.droidshop.api.manager.UserManager;
+import com.droidshop.api.manager.CustomerManager;
 import com.droidshop.api.model.error.WebServiceError;
 import com.droidshop.api.model.error.WebServiceException;
-import com.droidshop.api.model.user.User;
+import com.droidshop.api.model.user.Customer;
 
 @Controller
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/customer")
+public class CustomerController {
     @Autowired
-    UserManager userManager;
+    CustomerManager customerManager;
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public User addUser(@RequestBody User user) throws Exception {
-        return userManager.add(user);
+    public Customer addCustomer(@RequestBody Customer customer) throws Exception {
+        return customerManager.add(customer);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public User updateUser(@PathVariable Long id, @RequestBody User user) throws Exception {
-        return userManager.update(id, user);
+    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer customer) throws Exception {
+        return customerManager.update(id, customer);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public User fetchUser(@PathVariable Long id) {
-        return userManager.fetch(id);
+    public Customer fetchCustomer(@PathVariable Long id) {
+        return customerManager.fetch(id);
     }
 
-    @RequestMapping(value = "/username/{username}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/username/{userName}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public User fetchUserByUsername(@PathVariable String username) {
-        return userManager.fetchByUsername(username);
+    public Customer fetchByUserName(@PathVariable String userName) {
+        return customerManager.fetchByUserName(userName);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<User> fetchAllUsers(@RequestParam(value = "include_all", required = false) boolean includeAll) {
-        return userManager.fetchAll(includeAll);
+    public List<Customer> fetchAllCustomers(@RequestParam(value = "include_all", required = false) boolean includeAll) {
+        return customerManager.fetchAll(includeAll);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json")
     @ResponseBody
-    public User deleteUser(@PathVariable Long id, @RequestBody User user) throws Exception {
-        return userManager.delete(id, user);
+    public Customer deleteCustomer(@PathVariable Long id, @RequestBody Customer customer) throws Exception {
+        return customerManager.delete(id, customer);
     }
 
     // Exception handler for WebServiceException cases
     @ExceptionHandler(WebServiceException.class)
     public ResponseEntity<WebServiceError> handleWebServiceException(WebServiceException webServiceException) {
-        System.out.println("UserController.handleWebServiceException");
+        System.out.println("CustomerController.handleWebServiceException");
         WebServiceError webServiceError = new WebServiceError(webServiceException.getExceptionCode(), webServiceException.getExceptionMessage());
 
         // This should happen in case of input constraint validations
@@ -78,7 +77,7 @@ public class UserController {
     // Exception handler for generic Exception cases
     @ExceptionHandler(Exception.class)
     public ResponseEntity<WebServiceError> handleException(Exception exception) {
-        System.out.println("UserController.handleException");
+        System.out.println("CustomerController.handleException");
         WebServiceError webServiceError = new WebServiceError(400, exception.getMessage());
         return new ResponseEntity<WebServiceError>(webServiceError, HttpStatus.BAD_REQUEST);
     }

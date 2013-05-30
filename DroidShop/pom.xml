@@ -65,6 +65,11 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
+			<groupId>com.android.volley</groupId>
+			<artifactId>volley</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>${gson.version}</version>
@@ -127,7 +132,7 @@
 		<dependency>
 			<groupId>com.github.kevinsawicki</groupId>
 			<artifactId>wishlist</artifactId>
-			<version>0.10-SNAPSHOT</version>
+			<version>0.9</version>
 			<type>apklib</type>
 			<exclusions>
 				<exclusion>
@@ -282,7 +287,7 @@
 	<repositories>
 		<repository>
 			<id>android_artifacts</id>
-			<url>file://${env.ANDROID_HOME}../artifacts</url>
+			<url>file://C:\Users\Adeel\Dropbox\Development\android\artifacts</url>
 		</repository>
 	</repositories>
 

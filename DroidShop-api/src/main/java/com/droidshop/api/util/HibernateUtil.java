@@ -89,17 +89,18 @@ public class HibernateUtil
 
 	}
 
-	public void generateCreateScript()
+	public void generateCreateScript(boolean exportToDB, boolean justDrop, boolean justCreate)
 	{
 		Configuration configuration = new Configuration();
 		configuration.configure(configFile);
 		SchemaExport export = new SchemaExport(configuration);
-		export.execute(true, false, false, false);
+		export.execute(true, exportToDB, justDrop, justCreate);
 	}
 
 	public static void main(String args[])
 	{
 		HibernateUtil util = new HibernateUtil();
 		util.generateUpdateScript();
+		/*util.generateCreateScript(true, false, true);*/
 	}
 }

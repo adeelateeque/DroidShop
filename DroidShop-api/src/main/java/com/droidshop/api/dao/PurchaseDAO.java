@@ -1,7 +1,7 @@
 package com.droidshop.api.dao;
 
 import com.droidshop.api.model.error.WebServiceException;
-import com.droidshop.api.model.purchase.PurchaseRequest;
+import com.droidshop.api.model.purchase.Purchase;
 import com.droidshop.api.model.purchase.PurchaseSearchCriteria;
 import com.droidshop.api.util.mongodb.MongoBroker;
 
@@ -15,29 +15,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class PurchaseRequestDAO {
+public class PurchaseDAO {
     @Autowired
     MongoBroker mongoBroker;
 
-    public PurchaseRequest add(PurchaseRequest purchaseRequest) throws WebServiceException {
+    public Purchase add(Purchase purchase) throws WebServiceException {
         System.out.println("AuthorizationRequestDAO.add");
 
         try {
-            mongoBroker.getTemplate().save(purchaseRequest);
+            mongoBroker.getTemplate().save(purchase);
         } catch(Exception exception) {
             System.out.println("Exception [" + exception.getMessage() + "]");
             throw new WebServiceException(500, exception.getMessage());
         }
-        return purchaseRequest;
+        return purchase;
     }
 
-    public PurchaseRequest update(String id, PurchaseRequest purchaseRequest) throws WebServiceException {
+    public Purchase update(String id, Purchase purchase) throws WebServiceException {
         System.out.println("AuthorizationRequestDAO.update");
 
-        PurchaseRequest updatedRequest = null;
+        Purchase updatedRequest = null;
         try {
-            PurchaseRequest fetchedRequest = get(id);
-            updatedRequest = getUpdatedRequest(fetchedRequest, purchaseRequest);
+            Purchase fetchedRequest = get(id);
+            updatedRequest = getUpdatedRequest(fetchedRequest, purchase);
             mongoBroker.getTemplate().save(updatedRequest);
         } catch(Exception exception) {
             System.out.println("Exception [" + exception.getMessage() + "]");
@@ -46,7 +46,7 @@ public class PurchaseRequestDAO {
         return updatedRequest;
     }
     
-    public PurchaseRequest delete(String id, PurchaseRequest purchaseRequest) throws WebServiceException 
+    public Purchase delete(String id, Purchase purchase) throws WebServiceException 
     {
     	 try {
     		 mongoBroker.getTemplate().remove(get(id));
@@ -54,57 +54,57 @@ public class PurchaseRequestDAO {
              System.out.println("Exception [" + exception.getMessage() + "]");
              throw new WebServiceException(500, exception.getMessage());
          }
-    	 return new PurchaseRequest();
+    	 return new Purchase();
     }
 
-    public PurchaseRequest get(String id) throws WebServiceException {
+    public Purchase get(String id) throws WebServiceException {
         System.out.println("AuthorizationRequestDAO.get");
-        PurchaseRequest response = null;
+        Purchase response = null;
         try {
-            response = mongoBroker.getTemplate().findById(id, PurchaseRequest.class);
+            response = mongoBroker.getTemplate().findById(id, Purchase.class);
         } catch(Exception exception) {
             System.out.println("Exception [" + exception.getMessage() + "]");
             throw new WebServiceException(500, exception.getMessage());
         }
         if(response == null) {
-            response = new PurchaseRequest();
+            response = new Purchase();
         }
         return response;
     }
 
-    public List<PurchaseRequest> getAll() throws WebServiceException {
+    public List<Purchase> getAll() throws WebServiceException {
         System.out.println("AuthorizationRequestDAO.getAll");
-        List<PurchaseRequest> response = null;
+        List<Purchase> response = null;
         try {
-            response = mongoBroker.getTemplate().findAll(PurchaseRequest.class);
+            response = mongoBroker.getTemplate().findAll(Purchase.class);
         } catch(Exception exception) {
             System.out.println("Exception [" + exception.getMessage() + "]");
             throw new WebServiceException(500, exception.getMessage());
         }
         if(response == null) {
-            response = new ArrayList<PurchaseRequest>();
+            response = new ArrayList<Purchase>();
         }
         return response;
     }
 
-    public List<PurchaseRequest> search(PurchaseSearchCriteria purchaseSearchCriteria) throws WebServiceException {
+    public List<Purchase> search(PurchaseSearchCriteria purchaseSearchCriteria) throws WebServiceException {
         System.out.println("AuthorizationRequestDAO.search");
-        List<PurchaseRequest> response = null;
+        List<Purchase> response = null;
         try {
             Query query = getQueryFromSearchCriteria(purchaseSearchCriteria);
-            response = mongoBroker.getTemplate().find(query, PurchaseRequest.class);
+            response = mongoBroker.getTemplate().find(query, Purchase.class);
         } catch(Exception exception) {
             System.out.println("Exception [" + exception.getMessage() + "]");
             throw new WebServiceException(500, exception.getMessage());
         }
         if(response == null) {
-            response = new ArrayList<PurchaseRequest>();
+            response = new ArrayList<Purchase>();
         }
         return response;
     }
 
     // TODO: Throw exceptions in error cases
-    private PurchaseRequest getUpdatedRequest(PurchaseRequest fetchedRequest, PurchaseRequest updatedRequest) throws WebServiceException {
+    private Purchase getUpdatedRequest(Purchase fetchedRequest, Purchase updatedRequest) throws WebServiceException {
         updatedRequest.setId(fetchedRequest.getId());
         // TODO: Other checks go here. Only update the fields that need to be updated
         return updatedRequest;

@@ -23,7 +23,7 @@ import javax.ws.rs.PUT;
         @CompoundIndex(name = "order_number_idx", def = "{'orderNumber': 1}")
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PurchaseRequest {
+public class Purchase {
     @Id
     @NotNull(groups=PUT.class, message = "id: Missing Required Field")
     private String id;
@@ -174,7 +174,7 @@ public class PurchaseRequest {
 
 	@Override
 	public String toString() {
-		return "PurchaseRequest{" +
+		return "Purchase{" +
 				"id='" + id + '\'' +
 				", billingAddress=" + billingAddress +
 				", shippingAddress=" + shippingAddress +
