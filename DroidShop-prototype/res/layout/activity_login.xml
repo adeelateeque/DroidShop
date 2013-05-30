@@ -2,19 +2,132 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     android:orientation="vertical"
     tools:context=".LoginActivity" >
-
-    <com.facebook.widget.LoginButton
-        android:id="@+id/authButton"
+    
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="30sp"
+        android:text="@string/tvLogin" />
     
-    <com.google.android.gms.common.SignInButton
-    	android:id="@+id/sign_in_button"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content" />
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" >
+        
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1" >
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:textSize="18sp"
+                android:layout_weight="0.2"
+                android:text="@string/tvUsername" />
+            
+            <EditText
+                android:id="@+id/etUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.8"
+                android:hint="@string/htUsername" />
+            
+        </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1" >
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:textSize="18sp"
+                android:layout_weight="0.2"
+                android:text="@string/tvPwd" />
+            
+            <EditText
+                android:id="@+id/etPwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="5"
+                android:layout_weight="0.8"
+                android:inputType="textPassword"
+                android:hint="@string/htPwd" />
+            
+        </TableRow>
+        
+    </TableLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="-10dp"
+        android:weightSum="1" >
+        
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_gravity="center"
+            android:text="@string/btnClear" />
+        
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_gravity="center"
+            android:text="@string/btnLogin" />
+        
+    </LinearLayout>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:textSize="20sp"
+        android:text="@string/tvOr" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="30sp"
+        android:text="@string/tvRegister" />
+    
+   	<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1" >
+        
+   	    <com.facebook.widget.LoginButton
+   	        android:id="@+id/authButton"
+   	        android:layout_width="0dp"
+   	        android:layout_height="wrap_content"
+   	        android:layout_weight="0.5"
+   	        android:text="@+id/btnRegister" />
+    
+    	<Button
+        	android:id="@+id/btnRegister"
+        	android:layout_width="0dp"
+        	android:layout_height="55dp"
+        	android:layout_weight="0.5"
+        	android:text="@string/btnRegister" />
+        
+    </LinearLayout>
     
 </LinearLayout>
