@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -84,6 +83,10 @@
                 android:textColor="@color/text"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
+            <Button android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Click for HTTP call" android:onClick="makeHttpCall"/>
+
+            <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Result will go here.." android:id="@+id/tv_httpResult"/>
         </LinearLayout>
     </ScrollView>
 

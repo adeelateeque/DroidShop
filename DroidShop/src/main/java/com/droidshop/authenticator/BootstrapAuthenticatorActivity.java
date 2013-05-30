@@ -1,4 +1,3 @@
-
 package com.droidshop.authenticator;
 
 import static android.R.layout.simple_dropdown_item_1line;
@@ -15,7 +14,10 @@ import static com.droidshop.core.Constants.Http.PARSE_APP_ID;
 import static com.droidshop.core.Constants.Http.PARSE_REST_API_KEY;
 import static com.droidshop.core.Constants.Http.URL_AUTH;
 import static com.github.kevinsawicki.http.HttpRequest.get;
-import static com.github.kevinsawicki.http.HttpRequest.post;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
@@ -27,7 +29,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
@@ -37,34 +38,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-
-import com.droidshop.core.Constants;
-import com.droidshop.core.User;
-import com.droidshop.util.Ln;
-import com.droidshop.util.SafeAsyncTask;
-import com.droidshop.util.Strings;
-import com.github.kevinsawicki.http.HttpRequest;
-import com.github.kevinsawicki.wishlist.Toaster;
-import com.droidshop.R.id;
-import com.droidshop.R.layout;
-import com.droidshop.R.string;
-import com.droidshop.ui.TextWatcherAdapter;
-import com.google.gson.Gson;
-
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.InjectView;
 import butterknife.Views;
 
-import static com.droidshop.core.Constants.Http.USERNAME;
-import static com.droidshop.core.Constants.Http.PASSWORD;
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.droidshop.R.id;
+import com.droidshop.R.layout;
+import com.droidshop.R.string;
+import com.droidshop.core.Constants;
+import com.droidshop.core.User;
+import com.droidshop.ui.TextWatcherAdapter;
+import com.droidshop.util.Ln;
+import com.droidshop.util.SafeAsyncTask;
+import com.droidshop.util.Strings;
+import com.droidshop.util.VolleyUtil;
+import com.github.kevinsawicki.http.HttpRequest;
+import com.github.kevinsawicki.wishlist.Toaster;
+import com.google.gson.Gson;
 
 /**
  * Activity to authenticate the user against an API (example API on Parse.com)
  */
-public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticatorActivity {
+public class BootstrapAuthenticatorActivity extends
+        SherlockAccountAuthenticatorActivity {
 
     /**
      * PARAM_CONFIRMCREDENTIALS
@@ -86,12 +85,16 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
      */
     public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
 
-
     private AccountManager accountManager;
 
-    @InjectView(id.et_email) AutoCompleteTextView emailText;
-    @InjectView(id.et_password) EditText passwordText;
-    @InjectView(id.b_signin) Button signinButton;
+    @InjectView(id.et_email)
+    AutoCompleteTextView emailText;
+    @InjectView(id.et_password)
+    EditText passwordText;
+    @InjectView(id.b_signin)
+    Button signinButton;
+    @InjectView(id.tv_httpResult)
+    TextView tvHttpResult;
 
     private TextWatcher watcher = validationTextWatcher();
 
@@ -109,11 +112,11 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 
     private String password;
 
-
     /**
-     * In this instance the token is simply the sessionId returned from Parse.com. This could be a
-     * oauth token or some other type of timed token that expires/etc. We're just using the parse.com
-     * sessionId to prove the example of how to utilize a token.
+     * In this instance the token is simply the sessionId returned from
+     * Parse.com. This could be a oauth token or some other type of timed token
+     * that expires/etc. We're just using the parse.com sessionId to prove the
+     * example of how to utilize a token.
      */
     private String token;
 
@@ -240,17 +243,18 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
         authenticationTask = new SafeAsyncTask<Boolean>() {
             public Boolean call() throws Exception {
 
-                final String query = String.format("%s=%s&%s=%s", PARAM_USERNAME, email, PARAM_PASSWORD, password);
+                final String query = String.format("%s=%s&%s=%s",
+                        PARAM_USERNAME, email, PARAM_PASSWORD, password);
 
-                HttpRequest request = get(URL_AUTH + "?" + query)
-                        .header(HEADER_PARSE_APP_ID, PARSE_APP_ID)
-                        .header(HEADER_PARSE_REST_API_KEY, PARSE_REST_API_KEY);
-
+                HttpRequest request = get(URL_AUTH + "?" + query).header(
+                        HEADER_PARSE_APP_ID, PARSE_APP_ID).header(
+                        HEADER_PARSE_REST_API_KEY, PARSE_REST_API_KEY);
 
                 Ln.d("Authentication response=%s", request.code());
 
-                if(request.ok()) {
-                    final User model = new Gson().fromJson(Strings.toString(request.buffer()), User.class);
+                if (request.ok()) {
+                    final User model = new Gson().fromJson(
+                            Strings.toString(request.buffer()), User.class);
                     token = model.getSessionToken();
                 }
 
@@ -287,6 +291,23 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
         authenticationTask.execute();
     }
 
+    public void makeHttpCall(View view) {
+        StringRequest myReq = new StringRequest(Method.GET,
+                "http://www.google.com",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        tvHttpResult.setText(response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        tvHttpResult.setText(error.getMessage());
+                    }
+                });
+        VolleyUtil.getRequestQueue().add(myReq);
+    }
+
     /**
      * Called when response is received from the server for confirm credentials
      * request. See onAuthenticationResult(). Sets the
@@ -295,7 +316,8 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
      * @param result
      */
     protected void finishConfirmCredentials(boolean result) {
-        final Account account = new Account(email, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
+        final Account account = new Account(email,
+                Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
         accountManager.setPassword(account, password);
 
         final Intent intent = new Intent();
@@ -313,7 +335,8 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
      */
 
     protected void finishLogin() {
-        final Account account = new Account(email, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
+        final Account account = new Account(email,
+                Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
 
         if (requestNewAccount)
             accountManager.addAccountExplicitly(account, password, null);
