@@ -46,7 +46,7 @@ public class Order implements Serializable
 	@Column(name = "id")
 	private Long id;
 	
-	@JoinColumn(name = "customer_id", referencedColumnName = "userName")
+	@JoinColumn(name = "customer_id", referencedColumnName = "id")
 	@ManyToOne(optional = false)
 	private Customer customer;
 

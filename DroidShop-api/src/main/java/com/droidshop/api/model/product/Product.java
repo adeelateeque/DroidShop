@@ -38,6 +38,7 @@ import javax.ws.rs.PUT;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -61,6 +62,7 @@ public class Product implements Serializable
 	@Basic(optional = false)
 	private String name;
 
+	@JsonIgnore
 	@ManyToMany
 	private List<Category> categories;
 
