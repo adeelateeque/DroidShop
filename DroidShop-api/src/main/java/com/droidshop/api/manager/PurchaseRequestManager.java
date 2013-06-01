@@ -1,12 +1,8 @@
 package com.droidshop.api.manager;
 
-import com.droidshop.api.dao.PurchaseDAO;
-import com.droidshop.api.model.error.WebServiceException;
-import com.droidshop.api.model.purchase.Purchase;
-import com.droidshop.api.model.purchase.PurchaseSearchCriteria;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -15,11 +11,15 @@ import javax.validation.ValidatorFactory;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Component
+import com.droidshop.api.dao.PurchaseDAO;
+import com.droidshop.api.model.error.WebServiceException;
+import com.droidshop.api.model.purchase.Purchase;
+import com.droidshop.api.model.purchase.PurchaseSearchCriteria;
+
+@Service
 public class PurchaseRequestManager {
     @Autowired
 	PurchaseDAO purchaseDAO;

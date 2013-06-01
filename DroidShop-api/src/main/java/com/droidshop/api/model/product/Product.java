@@ -72,6 +72,7 @@ public class Product implements Serializable
 	@Lob
 	private String description;
 
+	@JsonIgnore
 	@Lob
 	private byte[] image;
 

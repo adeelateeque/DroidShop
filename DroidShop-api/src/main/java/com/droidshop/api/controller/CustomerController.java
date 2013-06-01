@@ -78,6 +78,7 @@ public class CustomerController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<WebServiceError> handleException(Exception exception) {
         System.out.println("CustomerController.handleException");
+        exception.printStackTrace();
         WebServiceError webServiceError = new WebServiceError(400, exception.getMessage());
         return new ResponseEntity<WebServiceError>(webServiceError, HttpStatus.BAD_REQUEST);
     }

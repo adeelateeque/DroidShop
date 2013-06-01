@@ -15,18 +15,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.Type;
-import org.springframework.stereotype.Component;
-
-import com.droidshop.api.util.HibernateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("unchecked")
 
-@Component
 public abstract class AbstractDAO<T>
 {
-	protected static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
-	protected Session session;
+	@Autowired
+	protected SessionFactory sessionFactory;
 
 	private Class<T> entityClass;
 
@@ -35,73 +31,44 @@ public abstract class AbstractDAO<T>
 		this.entityClass = entityClass;
 	}
 	
-	public void beginTransaction()
+	protected Session getCurrentSession()
 	{
-		session = sessionFactory.openSession();
-		session.getTransaction().begin();
-	}
-
-	public void commit()
-	{
-		session.getTransaction().commit();
-	}
-
-	public void rollback()
-	{
-		session.getTransaction().rollback();
-	}
-
-	public void closeTransaction()
-	{
-		session.close();
-	}
-
-	public void commitAndCloseTransaction()
-	{
-		commit();
-		closeTransaction();
+		return sessionFactory.getCurrentSession();
 	}
 	
-	public boolean isSessionClosed()
-	{
-		return !session.isOpen();
-	}
-
-	public void flush()
-	{
-		session.flush();
-	}
-
 	public Serializable save(T entity)
 	{
-		return session.save(entity);
+		return sessionFactory.getCurrentSession().save(entity);
 	}
+	
+	public void saveOrUpdate(T entity) {
+        getCurrentSession().saveOrUpdate(entity);
+    }
 
 	public void delete(T entity)
 	{
-		T entityToBeRemoved = (T) session.merge(entity);
-		session.delete(entityToBeRemoved);
+		sessionFactory.getCurrentSession().delete(entity);
 	}
 
 	public void update(T entity)
 	{
-		session.update(entity);
+		sessionFactory.getCurrentSession().update(entity);
 	}
 	
 	public T merge(T entity)
 	{
-		return (T) session.merge(entity);
+		return (T) sessionFactory.getCurrentSession().merge(entity);
 	}
 	
 	public T find(Serializable entityID)
 	{
-		return (T) session.get(entityClass, entityID);
+		return (T) sessionFactory.getCurrentSession().get(entityClass, entityID);
 	}
 
 	public T findReferenceOnly(Serializable entityID)
 	{
 		// load method returns a reference while get method returns the whole object
-		return (T) session.load(entityClass, entityID);
+		return (T) sessionFactory.getCurrentSession().load(entityClass, entityID);
 	}
 
 	public int getCollectionSize(T entity, String collectionName)
@@ -109,8 +76,8 @@ public abstract class AbstractDAO<T>
 		String query = "SELECT size(p." + collectionName + ") FROM " + entityClass.getSimpleName() + " p WHERE p."
 				+ getIdentityColumn() + " = :value";
 
-		Query qry = session.createQuery(query);
-		qry.setParameter("value", getMetaData().getIdentifier(entity, (SessionImplementor) session));
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
+		qry.setParameter("value", getMetaData().getIdentifier(entity, (SessionImplementor) sessionFactory.getCurrentSession()));
 		return (Integer) qry.uniqueResult();
 	}
 
@@ -120,7 +87,7 @@ public abstract class AbstractDAO<T>
 
 		try
 		{
-			Query query = session.getNamedQuery(namedQuery);
+			Query query = sessionFactory.getCurrentSession().getNamedQuery(namedQuery);
 
 			populateQueryParameters(query, parameters);
 
@@ -129,7 +96,7 @@ public abstract class AbstractDAO<T>
 		}
 		catch (NonUniqueResultException e)
 		{
-			Query query = session.getNamedQuery(namedQuery);
+			Query query = sessionFactory.getCurrentSession().getNamedQuery(namedQuery);
 
 			populateQueryParameters(query, parameters);
 
@@ -154,7 +121,7 @@ public abstract class AbstractDAO<T>
 
 		try
 		{
-			Query query = session.getNamedQuery(namedQuery);
+			Query query = sessionFactory.getCurrentSession().getNamedQuery(namedQuery);
 
 			populateQueryParameters(query, parameters);
 
@@ -206,7 +173,7 @@ public abstract class AbstractDAO<T>
 
 	public List<T> getAll()
 	{
-		return (List<T>) session.createQuery("from " + entityClass.getSimpleName()).list();
+		return (List<T>) sessionFactory.getCurrentSession().createQuery("from " + entityClass.getSimpleName()).list();
 	}
 
 	public List<T> getAllOrderBy(String orderby, String order, Boolean distinct)
@@ -227,7 +194,7 @@ public abstract class AbstractDAO<T>
 			query = "FROM " + entityClass.getSimpleName() + " p ORDER BY p." + orderby + " " + order;
 		}
 	
-		return (List<T>) session.createQuery(query).list();
+		return (List<T>) sessionFactory.getCurrentSession().createQuery(query).list();
 	}
 
 	public List<T> getAllWhereLessThan(String column, Object lessThan, Boolean inclusive, Boolean distinct, String orderby,
@@ -269,7 +236,7 @@ public abstract class AbstractDAO<T>
 			query += " ORDER BY p." + orderby + " " + order;
 		}
 	
-		Query qry = session.createQuery(query);
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
 		qry.setParameter("lessThan", lessThan, getColumnHibernateType(column));
 	
 		return (List<T>) qry.list();
@@ -314,7 +281,7 @@ public abstract class AbstractDAO<T>
 			query += " ORDER BY p." + orderby + " " + order;
 		}
 	
-		Query qry = session.createQuery(query);
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
 		qry.setParameter("greaterThan", greaterThan, getColumnHibernateType(column));
 	
 		return (List<T>) qry.list();
@@ -359,7 +326,7 @@ public abstract class AbstractDAO<T>
 			query += " ORDER BY p." + orderby + " " + order;
 		}
 	
-		Query qry = session.createQuery(query);
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
 		qry.setParameter("equalsTo", equalsTo, getColumnHibernateType(column));
 	
 		return (List<T>) qry.list();
@@ -423,7 +390,7 @@ public abstract class AbstractDAO<T>
 			query += " ORDER BY p." + orderby + " " + order;
 		}
 	
-		return (List<T>) session.createQuery(query).list();
+		return (List<T>) sessionFactory.getCurrentSession().createQuery(query).list();
 	}
 
 	public List<T> getAllWhereLike(String column, String like, Boolean distinct, String orderby, String order)
@@ -465,7 +432,7 @@ public abstract class AbstractDAO<T>
 			query += " ORDER BY p." + orderby + " " + order;
 		}
 	
-		Query qry = session.createQuery(query);
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
 		qry.setParameterList("items", items, getColumnHibernateType(column));
 	
 		return (List<T>) qry.list();
@@ -506,7 +473,7 @@ public abstract class AbstractDAO<T>
 			query += " ORDER BY p." + orderby + " " + order;
 		}
 	
-		Query qry = session.createQuery(query);
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
 		qry.setParameter("item", item);
 	
 		System.out.println(qry.toString());
@@ -548,7 +515,7 @@ public abstract class AbstractDAO<T>
 			query += " ORDER BY p." + orderby + " " + order;
 		}
 	
-		Query qry = session.createQuery(query);
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
 		qry.setParameter("items", items);
 	
 		System.out.println(qry.toString());
@@ -601,7 +568,7 @@ public abstract class AbstractDAO<T>
 			query += " ORDER BY p." + orderby + " " + order;
 		}
 	
-		Query qry = session.createQuery(query);
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
 		qry.setParameter("start", start, getColumnHibernateType(column));
 		qry.setParameter("end", end, getColumnHibernateType(column));
 	
@@ -613,8 +580,8 @@ public abstract class AbstractDAO<T>
 		String query = "FROM " + entityClass.getSimpleName() + " p LEFT JOIN FETCH p." + collectionToLoad + " WHERE p."
 				+ getIdentityColumn() + " = :value";
 	
-		Query qry = session.createQuery(query);
-		qry.setParameter("value", getMetaData().getIdentifier(entity, (SessionImplementor) session));
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
+		qry.setParameter("value", getMetaData().getIdentifier(entity, (SessionImplementor) sessionFactory.getCurrentSession()));
 	
 		if (qry.uniqueResult() == null)
 		{
@@ -632,8 +599,8 @@ public abstract class AbstractDAO<T>
 		}
 		query += " WHERE p." + getIdentityColumn() + " = :value";
 	
-		Query qry = session.createQuery(query);
-		qry.setParameter("value", getMetaData().getIdentifier(entity, (SessionImplementor) session));
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
+		qry.setParameter("value", getMetaData().getIdentifier(entity, (SessionImplementor) sessionFactory.getCurrentSession()));
 	
 		if (qry.uniqueResult() == null)
 		{
@@ -647,7 +614,7 @@ public abstract class AbstractDAO<T>
 		String query = "FROM " + entityClass.getSimpleName() + " p LEFT JOIN FETCH p." + collectionToLoad + " WHERE p."
 				+ getIdentityColumn() + " = :value";
 	
-		Query qry = session.createQuery(query);
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
 		qry.setParameter("value", id);
 		return (T) qry.uniqueResult();
 	}
@@ -661,7 +628,7 @@ public abstract class AbstractDAO<T>
 		}
 		query += " WHERE p." + getIdentityColumn() + " = :value";
 	
-		Query qry = session.createQuery(query);
+		Query qry = sessionFactory.getCurrentSession().createQuery(query);
 		qry.setParameter("value", id);
 		return (T) qry.uniqueResult();
 	}

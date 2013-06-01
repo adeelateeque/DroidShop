@@ -13,17 +13,19 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.droidshop.api.dao.OrderDAO;
 import com.droidshop.api.model.error.WebServiceException;
 import com.droidshop.api.model.order.Order;
 
-@Component
+@Service
 public class OrderManager {
     @Autowired
     OrderDAO orderDAO;
 
+    @Transactional
     public Order add(Order order) throws Exception {
         System.out.println("OrderManager: add");
         validate(order, POST.class);
@@ -31,6 +33,7 @@ public class OrderManager {
         return newOrder;
     }
 
+    @Transactional
     public Order update(Long orderID, Order order) throws Exception {
         System.out.println("OrderManager: update");
         validate(order, PUT.class);
@@ -43,25 +46,29 @@ public class OrderManager {
         Order updatedOrder = orderDAO.update(orderID, order);
         return updatedOrder;
     }
-
+    
+    @Transactional
     public Order fetch(Long orderID) {
         System.out.println("OrderManager: fetch");
         Order fetchedOrder = orderDAO.fetch(orderID);
         return fetchedOrder;
     }
 
+    @Transactional
     public Order fetchByUserName(String userName) {
         System.out.println("OrderManager: fetchByUserName");
         Order fetchedOrder = orderDAO.fetchByUserName(userName);
         return fetchedOrder;
     }
 
+    @Transactional
     public List<Order> fetchAll(boolean includeAll) {
         System.out.println("OrderManager: fetchAll");
         List<Order> fetchedOrders = orderDAO.fetchAll(includeAll);
         return fetchedOrders;
     }
 
+    @Transactional
     public Order delete(Long orderID, Order order) throws Exception {
         System.out.println("OrderManager: delete");
         validate(order, DELETE.class);

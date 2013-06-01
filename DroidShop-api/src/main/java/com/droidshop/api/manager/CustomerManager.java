@@ -13,17 +13,19 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.droidshop.api.dao.CustomerDAO;
 import com.droidshop.api.model.error.WebServiceException;
 import com.droidshop.api.model.user.Customer;
 
-@Component
+@Service
 public class CustomerManager {
     @Autowired
     CustomerDAO customerDAO;
 
+    @Transactional
     public Customer add(Customer customer) throws Exception {
         System.out.println("CustomerManager: add");
         validate(customer, POST.class);
@@ -31,6 +33,7 @@ public class CustomerManager {
         return newCustomer;
     }
 
+    @Transactional
     public Customer update(Long customerID, Customer customer) throws Exception {
         System.out.println("CustomerManager: update");
         validate(customer, PUT.class);
@@ -44,24 +47,28 @@ public class CustomerManager {
         return updatedCustomer;
     }
 
+    @Transactional
     public Customer fetch(Long customerID) {
         System.out.println("CustomerManager: fetch");
         Customer fetchedCustomer = customerDAO.fetch(customerID);
         return fetchedCustomer;
     }
 
+    @Transactional
     public Customer fetchByUserName(String userName) {
         System.out.println("CustomerManager: fetchByUserName");
         Customer fetchedCustomer = customerDAO.fetchByUserName(userName);
         return fetchedCustomer;
     }
 
+    @Transactional
     public List<Customer> fetchAll(boolean includeAll) {
         System.out.println("CustomerManager: fetchAll");
         List<Customer> fetchedCustomers = customerDAO.fetchAll(includeAll);
         return fetchedCustomers;
     }
 
+    @Transactional
     public Customer delete(Long customerID, Customer customer) throws Exception {
         System.out.println("CustomerManager: delete");
         validate(customer, DELETE.class);
