@@ -99,7 +99,6 @@ public class FacebookFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 	    super.onSaveInstanceState(outState);
-	    Toast.makeText(getActivity(), "Saved", Toast.LENGTH_LONG).show();
 	    uiHelper.onSaveInstanceState(outState);
 	}
 
