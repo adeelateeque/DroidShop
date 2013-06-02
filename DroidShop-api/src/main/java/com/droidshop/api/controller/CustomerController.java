@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.droidshop.api.manager.CustomerManager;
 import com.droidshop.api.model.error.WebServiceError;
 import com.droidshop.api.model.error.WebServiceException;
+import com.droidshop.api.model.order.Order;
 import com.droidshop.api.model.user.Customer;
 
 @Controller
@@ -41,6 +42,12 @@ public class CustomerController {
     @ResponseBody
     public Customer fetchCustomer(@PathVariable Long id) {
         return customerManager.fetch(id);
+    }
+
+    @RequestMapping(value = "/{id}/orders", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<Order> fetchCustomerOrders(@PathVariable Long id) {
+        return customerManager.fetchCustomerOrders(id);
     }
 
     @RequestMapping(value = "/username/{userName}", method = RequestMethod.GET, produces = "application/json")
@@ -78,6 +85,7 @@ public class CustomerController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<WebServiceError> handleException(Exception exception) {
         System.out.println("CustomerController.handleException");
+        exception.printStackTrace();
         WebServiceError webServiceError = new WebServiceError(400, exception.getMessage());
         return new ResponseEntity<WebServiceError>(webServiceError, HttpStatus.BAD_REQUEST);
     }

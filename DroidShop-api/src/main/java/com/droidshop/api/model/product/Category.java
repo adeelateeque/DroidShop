@@ -25,6 +25,7 @@ import javax.ws.rs.PUT;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -49,6 +50,7 @@ public class Category implements Serializable
 	private String name;
 
 	@ManyToMany(mappedBy = "categories")
+	@JsonIgnore
 	private List<Product> products;
 
 	@JsonProperty("created_at")
