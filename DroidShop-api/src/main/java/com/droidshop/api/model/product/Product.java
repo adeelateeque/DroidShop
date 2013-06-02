@@ -62,7 +62,6 @@ public class Product implements Serializable
 	@Basic(optional = false)
 	private String name;
 
-	@JsonIgnore
 	@ManyToMany
 	private List<Category> categories;
 
