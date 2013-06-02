@@ -1,424 +1,183 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp"
-    android:orientation="vertical"
-    tools:context=".RegisterActivity" >
-	    
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:text="@string/tvRegistration" />
-    
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="430dp" >
-        
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvUsername" />
-        
-        	<EditText
-            	android:id="@+id/etUsername"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.8"
-            	android:hint="@string/htUsername" />
-        	
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:layout_gravity="bottom"
-                android:textSize="18sp"
-                android:text="@string/tvPwd" />
-
-            <EditText
-                android:id="@+id/etPwd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:layout_weight="0.8"
-                android:inputType="textPassword"
-                android:hint="@string/htPwd" />
-            
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/tableRow2.5"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:layout_gravity="bottom"
-                android:textSize="18sp"
-                android:text="@string/tvCPwd" />
-
-            <EditText
-                android:id="@+id/etCPwd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:layout_weight="0.8"
-                android:inputType="textPassword"
-                android:hint="@string/htCPwd" />
-            
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:layout_gravity="bottom"
-                android:textSize="18sp"
-                android:text="@string/tvLName" />
-
-            <EditText
-                android:id="@+id/etLName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:layout_weight="0.8"
-                android:inputType="textPersonName"
-                android:hint="@string/htLName" />
-            
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:layout_gravity="bottom"
-                android:textSize="18sp"
-                android:text="@string/tvFName" />
-
-            <EditText
-                android:id="@+id/etFName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:layout_weight="0.8"
-                android:inputType="textPersonName"
-                android:hint="@string/htFName" />
-            
-        </TableRow>"
-
-        <TableRow
-            android:id="@+id/tableRow5"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-        	
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvGender" />
-        
-        	<RadioGroup
-            	android:id="@+id/rgGender"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.8"
-            	android:orientation="horizontal" >
-
-        		<RadioButton
-        		    android:id="@+id/rbtnMale"
-            		android:layout_width="wrap_content"
-            		android:layout_height="wrap_content"
-            		android:text="@string/rbtnMale" />
-
-        		<RadioButton
-        		    android:id="@+id/rbtnFemale"
-            		android:layout_width="wrap_content"
-            		android:layout_height="wrap_content"
-            		android:text="@string/rbtnFemale" />
-        		
-        	</RadioGroup>
-            
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow6"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-        	
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvDOB" />
-
-            <Button
-                android:id="@+id/btnDOB"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:text="@string/btnDOB" />
-            
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/tableRow7"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvTele" />
-
-            <EditText
-                android:id="@+id/etTele"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:layout_weight="0.8"
-                android:hint="@string/htTele"
-                android:inputType="phone" >
-
-                <requestFocus />
-            </EditText>
-            
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow8"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvMPhone" />
-
-            <EditText
-                android:id="@+id/etMPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:layout_weight="0.8"
-                android:hint="@string/htMPhone"
-                android:inputType="phone" >
-
-                <requestFocus />
-            </EditText>
-            
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow9"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvEmail" />
-
-            <EditText
-                android:id="@+id/etEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:layout_weight="0.8"
-                android:hint="@string/htEmail"
-                android:inputType="textEmailAddress" />
-            
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow10"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvCountry" />
-
-            <Spinner
-        		android:id="@+id/spCountry"
-        		android:layout_width="match_parent"
-        		android:layout_height="wrap_content"
-        		android:layout_weight="0.8" />
-            
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow11"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvCity" />
-
-            <Spinner
-        		android:id="@+id/spCity"
-        		android:layout_width="match_parent"
-        		android:layout_height="wrap_content"
-        		android:layout_weight="0.8" />
-            
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow12"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvAddress" />
-
-            <EditText
-                android:id="@+id/etAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:layout_weight="0.8"
-                android:hint="@string/htAddress"
-                android:inputType="textMultiLine" />
-            
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow13"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvSQns" />
-
-            <EditText
-                android:id="@+id/etSQns"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:layout_weight="0.8"
-                android:hint="@string/htSQns" />
-            
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow14"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1" >
-            
-            <TextView
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.2"
-            	android:layout_gravity="bottom"
-        		android:textSize="18sp"
-            	android:text="@string/tvSAns" />
-
-            <EditText
-                android:id="@+id/etSAns"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="5"
-                android:layout_weight="0.8"
-                android:hint="@string/htSAns" />
-            
-        </TableRow>
-    </TableLayout>
-    </ScrollView>
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".LoginActivity" >
     
     <LinearLayout
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:layout_gravity="bottom"
-    	android:padding="10dp"
-    	android:orientation="horizontal" >
+    	android:orientation="vertical"
+    	android:weightSum="1" >
+    
+    	<TextView
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginTop="15dp"
+        	android:layout_marginBottom="5dp"
+        	android:gravity="center"
+        	android:textSize="30sp"
+        	android:text="@string/tvRegistration" />
+    
+    	<EditText
+    	   	 android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/htUsername" />
+    	
+    	<EditText
+    	    android:id="@+id/etPwd"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="textPassword"
+            android:hint="@string/htPwd" />
+
+       	<EditText
+            android:id="@+id/etCPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="textPassword"
+            android:hint="@string/htCPwd" />
+       		
+       	<EditText
+            android:id="@+id/etSQns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/htSQns" />
+
+        <EditText
+            android:id="@+id/etSAns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/htSAns" />
+       		
+       	<com.facebook.widget.LoginButton
+   	        android:id="@+id/authButton"
+   	        android:layout_width="wrap_content"
+   	        android:layout_height="wrap_content"
+   	        android:layout_gravity="center_horizontal" />
+       		
+       	<TextView
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:layout_marginTop="15dp"
+        	android:textSize="20sp"
+        	android:text="@string/tvOr" />
+
+        <EditText
+           	android:id="@+id/etLName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="textPersonName"
+            android:hint="@string/htLName" />
+
+        <EditText
+            android:id="@+id/etFName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="textPersonName"
+            android:hint="@string/htFName" />
+        
+        <RadioGroup
+           	android:id="@+id/rgGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1" >
+
+        	<RadioButton
+        		android:id="@+id/rbtnMale"
+            	android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_weight="0.5"
+            	android:text="@string/rbtnMale" />
+
+        	<RadioButton
+        		android:id="@+id/rbtnFemale"
+            	android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_weight="0.5"
+            	android:text="@string/rbtnFemale" />
+        		
+        </RadioGroup>
         
         <Button
-            android:id="@+id/btnReset"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnDOB"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4"
-            android:text="@string/btnReset" />
-			
-		<Button
-		    android:id="@+id/btnRegister"
-			android:layout_width="wrap_content"
-          	android:layout_height="wrap_content"
-            android:layout_weight="0.4"
-            android:text="@string/btnRegister" />
+            android:text="@string/btnDOB" />
         
+        <EditText
+            android:id="@+id/etTele"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/htTele"
+            android:inputType="phone" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/etMPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/htMPhone"
+            android:inputType="phone" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/htEmail"
+            android:inputType="textEmailAddress" />
+
+        <Spinner
+       		android:id="@+id/spCountry"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content" />
+
+        <Spinner
+        	android:id="@+id/spCity"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/htAddress"
+            android:inputType="textMultiLine" />
+        	
+        <LinearLayout
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:padding="10dp"
+    		android:orientation="horizontal" >
+        
+        	<Button
+            	android:id="@+id/btnReset"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_weight="0.4"
+            	android:text="@string/btnReset" />
+			
+			<Button
+		    	android:id="@+id/btnRegister"
+				android:layout_width="wrap_content"
+          		android:layout_height="wrap_content"
+           	 	android:layout_weight="0.4"
+           		android:text="@string/btnRegister" />
+        
+    	</LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

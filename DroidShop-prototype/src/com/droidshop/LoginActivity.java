@@ -9,26 +9,21 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 public class LoginActivity extends FragmentActivity implements OnClickListener {
-	
-	private FacebookFragment facebookFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_login);
 	    findViewById(R.id.btnRegister).setOnClickListener(this);
-	    if (savedInstanceState == null) {
-	        // Add the fragment on initial activity setup
-	        facebookFragment = new FacebookFragment();
-	        getSupportFragmentManager()
-	        .beginTransaction()
-	        .add(android.R.id.content, facebookFragment)
-	        .commit();
-	    } else {
-	        // Or set the fragment from restored state info
-	        facebookFragment = (FacebookFragment) getSupportFragmentManager()
-	        .findFragmentById(android.R.id.content);
-	    }
+	    /*findViewById(R.id.admin_login).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(LoginActivity.this, AdminLoginActivity.class);
+				startActivity(intent);
+			}
+	    	
+	    });*/
 	}
 
 	@Override
@@ -43,6 +38,6 @@ public class LoginActivity extends FragmentActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
 		startActivity(intent);
-		Toast.makeText(getApplicationContext(), "Register", Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), "Registration", Toast.LENGTH_LONG).show();
 	}
 }
