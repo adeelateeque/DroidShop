@@ -2,9 +2,6 @@ package com.droidshop;
 
 import java.util.Arrays;
 
-import com.facebook.*;
-import com.facebook.model.GraphUser;
-import com.facebook.widget.LoginButton;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
 
 public class FacebookFragment extends Fragment {
 	
@@ -22,10 +27,13 @@ public class FacebookFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    uiHelper = new UiLifecycleHelper(getActivity(), callback);
+	    LoginButton authButton = (LoginButton) getActivity().findViewById(R.id.authButton);
+	    authButton.setFragment(this);
+	    authButton.setReadPermissions(Arrays.asList("user_likes", "user_status"));
 	    uiHelper.onCreate(savedInstanceState);
 	}
 
-	@Override
+	/*@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_register, container, false);
@@ -33,7 +41,7 @@ public class FacebookFragment extends Fragment {
 		authButton.setFragment(this);
 		authButton.setReadPermissions(Arrays.asList("user_likes", "user_status"));
 	    return view;
-	}
+	}*/
 	
 	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
 	    if (state.isOpened()) {
@@ -53,7 +61,8 @@ public class FacebookFragment extends Fragment {
 	
 	private String user(GraphUser user) {
 		StringBuilder userInfo = new StringBuilder("");
-		userInfo.append(String.format("Name: %s\n\n", user.getName()));
+		userInfo.append(String.format("Name: %s\n\n", user.getLastName()));
+		userInfo.append(String.format("Name: %s\n\n", user.getFirstName()));
 		return userInfo.toString();
 	}
 	

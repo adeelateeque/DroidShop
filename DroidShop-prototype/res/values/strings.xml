@@ -10,7 +10,7 @@
     <string name="tvLogin">Welcome to DroidShop</string>
     <string name="tvOr">Or</string>
     <string name="btnRegister">Register</string>
-    <string name="btnFacebook">Facebook</string>
+    <string name="com_facebook_loginview_log_in_button">Connect to Facebook</string>
     <string name="action_settings">Settings</string>
     <string name="tvRegistration">Registration</string>
     <string name="htUsername">Username</string>

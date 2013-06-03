@@ -28,19 +28,20 @@ public class RegisterActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
-		
-		/*if (savedInstanceState == null) {
+    	
+		if (savedInstanceState == null) {
         // Add the fragment on initial activity setup
-        	facebookFragment = new FacebookFragment();
-        	getSupportFragmentManager()
-        	.beginTransaction()
-        	.add(android.R.id.content, facebookFragment)
-        	.commit();
+			facebookFragment = new FacebookFragment();
+	    	getSupportFragmentManager()
+	    	.beginTransaction()
+	    	.add(android.R.id.content, facebookFragment)
+	    	.commit();
     	} else {
         // Or set the fragment from restored state info
         	facebookFragment = (FacebookFragment) getSupportFragmentManager()
         	.findFragmentById(android.R.id.content);
-    	}*/
+    	}
+		
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		etUsername = (EditText) findViewById(R.id.etUsername);
 		etPwd = (EditText) findViewById(R.id.etPwd);
