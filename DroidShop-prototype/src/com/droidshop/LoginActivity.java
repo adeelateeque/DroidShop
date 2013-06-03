@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.Toast;
 
 public class LoginActivity extends FragmentActivity {
@@ -16,27 +15,7 @@ public class LoginActivity extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_login);
-<<<<<<< HEAD
 	    findViewById(R.id.btnRegister).setOnClickListener(new OnClickListener(){
-=======
-	    findViewById(R.id.btnRegister).setOnClickListener(this);
-<<<<<<< HEAD
-	    if (savedInstanceState == null) {
-	        // Add the fragment on initial activity setup
-	        facebookFragment = new FacebookFragment();
-	        getSupportFragmentManager()
-	        .beginTransaction()
-	        .add(android.R.id.content, facebookFragment)
-	        .commit();
-	    } else {
-	        // Or set the fragment from restored state info
-	        facebookFragment = (FacebookFragment) getSupportFragmentManager()
-	        .findFragmentById(android.R.id.content);
-	    }
-	   
-=======
-	    /*findViewById(R.id.admin_login).setOnClickListener(new OnClickListener(){
->>>>>>> db5e10d6318ef02b331af60870e518e76a889d4d
 
 			@Override
 			public void onClick(View v) {
@@ -46,12 +25,7 @@ public class LoginActivity extends FragmentActivity {
 				Toast.makeText(getApplicationContext(), "Registration", Toast.LENGTH_LONG).show();
 			}
 	    	
-<<<<<<< HEAD
 	    });
-=======
-	    });*/
->>>>>>> 1239e85cfdc01d80f037c1ee45d18f7f9dd6019b
->>>>>>> db5e10d6318ef02b331af60870e518e76a889d4d
 	}
 
 	@Override
