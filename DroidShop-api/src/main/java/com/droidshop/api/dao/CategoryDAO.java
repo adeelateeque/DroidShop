@@ -6,12 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.droidshop.api.model.product.Category;
 import com.droidshop.api.model.product.CategoryStatus;
 
-@Repository
+@Component
 public class CategoryDAO extends AbstractDAO<Category>
 {
 
@@ -28,7 +28,9 @@ public class CategoryDAO extends AbstractDAO<Category>
 		category.setCreatedAt(new Date());
 		category.setUpdatedAt(new Date());
 
+		beginTransaction();
 		save(category);
+		commitAndCloseTransaction();
 
 		System.out.println("CategoryDAO: END - adding category to the database");
 
@@ -40,11 +42,13 @@ public class CategoryDAO extends AbstractDAO<Category>
 		System.out.println("CategoryDAO: update");
 		System.out.println("CategoryDAO: START - updating category to the database");
 
+		beginTransaction();
 		Category fetchedCategory = fetch(categoryID);
 
 		fetchedCategory.setUpdatedAt(new Date());
 
 		update(fetchedCategory);
+		commitAndCloseTransaction();
 		System.out.println("CategoryDAO: END - updating category to the database");
 
 		return fetchedCategory;
@@ -66,9 +70,11 @@ public class CategoryDAO extends AbstractDAO<Category>
 		System.out.println("CategoryDAO: fetchByCategoryName");
 		System.out.println("CategoryDAO: START - fetching category from the database by categoryName");
 
-		Category fetchedCategory = (Category) getCurrentSession().createCriteria(Category.class)
+		beginTransaction();
+		Category fetchedCategory = (Category) session.createCriteria(Category.class)
 				.add(Restrictions.eq("categoryName", categoryName)).uniqueResult();
 		System.out.println("CategoryDAO: END - fetching category from the database by categoryName");
+		closeTransaction();
 
 		return fetchedCategory;
 	}
@@ -78,6 +84,7 @@ public class CategoryDAO extends AbstractDAO<Category>
 		System.out.println("CategoryDAO: fetchAll");
 		System.out.println("CategoryDAO: START - fetching all categorys from the database");
 
+		beginTransaction();
 		List<Category> fetchedCategorys = getAll();
 
 		System.out.println("DEBUG: includeAll [" + includeAll + "]");
@@ -111,9 +118,11 @@ public class CategoryDAO extends AbstractDAO<Category>
 		System.out.println("CategoryDAO: delete");
 		System.out.println("CategoryDAO: START - setting category status to delete in the database");
 
+		beginTransaction();
 		Category fetchedCategory = fetch(categoryID);
 		fetchedCategory.setUpdatedAt(new Date());
 		update(fetchedCategory);
+		commitAndCloseTransaction();
 		System.out.println("CategoryDAO: END - setting category status to delete in the database");
 
 		return fetchedCategory;
