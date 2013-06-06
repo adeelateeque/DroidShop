@@ -5,11 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.droidshop.api.model.order.Order;
 
-@Repository
+@Component
 public class OrderDAO extends AbstractDAO<Order>
 {
 	public OrderDAO()
@@ -22,7 +22,9 @@ public class OrderDAO extends AbstractDAO<Order>
 		System.out.println("OrderDAO: add");
 		System.out.println("OrderDAO: START - adding order to the database");
 
+		beginTransaction();
 		save(order);
+		commitAndCloseTransaction();
 
 		System.out.println("OrderDAO: END - adding order to the database");
 
@@ -34,10 +36,12 @@ public class OrderDAO extends AbstractDAO<Order>
 		System.out.println("OrderDAO: update");
 		System.out.println("OrderDAO: START - updating order to the database");
 
+		beginTransaction();
 		Order fetchedOrder = fetch(orderID);
 		fetchedOrder.setDateCreated(new Date());
 
 		update(fetchedOrder);
+		commitAndCloseTransaction();
 		System.out.println("OrderDAO: END - updating order to the database");
 
 		return fetchedOrder;
@@ -59,9 +63,12 @@ public class OrderDAO extends AbstractDAO<Order>
 		System.out.println("OrderDAO: fetchByUserName");
 		System.out.println("OrderDAO: START - fetching order from the database by ordername");
 
-		Order fetchedOrder = (Order) getCurrentSession().createCriteria(Order.class).add(Restrictions.eq("userName", userName))
+		beginTransaction();
+		Order fetchedOrder = (Order) session.createCriteria(Order.class).add(Restrictions.eq("userName", userName))
 				.uniqueResult();
 		System.out.println("OrderDAO: END - fetching order from the database by ordername");
+		closeTransaction();
+
 		return fetchedOrder;
 	}
 
@@ -70,6 +77,7 @@ public class OrderDAO extends AbstractDAO<Order>
 		System.out.println("OrderDAO: fetchAll");
 		System.out.println("OrderDAO: START - fetching all orders from the database");
 
+		beginTransaction();
 		List<Order> fetchedOrders = getAll();
 
 		System.out.println("DEBUG: includeAll [" + includeAll + "]");
@@ -105,8 +113,10 @@ public class OrderDAO extends AbstractDAO<Order>
 		System.out.println("OrderDAO: delete");
 		System.out.println("OrderDAO: START - setting order status to delete in the database");
 
+		beginTransaction();
 		Order fetchedOrder = fetch(orderID);
 		update(fetchedOrder);
+		commitAndCloseTransaction();
 		System.out.println("OrderDAO: END - setting order status to delete in the database");
 
 		return fetchedOrder;

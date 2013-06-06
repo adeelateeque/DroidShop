@@ -62,6 +62,7 @@ public class Product implements Serializable
 	@Basic(optional = false)
 	private String name;
 
+	@JsonIgnore
 	@ManyToMany
 	private List<Category> categories;
 
@@ -71,7 +72,6 @@ public class Product implements Serializable
 	@Lob
 	private String description;
 
-	@JsonIgnore
 	@Lob
 	private byte[] image;
 

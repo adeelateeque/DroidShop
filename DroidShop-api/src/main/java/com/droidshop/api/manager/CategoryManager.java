@@ -13,19 +13,17 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import com.droidshop.api.dao.CategoryDAO;
 import com.droidshop.api.model.error.WebServiceException;
 import com.droidshop.api.model.product.Category;
 
-@Service
+@Component
 public class CategoryManager {
     @Autowired
     CategoryDAO categoryDAO;
 
-    @Transactional
     public Category add(Category category) throws Exception {
         System.out.println("CategoryManager: add");
         validate(category, POST.class);
@@ -33,7 +31,6 @@ public class CategoryManager {
         return newCategory;
     }
 
-    @Transactional
     public Category update(Long categoryID, Category category) throws Exception {
         System.out.println("CategoryManager: update");
         validate(category, PUT.class);
@@ -47,28 +44,24 @@ public class CategoryManager {
         return updatedCategory;
     }
 
-    @Transactional
     public Category fetch(Long categoryID) {
         System.out.println("CategoryManager: fetch");
         Category fetchedCategory = categoryDAO.fetch(categoryID);
         return fetchedCategory;
     }
 
-    @Transactional
     public Category fetchByCategoryName(String categoryName) {
         System.out.println("CategoryManager: fetchByCategoryName");
         Category fetchedCategory = categoryDAO.fetchByCategoryName(categoryName);
         return fetchedCategory;
     }
 
-    @Transactional
     public List<Category> fetchAll(boolean includeAll) {
         System.out.println("CategoryManager: fetchAll");
         List<Category> fetchedCategorys = categoryDAO.fetchAll(includeAll);
         return fetchedCategorys;
     }
 
-    @Transactional
     public Category delete(Long categoryID, Category category) throws Exception {
         System.out.println("CategoryManager: delete");
         validate(category, DELETE.class);

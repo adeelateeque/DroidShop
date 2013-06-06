@@ -1,8 +1,11 @@
 package com.droidshop.api.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import com.droidshop.api.dao.ProductDAO;
+import com.droidshop.api.model.error.WebServiceException;
+import com.droidshop.api.model.product.Product;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -12,20 +15,15 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
-import com.droidshop.api.dao.ProductDAO;
-import com.droidshop.api.model.error.WebServiceException;
-import com.droidshop.api.model.product.Product;
-
-@Service
+@Component
 public class ProductManager {
     @Autowired
     ProductDAO productDAO;
 
-    @Transactional
     public Product add(Product product) throws Exception {
         System.out.println("ProductManager: add");
         validate(product, POST.class);
@@ -33,7 +31,6 @@ public class ProductManager {
         return newProduct;
     }
 
-    @Transactional
     public Product update(Long productID, Product product) throws Exception {
         System.out.println("ProductManager: update");
         validate(product, PUT.class);
@@ -47,28 +44,24 @@ public class ProductManager {
         return updatedProduct;
     }
 
-    @Transactional
     public Product fetch(Long productID) {
         System.out.println("ProductManager: fetch");
         Product fetchedProduct = productDAO.fetch(productID);
         return fetchedProduct;
     }
 
-    @Transactional
     public Product fetchByProductName(String productName) {
         System.out.println("ProductManager: fetchByProductName");
         Product fetchedProduct = productDAO.fetchByProductName(productName);
         return fetchedProduct;
     }
 
-    @Transactional
     public List<Product> fetchAll(boolean includeAll) {
         System.out.println("ProductManager: fetchAll");
         List<Product> fetchedProducts = productDAO.fetchAll(includeAll);
         return fetchedProducts;
     }
 
-    @Transactional
     public Product delete(Long productID, Product product) throws Exception {
         System.out.println("ProductManager: delete");
         validate(product, DELETE.class);

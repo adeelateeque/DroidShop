@@ -22,12 +22,26 @@ public class RegisterActivity extends FragmentActivity {
 	private RadioGroup rgGender;
 	private Button btnDOB;
 	private Spinner spCountry, spCity;
-	//private FacebookFragment facebookFragment;
+	private FacebookFragment facebookFragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
+    	
+		if (savedInstanceState == null) {
+        // Add the fragment on initial activity setup
+			facebookFragment = new FacebookFragment();
+	    	getSupportFragmentManager()
+	    	.beginTransaction()
+	    	.add(android.R.id.content, facebookFragment)
+	    	.commit();
+    	} else {
+        // Or set the fragment from restored state info
+        	facebookFragment = (FacebookFragment) getSupportFragmentManager()
+        	.findFragmentById(android.R.id.content);
+    	}
+		
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		etUsername = (EditText) findViewById(R.id.etUsername);
 		etPwd = (EditText) findViewById(R.id.etPwd);
@@ -45,14 +59,6 @@ public class RegisterActivity extends FragmentActivity {
 		spCountry = (Spinner) findViewById(R.id.spCountry);
 		spCity = (Spinner) findViewById(R.id.spCity);
 		addItemsOnCountrySpinner();
-		
-		/*if (savedInstanceState == null) {
-			
-	    } else {
-	        // Or set the fragment from restored state info
-	        facebookFragment = (FacebookFragment) getSupportFragmentManager()
-	        .findFragmentById(android.R.id.content);
-	    }*/
 		
 		findViewById(R.id.btnDOB).setOnClickListener(new OnClickListener() {
 
@@ -83,7 +89,7 @@ public class RegisterActivity extends FragmentActivity {
 				etSQns.setText("");
 				etSAns.setText("");
 				rgGender.clearCheck();
-				btnDOB.setText("Choose Date");
+				btnDOB.setText("Date Of Birth");
 				spCountry.setSelection(0);
 				spCity.setSelection(0);
 			}
