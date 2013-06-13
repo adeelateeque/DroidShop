@@ -28,4 +28,9 @@ public class Logger
 	{
 		org.slf4j.LoggerFactory.getLogger(entity).error(message);
 	}
+	
+	public static org.slf4j.Logger getLogger(Class<?> entity)
+	{
+		return org.slf4j.LoggerFactory.getLogger(entity);
+	}
 }
