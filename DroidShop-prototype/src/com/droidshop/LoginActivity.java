@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class LoginActivity extends FragmentActivity {
@@ -23,6 +24,19 @@ public class LoginActivity extends FragmentActivity {
 				Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
 				startActivity(intent);
 				Toast.makeText(getApplicationContext(), "Registration", Toast.LENGTH_LONG).show();
+			}
+	    	
+	    });
+	    
+	    Button login = (Button)findViewById(R.id.btnLogin);
+	    
+	    login.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(LoginActivity.this, ShoppingTab.class);
+				startActivity(intent);
 			}
 	    	
 	    });

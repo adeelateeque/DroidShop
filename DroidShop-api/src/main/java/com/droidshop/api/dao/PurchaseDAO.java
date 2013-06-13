@@ -1,20 +1,20 @@
 package com.droidshop.api.dao;
 
-import com.droidshop.api.model.error.WebServiceException;
-import com.droidshop.api.model.purchase.Purchase;
-import com.droidshop.api.model.purchase.PurchaseSearchCriteria;
-import com.droidshop.api.util.mongodb.MongoBroker;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.droidshop.api.model.error.WebServiceException;
+import com.droidshop.api.model.purchase.Purchase;
+import com.droidshop.api.model.purchase.PurchaseSearchCriteria;
+import com.droidshop.api.util.mongodb.MongoBroker;
 
-@Component
+@Repository
 public class PurchaseDAO {
     @Autowired
     MongoBroker mongoBroker;
