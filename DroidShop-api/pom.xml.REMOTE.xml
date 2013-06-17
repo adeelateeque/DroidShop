@@ -312,19 +312,17 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-<<<<<<< HEAD
-=======
 			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
->>>>>>> 87cb652a12864006eeb2dd6cbee7329f59a840ea
 			<version>${spring.version}</version>
 		</dependency>
 
 		<!-- Spring Data REST -->
+
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-rest-webmvc</artifactId>
@@ -386,11 +384,6 @@
 		</dependency>
 
 		<dependency>
-<<<<<<< HEAD
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-hibernate4</artifactId>
-			<version>2.2.0</version>
-=======
 			<groupId>com.google.code.geocoder-java</groupId>
 			<artifactId>geocoder-java</artifactId>
 			<version>0.15</version>
@@ -441,7 +434,6 @@
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
 			<version>0.8.1</version>
->>>>>>> 87cb652a12864006eeb2dd6cbee7329f59a840ea
 		</dependency>
 	</dependencies>
 

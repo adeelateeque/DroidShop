@@ -6,13 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.droidshop.api.model.user.Customer;
 import com.droidshop.api.model.user.UserStatus;
 import com.droidshop.api.util.PasswordEncoder;
 
-@Component
+@Repository
 public class CustomerDAO extends AbstractDAO<Customer>
 {
 
@@ -30,10 +30,8 @@ public class CustomerDAO extends AbstractDAO<Customer>
 		customer.setCreatedAt(new Date());
 		customer.setUpdatedAt(new Date());
 
-		beginTransaction();
 		customer.setPassword(PasswordEncoder.getEncodedPassword(customer.getUserName(), customer.getPassword()));
 		save(customer);
-		commitAndCloseTransaction();
 
 		System.out.println("CustomerDAO: END - adding customer to the database");
 
@@ -45,7 +43,6 @@ public class CustomerDAO extends AbstractDAO<Customer>
 		System.out.println("CustomerDAO: update");
 		System.out.println("CustomerDAO: START - updating customer to the database");
 
-		beginTransaction();
 		Customer fetchedCustomer = fetch(customerID);
 
 		if (customer.getFirstName() != null && !fetchedCustomer.getFirstName().equals(customer.getFirstName()))
@@ -76,7 +73,6 @@ public class CustomerDAO extends AbstractDAO<Customer>
 		fetchedCustomer.setUpdatedAt(new Date());
 
 		update(fetchedCustomer);
-		commitAndCloseTransaction();
 		System.out.println("CustomerDAO: END - updating customer to the database");
 
 		return fetchedCustomer;
@@ -98,11 +94,9 @@ public class CustomerDAO extends AbstractDAO<Customer>
 		System.out.println("CustomerDAO: fetchByUserName");
 		System.out.println("CustomerDAO: START - fetching customer from the database by customername");
 
-		beginTransaction();
-		Customer fetchedCustomer = (Customer) session.createCriteria(Customer.class)
+		Customer fetchedCustomer = (Customer) getCurrentSession().createCriteria(Customer.class)
 				.add(Restrictions.eq("userName", userName)).uniqueResult();
 		System.out.println("CustomerDAO: END - fetching customer from the database by customername");
-		closeTransaction();
 
 		return fetchedCustomer;
 	}
@@ -112,7 +106,6 @@ public class CustomerDAO extends AbstractDAO<Customer>
 		System.out.println("CustomerDAO: fetchAll");
 		System.out.println("CustomerDAO: START - fetching all customers from the database");
 
-		beginTransaction();
 		List<Customer> fetchedCustomers = getAll();
 
 		System.out.println("DEBUG: includeAll [" + includeAll + "]");
@@ -146,12 +139,10 @@ public class CustomerDAO extends AbstractDAO<Customer>
 		System.out.println("CustomerDAO: delete");
 		System.out.println("CustomerDAO: START - setting customer status to delete in the database");
 
-		beginTransaction();
 		Customer fetchedCustomer = fetch(customerID);
 		fetchedCustomer.setStatus(UserStatus.DELETED);
 		fetchedCustomer.setUpdatedAt(new Date());
 		update(fetchedCustomer);
-		commitAndCloseTransaction();
 		System.out.println("CustomerDAO: END - setting customer status to delete in the database");
 
 		return fetchedCustomer;
