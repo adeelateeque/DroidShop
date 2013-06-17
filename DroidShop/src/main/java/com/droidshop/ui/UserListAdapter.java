@@ -1,15 +1,15 @@
 package com.droidshop.ui;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 
 import com.droidshop.R;
 import com.droidshop.core.AvatarLoader;
-import com.droidshop.core.User;
+import com.droidshop.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * Adapter to display a list of traffic items
@@ -56,7 +56,6 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
         avatars.bind(imageView(0), user);
 
         setText(1, String.format("%1$s %2$s", user.getFirstName(), user.getLastName()));
-
     }
 
 }

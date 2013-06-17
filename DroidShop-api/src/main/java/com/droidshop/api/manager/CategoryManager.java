@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.droidshop.api.dao.CategoryDAO;
+import com.droidshop.api.model.Category;
 import com.droidshop.api.model.error.WebServiceException;
-import com.droidshop.api.model.product.Category;
 
 @Component
 public class CategoryManager {

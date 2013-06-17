@@ -13,7 +13,13 @@ import android.support.v4.app.NotificationCompat;
 
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
+import com.droidshop.event.PauseTimerEvent;
+import com.droidshop.event.ResumeTimerEvent;
+import com.droidshop.event.StopTimerEvent;
+import com.droidshop.event.TimerPausedEvent;
+import com.droidshop.event.TimerTickEvent;
 import com.droidshop.ui.BootstrapTimerActivity;
+
 import javax.inject.Inject;
 
 import com.droidshop.util.Ln;

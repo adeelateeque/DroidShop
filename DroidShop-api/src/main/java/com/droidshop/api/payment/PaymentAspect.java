@@ -1,24 +1,9 @@
-/*
- * Copyright 2012-2013 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.droidshop.api.payment;
-
-import lombok.extern.slf4j.Slf4j;
 
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.core.Ordered;
@@ -30,13 +15,12 @@ import com.droidshop.api.model.order.Order;
  * Aspect to publish an {@link OrderPaidEvent} on successful execution of
  * {@link PaymentService#pay(Order, CreditCardNumber)} <em>after</em> the transaction has completed. Manually defines
  * the order of the aspect to be <em>before</em> the transaction aspect.
- * 
- * @author Oliver Gierke
  */
 @Aspect
 @Service
-@Slf4j
 class PaymentAspect implements ApplicationEventPublisherAware, Ordered {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private ApplicationEventPublisher publisher;
 
@@ -63,14 +47,14 @@ class PaymentAspect implements ApplicationEventPublisherAware, Ordered {
 	 * 
 	 * @param order
 	 */
-	@AfterReturning(value = "execution(* PaymentService.pay(org.springsource.restbucks.order.Order, ..)) && args(order, ..)")
+	@AfterReturning(value = "execution(* PaymentService.pay(com.droidshop.api.model.order.Order, ..)) && args(order, ..)")
 	public void triggerPaymentEvent(Order order) {
 
 		if (order == null) {
 			return;
 		}
 
-		log.info("Publishing order payed event for order {}!", order.getId());
+		logger.info("Publishing order payed event for order {}!", order.getId());
 		this.publisher.publishEvent(new OrderPaidEvent(order.getId(), this));
 	}
 }

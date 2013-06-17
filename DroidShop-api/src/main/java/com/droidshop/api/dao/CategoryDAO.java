@@ -8,8 +8,7 @@ import java.util.List;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
-import com.droidshop.api.model.product.Category;
-import com.droidshop.api.model.product.CategoryStatus;
+import com.droidshop.api.model.Category;
 
 @Component
 public class CategoryDAO extends AbstractDAO<Category>
@@ -95,9 +94,9 @@ public class CategoryDAO extends AbstractDAO<Category>
 			while (iterator.hasNext())
 			{
 				Category currentCategory = (Category) iterator.next();
-				CategoryStatus categoryStatus = currentCategory.getStatus();
+				Category.Status categoryStatus = currentCategory.getStatus();
 				System.out.println("DEBUG: Category Status Code [" + categoryStatus + "]");
-				if (!categoryStatus.equals(CategoryStatus.ENABLED))
+				if (!categoryStatus.equals(Category.Status.ENABLED))
 				{
 					System.out.println("DEBUG: Removing Category [" + currentCategory.getName() + "]");
 					iterator.remove();

@@ -18,6 +18,9 @@ package com.droidshop.api.payment;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.repository.annotation.RestResource;
 
+import com.droidshop.api.model.payment.CreditCard;
+import com.droidshop.api.model.payment.CreditCardNumber;
+
 /**
  * Repository to access {@link CreditCard} instances.
  * 

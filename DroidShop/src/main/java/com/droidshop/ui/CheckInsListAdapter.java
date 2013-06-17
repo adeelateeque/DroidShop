@@ -3,7 +3,8 @@ package com.droidshop.ui;
 import android.view.LayoutInflater;
 
 import com.droidshop.R;
-import com.droidshop.core.CheckIn;
+import com.droidshop.model.CheckIn;
+import com.droidshop.ui.core.AlternatingColorListAdapter;
 
 import java.util.List;
 

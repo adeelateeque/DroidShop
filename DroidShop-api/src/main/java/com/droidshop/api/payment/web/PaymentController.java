@@ -1,21 +1,5 @@
-/*
- * Copyright 2012-2013 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.droidshop.api.payment.web;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,24 +17,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.droidshop.api.MonetaryAmount;
+import com.droidshop.api.model.MonetaryAmount;
 import com.droidshop.api.model.order.Order;
-import com.droidshop.api.payment.CreditCard;
-import com.droidshop.api.payment.CreditCardNumber;
-import com.droidshop.api.payment.CreditCardPayment;
-import com.droidshop.api.payment.Payment;
+import com.droidshop.api.model.payment.CreditCard;
+import com.droidshop.api.model.payment.CreditCardNumber;
+import com.droidshop.api.model.payment.CreditCardPayment;
+import com.droidshop.api.model.payment.Payment;
+import com.droidshop.api.model.payment.Payment.Receipt;
 import com.droidshop.api.payment.PaymentService;
-import com.droidshop.api.payment.Payment.Receipt;
 
 /**
  * Spring MVC controller to handle payments for an {@link Order}.
- * 
- * @author Oliver Gierke
  */
 @Controller
 @RequestMapping("/orders/{id}")
 @ExposesResourceFor(Payment.class)
-public class PaymentController {
+public class PaymentController
+{
 
 	private final PaymentService paymentService;
 	private final EntityLinks entityLinks;
@@ -58,11 +41,14 @@ public class PaymentController {
 	/**
 	 * Creates a new {@link PaymentController} using the given {@link PaymentService}.
 	 * 
-	 * @param paymentService must not be {@literal null}.
-	 * @param entityLinks must not be {@literal null}.
+	 * @param paymentService
+	 *            must not be {@literal null}.
+	 * @param entityLinks
+	 *            must not be {@literal null}.
 	 */
 	@Autowired
-	public PaymentController(PaymentService paymentService, EntityLinks entityLinks) {
+	public PaymentController(PaymentService paymentService, EntityLinks entityLinks)
+	{
 
 		Assert.notNull(paymentService, "PaymentService must not be null!");
 		Assert.notNull(entityLinks, "EntityLinks must not be null!");
@@ -74,16 +60,21 @@ public class PaymentController {
 	/**
 	 * Accepts a payment for an {@link Order}
 	 * 
-	 * @param order the {@link Order} to process the payment for. Retrieved from the path variable and converted into an
-	 *          {@link Order} instance by Spring Data's {@link DomainClassConverter}. Will be {@literal null} in case no
-	 *          {@link Order} with the given id could be found.
-	 * @param number the {@link CreditCardNumber} unmarshalled from the request payload.
+	 * @param order
+	 *            the {@link Order} to process the payment for. Retrieved from the path variable and
+	 *            converted into an {@link Order} instance by Spring Data's
+	 *            {@link DomainClassConverter}. Will be {@literal null} in case no {@link Order}
+	 *            with the given id could be found.
+	 * @param number
+	 *            the {@link CreditCardNumber} unmarshalled from the request payload.
 	 * @return
 	 */
 	@RequestMapping(value = PaymentLinks.PAYMENT, method = RequestMethod.PUT)
-	ResponseEntity<PaymentResource> submitPayment(@PathVariable("id") Order order, @RequestBody CreditCardNumber number) {
+	ResponseEntity<PaymentResource> submitPayment(@PathVariable("id") Order order, @RequestBody CreditCardNumber number)
+	{
 
-		if (order == null || order.isPaid()) {
+		if (order == null || order.isPaid())
+		{
 			return new ResponseEntity<PaymentResource>(HttpStatus.NOT_FOUND);
 		}
 
@@ -102,15 +93,18 @@ public class PaymentController {
 	 * @return
 	 */
 	@RequestMapping(value = PaymentLinks.RECEIPT, method = RequestMethod.GET)
-	ResponseEntity<Resource<Receipt>> showReceipt(@PathVariable("id") Order order) {
+	ResponseEntity<Resource<Receipt>> showReceipt(@PathVariable("id") Order order)
+	{
 
-		if (order == null || !order.isPaid() || order.isTaken()) {
+		if (order == null || !order.isPaid() || order.isTaken())
+		{
 			return new ResponseEntity<Resource<Receipt>>(HttpStatus.NOT_FOUND);
 		}
 
 		Payment payment = paymentService.getPaymentFor(order);
 
-		if (payment == null) {
+		if (payment == null)
+		{
 			return new ResponseEntity<Resource<Receipt>>(HttpStatus.NOT_FOUND);
 		}
 
@@ -124,9 +118,11 @@ public class PaymentController {
 	 * @return
 	 */
 	@RequestMapping(value = PaymentLinks.RECEIPT, method = RequestMethod.DELETE)
-	ResponseEntity<Resource<Receipt>> takeReceipt(@PathVariable("id") Order order) {
+	ResponseEntity<Resource<Receipt>> takeReceipt(@PathVariable("id") Order order)
+	{
 
-		if (order == null || !order.isPaid()) {
+		if (order == null || !order.isPaid())
+		{
 			return new ResponseEntity<Resource<Receipt>>(HttpStatus.NOT_FOUND);
 		}
 
@@ -134,20 +130,23 @@ public class PaymentController {
 	}
 
 	/**
-	 * Renders the given {@link Receipt} including links to the associated {@link Order} as well as a self link in case
+	 * Renders the given {@link Receipt} including links to the associated {@link Order} as well as
+	 * a self link in case
 	 * the {@link Receipt} is still available.
 	 * 
 	 * @param receipt
 	 * @return
 	 */
-	private ResponseEntity<Resource<Receipt>> createReceiptResponse(Receipt receipt) {
+	private ResponseEntity<Resource<Receipt>> createReceiptResponse(Receipt receipt)
+	{
 
 		Order order = receipt.getOrder();
 
 		Resource<Receipt> resource = new Resource<Receipt>(receipt);
 		resource.add(entityLinks.linkToSingleResource(order));
 
-		if (!order.isTaken()) {
+		if (!order.isTaken())
+		{
 			resource.add(entityLinks.linkForSingleResource(order).slash("receipt").withSelfRel());
 		}
 
@@ -156,14 +155,39 @@ public class PaymentController {
 
 	/**
 	 * Resource implementation for payment results.
-	 * 
-	 * @author Oliver Gierke
 	 */
-	@Data
 	@EqualsAndHashCode(callSuper = true)
-	static class PaymentResource extends ResourceSupport {
+	static class PaymentResource extends ResourceSupport
+	{
+		private MonetaryAmount amount;
 
-		private final MonetaryAmount amount;
-		private final CreditCard creditCard;
+		private CreditCard creditCard;
+
+		public PaymentResource(MonetaryAmount amount, CreditCard creditCard)
+		{
+			super();
+			this.amount = amount;
+			this.creditCard = creditCard;
+		}
+
+		public MonetaryAmount getAmount()
+		{
+			return amount;
+		}
+
+		public void setAmount(MonetaryAmount amount)
+		{
+			this.amount = amount;
+		}
+
+		public CreditCard getCreditCard()
+		{
+			return creditCard;
+		}
+
+		public void setCreditCard(CreditCard creditCard)
+		{
+			this.creditCard = creditCard;
+		}
 	}
 }

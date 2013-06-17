@@ -21,9 +21,8 @@ package com.droidshop.authenticator;
 
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+
 import com.actionbarsherlock.app.SherlockActivity;
 
 /**

@@ -13,8 +13,11 @@ import com.droidshop.BootstrapApplication;
 import com.droidshop.BootstrapServiceProvider;
 import com.droidshop.R;
 import com.droidshop.authenticator.LogoutService;
-import com.droidshop.core.News;
+import com.droidshop.model.News;
+import com.droidshop.ui.core.ItemListFragment;
+import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+
 import javax.inject.Inject;
 
 import java.util.Collections;
@@ -54,7 +57,7 @@ public class NewsListFragment extends ItemListFragment<News> {
     }
 
     @Override
-    LogoutService getLogoutService() {
+    protected LogoutService getLogoutService() {
         return logoutService;
     }
 

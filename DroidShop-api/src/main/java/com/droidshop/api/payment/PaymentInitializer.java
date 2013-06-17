@@ -1,36 +1,23 @@
-/*
- * Copyright 2012-2013 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.droidshop.api.payment;
-
-import lombok.extern.slf4j.Slf4j;
 
 import org.joda.time.Months;
 import org.joda.time.Years;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.droidshop.api.model.payment.CreditCard;
+import com.droidshop.api.model.payment.CreditCardNumber;
+
 /**
  * Initializing component to creade a default {@link CreditCard} in the system.
- * 
- * @author Oliver Gierke
  */
 @Service
-@Slf4j
 class PaymentInitializer {
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	public PaymentInitializer(CreditCardRepository repository) {
 
@@ -43,6 +30,6 @@ class PaymentInitializer {
 
 		creditCard = repository.save(creditCard);
 
-		log.info("Credit card {} created!", creditCard);
+		logger.info("Credit card {} created!", creditCard);
 	}
 }

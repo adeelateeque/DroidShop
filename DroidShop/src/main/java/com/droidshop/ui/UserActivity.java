@@ -1,18 +1,18 @@
 package com.droidshop.ui;
 
 import static com.droidshop.core.Constants.Extra.USER;
+
+import javax.inject.Inject;
+
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import butterknife.InjectView;
 
-import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.core.AvatarLoader;
-import com.droidshop.core.User;
-import javax.inject.Inject;
-
-import butterknife.InjectView;
-import butterknife.Views;
+import com.droidshop.model.User;
+import com.droidshop.ui.core.BootstrapActivity;
 
 public class UserActivity extends BootstrapActivity {
 

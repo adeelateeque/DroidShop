@@ -1,18 +1,3 @@
-/*
- * Copyright 2012-2013 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.droidshop.api.payment;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +8,15 @@ import org.springframework.util.Assert;
 import com.droidshop.api.model.order.Order;
 import com.droidshop.api.model.order.OrderRepository;
 import com.droidshop.api.model.order.Order.Status;
-import com.droidshop.api.payment.Payment.Receipt;
+import com.droidshop.api.model.payment.CreditCard;
+import com.droidshop.api.model.payment.CreditCardNumber;
+import com.droidshop.api.model.payment.CreditCardPayment;
+import com.droidshop.api.model.payment.Payment;
+import com.droidshop.api.model.payment.Payment.Receipt;
 
 /**
  * Implementation of {@link PaymentService} delegating persistence operations to {@link PaymentRepository} and
  * {@link CreditCardRepository}.
- * 
- * @author Oliver Gierke
  */
 @Service
 @Transactional
@@ -61,7 +48,7 @@ class PaymentServiceImpl implements PaymentService {
 
 	/* 
 	 * (non-Javadoc)
-	 * @see org.springsource.restbucks.payment.PaymentService#pay(org.springsource.restbucks.order.Order, org.springsource.restbucks.payment.Payment)
+	 * @see com.droidshop.api.payment.PaymentService#pay(com.droidshop.api.model.order.Order, com.droidshop.api.payment.Payment)
 	 */
 	@Override
 	public CreditCardPayment pay(Order order, CreditCardNumber creditCardNumber) {
@@ -88,7 +75,7 @@ class PaymentServiceImpl implements PaymentService {
 
 	/* 
 	 * (non-Javadoc)
-	 * @see org.springsource.restbucks.payment.PaymentService#getPaymentFor(org.springsource.restbucks.order.Order)
+	 * @see com.droidshop.api.payment.PaymentService#getPaymentFor(com.droidshop.api.model.order.Order)
 	 */
 	@Override
 	@Transactional(readOnly = true)
@@ -98,7 +85,7 @@ class PaymentServiceImpl implements PaymentService {
 
 	/* 
 	 * (non-Javadoc)
-	 * @see org.springsource.restbucks.payment.PaymentService#takeReceiptFor(org.springsource.restbucks.order.Order)
+	 * @see com.droidshop.api.payment.PaymentService#takeReceiptFor(com.droidshop.api.model.order.Order)
 	 */
 	@Override
 	public Receipt takeReceiptFor(Order order) {

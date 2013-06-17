@@ -22,8 +22,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.droidshop.api.model.order.Order;
-import com.droidshop.api.payment.Payment;
-import com.droidshop.api.payment.Payment.Receipt;
+import com.droidshop.api.model.payment.Payment;
+import com.droidshop.api.model.payment.Payment.Receipt;
 
 /**
  * Helper component to create links to the {@link Payment} and {@link Receipt}.

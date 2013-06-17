@@ -10,11 +10,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.widget.ImageView;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.droidshop.R;
+import com.droidshop.model.User;
+import com.droidshop.util.GravatarUtils;
+import com.droidshop.util.ImageUtils;
 import com.droidshop.util.Ln;
 import com.droidshop.util.SafeAsyncTask;
 import com.github.kevinsawicki.http.HttpRequest;
+
 import javax.inject.Inject;
 
 import java.io.File;

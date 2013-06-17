@@ -8,13 +8,11 @@ import java.util.List;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
-import com.droidshop.api.model.product.Product;
-import com.droidshop.api.model.product.ProductStatus;
+import com.droidshop.api.model.Product;
 
 @Component
 public class ProductDAO extends AbstractDAO<Product>
 {
-
 	public ProductDAO()
 	{
 		super(Product.class);
@@ -96,9 +94,9 @@ public class ProductDAO extends AbstractDAO<Product>
 			while (iterator.hasNext())
 			{
 				Product currentProduct = (Product) iterator.next();
-				ProductStatus productStatus = currentProduct.getStatus();
+				Product.Status productStatus = currentProduct.getStatus();
 				System.out.println("DEBUG: Product Status Code [" + productStatus + "]");
-				if (!productStatus.equals(ProductStatus.INSTOCK))
+				if (!productStatus.equals(Product.Status.INSTOCK))
 				{
 					System.out.println("DEBUG: Removing Product [" + currentProduct.getName() + "]");
 					iterator.remove();

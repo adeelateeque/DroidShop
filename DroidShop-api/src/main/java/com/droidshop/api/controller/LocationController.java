@@ -4,6 +4,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.StatusType;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.droidshop.api.manager.GeocodeManager;
-import com.droidshop.api.model.geospatial.GeoLocation;
-import com.droidshop.api.model.geospatial.LatLng;
-import com.droidshop.api.model.geospatial.LocationQuery;
-import com.droidshop.api.model.geospatial.MongoConnection;
-import com.droidshop.api.model.geospatial.SpatialQuery;
+import com.droidshop.api.model.geo.GeoLocation;
+import com.droidshop.api.model.geo.LatLng;
+import com.droidshop.api.model.geo.LocationQuery;
+import com.droidshop.api.model.geo.MongoConnection;
+import com.droidshop.api.model.geo.SpatialQuery;
 import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/locations")
 public class LocationController
 {
-	private final Logger logger = com.droidshop.api.Logger.getLogger(this.getClass());
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private MongoConnection mongoConnection = new MongoConnection();
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")

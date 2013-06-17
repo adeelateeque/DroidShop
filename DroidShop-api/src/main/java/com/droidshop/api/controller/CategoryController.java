@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.droidshop.api.manager.CategoryManager;
+import com.droidshop.api.model.Category;
 import com.droidshop.api.model.error.WebServiceError;
 import com.droidshop.api.model.error.WebServiceException;
-import com.droidshop.api.model.product.Category;
 
 
 @Controller

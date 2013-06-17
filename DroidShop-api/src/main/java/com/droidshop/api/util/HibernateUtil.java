@@ -13,12 +13,15 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.droidshop.api.Logger;
 
 public class HibernateUtil
 {
 	private static final SessionFactory sessionFactory;
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	private static final String configFile = "hibernate.cfg.xml";
 
@@ -85,7 +88,7 @@ public class HibernateUtil
 		{
 			e.printStackTrace();
 		}
-		Logger.info(this.getClass(), "Update script generated");
+		logger.info("Update script generated");
 
 	}
 
@@ -101,6 +104,6 @@ public class HibernateUtil
 	{
 		HibernateUtil util = new HibernateUtil();
 		util.generateUpdateScript();
-		/*util.generateCreateScript(true, false, true);*/
+		/* util.generateCreateScript(true, false, true); */
 	}
 }

@@ -49,12 +49,12 @@ import com.droidshop.R.id;
 import com.droidshop.R.layout;
 import com.droidshop.R.string;
 import com.droidshop.core.Constants;
-import com.droidshop.core.User;
+import com.droidshop.model.User;
 import com.droidshop.ui.TextWatcherAdapter;
 import com.droidshop.util.Ln;
 import com.droidshop.util.SafeAsyncTask;
 import com.droidshop.util.Strings;
-import com.droidshop.util.VolleyUtil;
+import com.droidshop.util.VolleyUtils;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.wishlist.Toaster;
 import com.google.gson.Gson;
@@ -305,7 +305,7 @@ public class BootstrapAuthenticatorActivity extends
                         tvHttpResult.setText(error.getMessage());
                     }
                 });
-        VolleyUtil.getRequestQueue().add(myReq);
+        VolleyUtils.getRequestQueue().add(myReq);
     }
 
     /**

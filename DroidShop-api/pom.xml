@@ -322,7 +322,6 @@
 		</dependency>
 
 		<!-- Spring Data REST -->
-
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-rest-webmvc</artifactId>

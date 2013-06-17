@@ -1,5 +1,7 @@
 package com.droidshop.ui;
 
+import javax.inject.Inject;
+
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -7,21 +9,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import butterknife.InjectView;
 
-import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
-import com.droidshop.core.PauseTimerEvent;
-import com.droidshop.core.ResumeTimerEvent;
-import com.droidshop.core.StopTimerEvent;
-import com.droidshop.core.TimerPausedEvent;
 import com.droidshop.core.TimerService;
-import com.droidshop.core.TimerTickEvent;
-import javax.inject.Inject;
+import com.droidshop.event.PauseTimerEvent;
+import com.droidshop.event.ResumeTimerEvent;
+import com.droidshop.event.StopTimerEvent;
+import com.droidshop.event.TimerPausedEvent;
+import com.droidshop.event.TimerTickEvent;
+import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
-
-import butterknife.InjectView;
-import butterknife.Views;
 
 public class BootstrapTimerActivity extends BootstrapFragmentActivity implements View.OnClickListener {
 
