@@ -13,7 +13,6 @@ import static com.droidshop.core.Constants.Http.HEADER_PARSE_REST_API_KEY;
 import static com.droidshop.core.Constants.Http.PARSE_APP_ID;
 import static com.droidshop.core.Constants.Http.PARSE_REST_API_KEY;
 import static com.droidshop.core.Constants.Http.URL_AUTH;
-import static com.github.kevinsawicki.http.HttpRequest.get;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,353 +41,384 @@ import butterknife.InjectView;
 import butterknife.Views;
 
 import com.android.volley.Request.Method;
-import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.droidshop.R.id;
 import com.droidshop.R.layout;
 import com.droidshop.R.string;
 import com.droidshop.core.Constants;
 import com.droidshop.model.User;
 import com.droidshop.ui.TextWatcherAdapter;
+import com.droidshop.util.GsonRequest;
 import com.droidshop.util.Ln;
 import com.droidshop.util.SafeAsyncTask;
-import com.droidshop.util.Strings;
 import com.droidshop.util.VolleyUtils;
-import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.wishlist.Toaster;
-import com.google.gson.Gson;
 
 /**
  * Activity to authenticate the user against an API (example API on Parse.com)
  */
-public class BootstrapAuthenticatorActivity extends
-        SherlockAccountAuthenticatorActivity {
+public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticatorActivity
+{
 
-    /**
-     * PARAM_CONFIRMCREDENTIALS
-     */
-    public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
+	protected BootstrapAuthenticatorActivity instance = this;
 
-    /**
-     * PARAM_PASSWORD
-     */
-    public static final String PARAM_PASSWORD = "password";
+	/**
+	 * PARAM_CONFIRMCREDENTIALS
+	 */
+	public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
 
-    /**
-     * PARAM_USERNAME
-     */
-    public static final String PARAM_USERNAME = "username";
+	/**
+	 * PARAM_PASSWORD
+	 */
+	public static final String PARAM_PASSWORD = "password";
 
-    /**
-     * PARAM_AUTHTOKEN_TYPE
-     */
-    public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
+	/**
+	 * PARAM_USERNAME
+	 */
+	public static final String PARAM_USERNAME = "username";
 
-    private AccountManager accountManager;
+	/**
+	 * PARAM_AUTHTOKEN_TYPE
+	 */
+	public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
 
-    @InjectView(id.et_email)
-    AutoCompleteTextView emailText;
-    @InjectView(id.et_password)
-    EditText passwordText;
-    @InjectView(id.b_signin)
-    Button signinButton;
-    @InjectView(id.tv_httpResult)
-    TextView tvHttpResult;
+	private AccountManager accountManager;
 
-    private TextWatcher watcher = validationTextWatcher();
+	@InjectView(id.et_email)
+	AutoCompleteTextView emailText;
+	@InjectView(id.et_password)
+	EditText passwordText;
+	@InjectView(id.b_signin)
+	Button signinButton;
 
-    private SafeAsyncTask<Boolean> authenticationTask;
-    private String authToken;
-    private String authTokenType;
+	private TextWatcher watcher = validationTextWatcher();
 
-    /**
-     * If set we are just checking that the user knows their credentials; this
-     * doesn't cause the user's password to be changed on the device.
-     */
-    private Boolean confirmCredentials = false;
+	private SafeAsyncTask<Boolean> authenticationTask;
+	private String authToken;
+	private String authTokenType;
 
-    private String email;
+	/**
+	 * If set we are just checking that the user knows their credentials; this
+	 * doesn't cause the user's password to be changed on the device.
+	 */
+	private Boolean confirmCredentials = false;
 
-    private String password;
+	private String email;
 
-    /**
-     * In this instance the token is simply the sessionId returned from
-     * Parse.com. This could be a oauth token or some other type of timed token
-     * that expires/etc. We're just using the parse.com sessionId to prove the
-     * example of how to utilize a token.
-     */
-    private String token;
+	private String password;
 
-    /**
-     * Was the original caller asking for an entirely new account?
-     */
-    protected boolean requestNewAccount = false;
+	/**
+	 * In this instance the token is simply the sessionId returned from
+	 * Parse.com. This could be a oauth token or some other type of timed token
+	 * that expires/etc. We're just using the parse.com sessionId to prove the
+	 * example of how to utilize a token.
+	 */
+	private String token;
 
-    @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+	/**
+	 * Was the original caller asking for an entirely new account?
+	 */
+	protected boolean requestNewAccount = false;
 
-        accountManager = AccountManager.get(this);
-        final Intent intent = getIntent();
-        email = intent.getStringExtra(PARAM_USERNAME);
-        authTokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
-        requestNewAccount = email == null;
-        confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS,
-                false);
+	@Override
+	public void onCreate(Bundle bundle)
+	{
+		super.onCreate(bundle);
 
-        setContentView(layout.login_activity);
+		accountManager = AccountManager.get(this);
+		final Intent intent = getIntent();
+		email = intent.getStringExtra(PARAM_USERNAME);
+		authTokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
+		requestNewAccount = email == null;
+		confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS, false);
 
-        Views.inject(this);
+		setContentView(layout.login_activity);
 
-        emailText.setAdapter(new ArrayAdapter<String>(this,
-                simple_dropdown_item_1line, userEmailAccounts()));
+		Views.inject(this);
 
-        passwordText.setOnKeyListener(new OnKeyListener() {
+		emailText.setAdapter(new ArrayAdapter<String>(this, simple_dropdown_item_1line, userEmailAccounts()));
 
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event != null && ACTION_DOWN == event.getAction()
-                        && keyCode == KEYCODE_ENTER && signinButton.isEnabled()) {
-                    handleLogin(signinButton);
-                    return true;
-                }
-                return false;
-            }
-        });
+		passwordText.setOnKeyListener(new OnKeyListener()
+		{
 
-        passwordText.setOnEditorActionListener(new OnEditorActionListener() {
+			public boolean onKey(View v, int keyCode, KeyEvent event)
+			{
+				if (event != null && ACTION_DOWN == event.getAction() && keyCode == KEYCODE_ENTER
+						&& signinButton.isEnabled())
+				{
+					handleLogin(signinButton);
+					return true;
+				}
+				return false;
+			}
+		});
 
-            public boolean onEditorAction(TextView v, int actionId,
-                    KeyEvent event) {
-                if (actionId == IME_ACTION_DONE && signinButton.isEnabled()) {
-                    handleLogin(signinButton);
-                    return true;
-                }
-                return false;
-            }
-        });
+		passwordText.setOnEditorActionListener(new OnEditorActionListener()
+		{
 
-        emailText.addTextChangedListener(watcher);
-        passwordText.addTextChangedListener(watcher);
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+			{
+				if (actionId == IME_ACTION_DONE && signinButton.isEnabled())
+				{
+					handleLogin(signinButton);
+					return true;
+				}
+				return false;
+			}
+		});
 
-        TextView signupText = (TextView) findViewById(id.tv_signup);
-        signupText.setMovementMethod(LinkMovementMethod.getInstance());
-        signupText.setText(Html.fromHtml(getString(string.signup_link)));
-    }
+		emailText.addTextChangedListener(watcher);
+		passwordText.addTextChangedListener(watcher);
 
-    private List<String> userEmailAccounts() {
-        Account[] accounts = accountManager.getAccountsByType("com.google");
-        List<String> emailAddresses = new ArrayList<String>(accounts.length);
-        for (Account account : accounts)
-            emailAddresses.add(account.name);
-        return emailAddresses;
-    }
+		TextView signupText = (TextView) findViewById(id.tv_signup);
+		signupText.setMovementMethod(LinkMovementMethod.getInstance());
+		signupText.setText(Html.fromHtml(getString(string.signup_link)));
+	}
 
-    private TextWatcher validationTextWatcher() {
-        return new TextWatcherAdapter() {
-            public void afterTextChanged(Editable gitDirEditText) {
-                updateUIWithValidation();
-            }
+	private List<String> userEmailAccounts()
+	{
+		Account[] accounts = accountManager.getAccountsByType("com.google");
+		List<String> emailAddresses = new ArrayList<String>(accounts.length);
+		for (Account account : accounts)
+			emailAddresses.add(account.name);
+		return emailAddresses;
+	}
 
-        };
-    }
+	private TextWatcher validationTextWatcher()
+	{
+		return new TextWatcherAdapter()
+		{
+			public void afterTextChanged(Editable gitDirEditText)
+			{
+				updateUIWithValidation();
+			}
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUIWithValidation();
-    }
+		};
+	}
 
-    private void updateUIWithValidation() {
-        boolean populated = populated(emailText) && populated(passwordText);
-        signinButton.setEnabled(populated);
-    }
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		updateUIWithValidation();
+	}
 
-    private boolean populated(EditText editText) {
-        return editText.length() > 0;
-    }
+	private void updateUIWithValidation()
+	{
+		boolean populated = populated(emailText) && populated(passwordText);
+		signinButton.setEnabled(populated);
+	}
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage(getText(string.message_signing_in));
-        dialog.setIndeterminate(true);
-        dialog.setCancelable(true);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            public void onCancel(DialogInterface dialog) {
-                if (authenticationTask != null)
-                    authenticationTask.cancel(true);
-            }
-        });
-        return dialog;
-    }
+	private boolean populated(EditText editText)
+	{
+		return editText.length() > 0;
+	}
 
-    /**
-     * Handles onClick event on the Submit button. Sends username/password to
-     * the server for authentication.
-     * <p/>
-     * Specified by android:onClick="handleLogin" in the layout xml
-     *
-     * @param view
-     */
-    public void handleLogin(View view) {
-        if (authenticationTask != null)
-            return;
+	@Override
+	protected Dialog onCreateDialog(int id)
+	{
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setMessage(getText(string.message_signing_in));
+		dialog.setIndeterminate(true);
+		dialog.setCancelable(true);
+		dialog.setOnCancelListener(new DialogInterface.OnCancelListener()
+		{
+			public void onCancel(DialogInterface dialog)
+			{
+				if (authenticationTask != null)
+					authenticationTask.cancel(true);
+			}
+		});
+		return dialog;
+	}
 
-        if (requestNewAccount)
-            email = emailText.getText().toString();
-        password = passwordText.getText().toString();
-        showProgress();
+	/**
+	 * Handles onClick event on the Submit button. Sends username/password to
+	 * the server for authentication.
+	 * <p/>
+	 * Specified by android:onClick="handleLogin" in the layout xml
+	 *
+	 * @param view
+	 */
+	public void handleLogin(final View view)
+	{
+		if (authenticationTask != null)
+			return;
 
-        authenticationTask = new SafeAsyncTask<Boolean>() {
-            public Boolean call() throws Exception {
+		if (requestNewAccount)
+			email = emailText.getText().toString();
+		password = passwordText.getText().toString();
+		showProgress();
 
-                final String query = String.format("%s=%s&%s=%s",
-                        PARAM_USERNAME, email, PARAM_PASSWORD, password);
+		authenticationTask = new SafeAsyncTask<Boolean>()
+		{
+			boolean success = false;
+			public Boolean call() throws Exception
+			{
+				final String query = String.format("%s=%s&%s=%s", PARAM_USERNAME, email, PARAM_PASSWORD, password);
 
-                HttpRequest request = get(URL_AUTH + "?" + query).header(
-                        HEADER_PARSE_APP_ID, PARSE_APP_ID).header(
-                        HEADER_PARSE_REST_API_KEY, PARSE_REST_API_KEY);
+				GsonRequest<User> request = new GsonRequest<User>(Method.GET, URL_AUTH + "?" + query, User.class,
+						new Listener<User>()
+						{
+							@Override
+							public void onResponse(User user)
+							{
+								token = user.getSessionToken();
+								success = true;
+							}
+						}, new ErrorListener()
+						{
 
-                Ln.d("Authentication response=%s", request.code());
+							@Override
+							public void onErrorResponse(VolleyError error)
+							{
+								Ln.e(error);
+							}
 
-                if (request.ok()) {
-                    final User model = new Gson().fromJson(
-                            Strings.toString(request.buffer()), User.class);
-                    token = model.getSessionToken();
-                }
+						});
 
-                return request.ok();
-            }
+				request.getHeaders().put(HEADER_PARSE_APP_ID, PARSE_APP_ID);
+				request.getHeaders().put(HEADER_PARSE_REST_API_KEY, PARSE_REST_API_KEY);
 
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                Throwable cause = e.getCause() != null ? e.getCause() : e;
+				VolleyUtils.getRequestQueue().add(request);
 
-                String message;
-                // A 404 is returned as an Exception with this message
-                if ("Received authentication challenge is null".equals(cause
-                        .getMessage()))
-                    message = getResources().getString(
-                            string.message_bad_credentials);
-                else
-                    message = cause.getMessage();
+				return success;
+			}
 
-                Toaster.showLong(BootstrapAuthenticatorActivity.this, message);
-            }
+			@Override
+			protected void onException(Exception e) throws RuntimeException
+			{
+				Throwable cause = e.getCause() != null ? e.getCause() : e;
 
-            @Override
-            public void onSuccess(Boolean authSuccess) {
-                onAuthenticationResult(authSuccess);
-            }
+				String message;
+				// A 404 is returned as an Exception with this message
+				if ("Received authentication challenge is null".equals(cause.getMessage()))
+					message = getResources().getString(string.message_bad_credentials);
+				else
+					message = cause.getMessage();
 
-            @Override
-            protected void onFinally() throws RuntimeException {
-                hideProgress();
-                authenticationTask = null;
-            }
-        };
-        authenticationTask.execute();
-    }
+				Toaster.showLong(BootstrapAuthenticatorActivity.this, message);
+			}
 
-    public void makeHttpCall(View view) {
-        StringRequest myReq = new StringRequest(Method.GET,
-                "http://www.google.com",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        tvHttpResult.setText(response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        tvHttpResult.setText(error.getMessage());
-                    }
-                });
-        VolleyUtils.getRequestQueue().add(myReq);
-    }
+			@Override
+			public void onSuccess(Boolean authSuccess)
+			{
+				onAuthenticationResult(authSuccess);
+			}
 
-    /**
-     * Called when response is received from the server for confirm credentials
-     * request. See onAuthenticationResult(). Sets the
-     * AccountAuthenticatorResult which is sent back to the caller.
-     *
-     * @param result
-     */
-    protected void finishConfirmCredentials(boolean result) {
-        final Account account = new Account(email,
-                Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
-        accountManager.setPassword(account, password);
+			@Override
+			protected void onFinally() throws RuntimeException
+			{
+				hideProgress();
+				authenticationTask = null;
+			}
+		};
+		authenticationTask.execute();
+	}
 
-        final Intent intent = new Intent();
-        intent.putExtra(KEY_BOOLEAN_RESULT, result);
-        setAccountAuthenticatorResult(intent.getExtras());
-        setResult(RESULT_OK, intent);
-        finish();
-    }
+	/*
+	 * public void makeHttpCall(View view) {
+	 * StringRequest myReq = new StringRequest(Method.GET,
+	 * "http://www.google.com",
+	 * new Response.Listener<String>() {
+	 * @Override
+	 * public void onResponse(String response) {
+	 * tvHttpResult.setText(response);
+	 * }
+	 * }, new Response.ErrorListener() {
+	 * @Override
+	 * public void onErrorResponse(VolleyError error) {
+	 * tvHttpResult.setText(error.getMessage());
+	 * }
+	 * });
+	 * VolleyUtils.getRequestQueue().add(myReq);
+	 * }
+	 */
 
-    /**
-     * Called when response is received from the server for authentication
-     * request. See onAuthenticationResult(). Sets the
-     * AccountAuthenticatorResult which is sent back to the caller. Also sets
-     * the authToken in AccountManager for this account.
-     */
+	/**
+	 * Called when response is received from the server for confirm credentials
+	 * request. See onAuthenticationResult(). Sets the
+	 * AccountAuthenticatorResult which is sent back to the caller.
+	 *
+	 * @param result
+	 */
+	protected void finishConfirmCredentials(boolean result)
+	{
+		final Account account = new Account(email, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
+		accountManager.setPassword(account, password);
 
-    protected void finishLogin() {
-        final Account account = new Account(email,
-                Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
+		final Intent intent = new Intent();
+		intent.putExtra(KEY_BOOLEAN_RESULT, result);
+		setAccountAuthenticatorResult(intent.getExtras());
+		setResult(RESULT_OK, intent);
+		finish();
+	}
 
-        if (requestNewAccount)
-            accountManager.addAccountExplicitly(account, password, null);
-        else
-            accountManager.setPassword(account, password);
-        final Intent intent = new Intent();
-        authToken = token;
-        intent.putExtra(KEY_ACCOUNT_NAME, email);
-        intent.putExtra(KEY_ACCOUNT_TYPE, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
-        if (authTokenType != null
-                && authTokenType.equals(Constants.Auth.AUTHTOKEN_TYPE))
-            intent.putExtra(KEY_AUTHTOKEN, authToken);
-        setAccountAuthenticatorResult(intent.getExtras());
-        setResult(RESULT_OK, intent);
-        finish();
-    }
+	/**
+	 * Called when response is received from the server for authentication
+	 * request. See onAuthenticationResult(). Sets the
+	 * AccountAuthenticatorResult which is sent back to the caller. Also sets
+	 * the authToken in AccountManager for this account.
+	 */
 
-    /**
-     * Hide progress dialog
-     */
-    @SuppressWarnings("deprecation")
-    protected void hideProgress() {
-        dismissDialog(0);
-    }
+	protected void finishLogin()
+	{
+		final Account account = new Account(email, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
 
-    /**
-     * Show progress dialog
-     */
-    @SuppressWarnings("deprecation")
-    protected void showProgress() {
-        showDialog(0);
-    }
+		if (requestNewAccount)
+			accountManager.addAccountExplicitly(account, password, null);
+		else
+			accountManager.setPassword(account, password);
+		final Intent intent = new Intent();
+		authToken = token;
+		intent.putExtra(KEY_ACCOUNT_NAME, email);
+		intent.putExtra(KEY_ACCOUNT_TYPE, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
+		if (authTokenType != null && authTokenType.equals(Constants.Auth.AUTHTOKEN_TYPE))
+			intent.putExtra(KEY_AUTHTOKEN, authToken);
+		setAccountAuthenticatorResult(intent.getExtras());
+		setResult(RESULT_OK, intent);
+		finish();
+	}
 
-    /**
-     * Called when the authentication process completes (see attemptLogin()).
-     *
-     * @param result
-     */
-    public void onAuthenticationResult(boolean result) {
-        if (result)
-            if (!confirmCredentials)
-                finishLogin();
-            else
-                finishConfirmCredentials(true);
-        else {
-            Ln.d("onAuthenticationResult: failed to authenticate");
-            if (requestNewAccount)
-                Toaster.showLong(BootstrapAuthenticatorActivity.this,
-                        string.message_auth_failed_new_account);
-            else
-                Toaster.showLong(BootstrapAuthenticatorActivity.this,
-                        string.message_auth_failed);
-        }
-    }
+	/**
+	 * Hide progress dialog
+	 */
+	@SuppressWarnings("deprecation")
+	protected void hideProgress()
+	{
+		dismissDialog(0);
+	}
+
+	/**
+	 * Show progress dialog
+	 */
+	@SuppressWarnings("deprecation")
+	protected void showProgress()
+	{
+		showDialog(0);
+	}
+
+	/**
+	 * Called when the authentication process completes (see attemptLogin()).
+	 *
+	 * @param result
+	 */
+	public void onAuthenticationResult(boolean result)
+	{
+		if (result)
+			if (!confirmCredentials)
+				finishLogin();
+			else
+				finishConfirmCredentials(true);
+		else
+		{
+			Ln.d("onAuthenticationResult: failed to authenticate");
+			if (requestNewAccount)
+				Toaster.showLong(BootstrapAuthenticatorActivity.this, string.message_auth_failed_new_account);
+			else
+				Toaster.showLong(BootstrapAuthenticatorActivity.this, string.message_auth_failed);
+		}
+	}
 }

@@ -1,6 +1,5 @@
 package com.droidshop.ui;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.text.TextUtils;
@@ -16,8 +15,9 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
  */
 public class UserListAdapter extends SingleTypeAdapter<User> {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM dd");
-    private final AvatarLoader avatars;
+	//private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM dd");
+
+	private final AvatarLoader avatars;
 
     /**
      * @param inflater

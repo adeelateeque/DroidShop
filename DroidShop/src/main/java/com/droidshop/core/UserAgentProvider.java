@@ -49,7 +49,7 @@ public class UserAgentProvider implements Provider<String> {
 
                     // http://stackoverflow.com/questions/2641111/where-is-android-os-systemproperties
                     try{
-                        final Class SystemProperties = classLoader.loadClass("android.os.SystemProperties");
+                        final Class<?> SystemProperties = classLoader.loadClass("android.os.SystemProperties");
                         final Method get = SystemProperties.getMethod("get", String.class);
                         params.add( "clientidbase=" + get.invoke(SystemProperties, "ro.com.google.clientidbase"));
                     }catch( Exception ignored ){

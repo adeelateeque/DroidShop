@@ -4,6 +4,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 import butterknife.Views;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -43,6 +44,11 @@ public abstract class BootstrapActivity extends SherlockActivity{
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    protected void toast(int id) {
+        String text = getResources().getString(id);
+        Toast.makeText(BootstrapApplication.getInstance(), text, Toast.LENGTH_LONG).show();
     }
 
 }

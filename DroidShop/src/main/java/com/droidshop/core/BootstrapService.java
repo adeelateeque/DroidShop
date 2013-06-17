@@ -232,4 +232,19 @@ public class BootstrapService {
         }
     }
 
+	public String getApiKey()
+	{
+		return apiKey;
+	}
+
+	public String getUsername()
+	{
+		return username;
+	}
+
+	public String getPassword()
+	{
+		return password;
+	}
+
 }

@@ -15,7 +15,6 @@ public class VolleyUtils {
         private static RequestQueue mRequestQueue;
         private static ImageLoader mImageLoaderNoMemCache;
 
-
         private VolleyUtils() {
             // no instances
         }
