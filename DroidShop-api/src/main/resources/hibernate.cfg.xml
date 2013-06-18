@@ -3,23 +3,28 @@
 "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.password">1234567</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/droidshop</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="show_sql">true</property>
-        
-        <mapping class="com.droidshop.api.model.user.User" />
-        <mapping class="com.droidshop.api.model.user.Customer" />
-        <mapping class="com.droidshop.api.model.user.Admin" />
-        <mapping class="com.droidshop.api.model.product.Product" />
-        <mapping class="com.droidshop.api.model.product.Category" />
-        <mapping class="com.droidshop.api.model.product.Review" />
-        <mapping class="com.droidshop.api.model.order.Order" />
-        <mapping class="com.droidshop.api.model.order.OrderDetail" />
-        <mapping class="com.droidshop.api.model.order.OrderStatus" />
-    </session-factory>
+	<session-factory>
+		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/droidshop</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="show_sql">true</property>
+
+		<mapping class="com.droidshop.api.model.AbstractEntity" />
+		<mapping class="com.droidshop.api.model.Product" />
+		<mapping class="com.droidshop.api.model.Category" />
+		<mapping class="com.droidshop.api.model.Review" />
+		<mapping class="com.droidshop.api.model.MonetaryAmount" />
+		
+		<mapping class="com.droidshop.api.model.user.User" />
+		<mapping class="com.droidshop.api.model.user.Customer" />
+		<mapping class="com.droidshop.api.model.user.Admin" />
+
+		<mapping class="com.droidshop.api.model.order.Order" />
+		<mapping class="com.droidshop.api.model.order.OrderDetail" />
+		
+		<mapping class="com.droidshop.api.model.payment.Payment" />
+		<mapping class="com.droidshop.api.model.payment.CreditCard" />
+		<mapping class="com.droidshop.api.model.payment.CreditCardPayment" />
+	</session-factory>
 </hibernate-configuration> 

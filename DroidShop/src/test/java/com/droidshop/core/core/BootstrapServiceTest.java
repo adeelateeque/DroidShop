@@ -7,10 +7,10 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 
 import com.droidshop.core.BootstrapService;
-import com.droidshop.core.CheckIn;
-import com.droidshop.core.News;
-import com.droidshop.core.User;
 import com.droidshop.core.UserAgentProvider;
+import com.droidshop.model.CheckIn;
+import com.droidshop.model.News;
+import com.droidshop.model.User;
 import com.github.kevinsawicki.http.HttpRequest;
 
 import java.io.BufferedReader;

@@ -21,7 +21,7 @@ import com.droidshop.util.Ln;
 
 class BootstrapAccountAuthenticator extends AbstractAccountAuthenticator {
 
-    private static final String DESCRIPTION_CLIENT = "Bootstrap for Android";
+    //private static final String DESCRIPTION_CLIENT = "DroidShop for Android";
 
     private final Context context;
 

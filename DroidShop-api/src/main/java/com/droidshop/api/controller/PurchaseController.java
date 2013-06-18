@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.droidshop.api.manager.PurchaseRequestManager;
+import com.droidshop.api.manager.PurchaseManager;
 import com.droidshop.api.model.error.WebServiceError;
 import com.droidshop.api.model.error.WebServiceException;
 import com.droidshop.api.model.purchase.Purchase;
@@ -25,13 +25,13 @@ import com.droidshop.api.model.purchase.PurchaseSearchCriteria;
 @RequestMapping("/purchase")
 public class PurchaseController {
     @Autowired
-	PurchaseRequestManager purchaseRequestManager;
+	PurchaseManager purchaseManager;
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
     public Purchase add(@RequestBody Purchase purchase) throws WebServiceException {
         System.out.println("AuthorizationRequestController.add [" + purchase.toString() + "]");
-        Purchase response = purchaseRequestManager.add(purchase);
+        Purchase response = purchaseManager.add(purchase);
         return response;
     }
 
@@ -42,14 +42,14 @@ public class PurchaseController {
             @RequestBody Purchase purchase) throws WebServiceException
     {
         System.out.println("AuthorizationRequestController.update [" + purchase.toString() + "]");
-        Purchase response = purchaseRequestManager.update(id, purchase);
+        Purchase response = purchaseManager.update(id, purchase);
         return response;
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
     @ResponseBody
     public Purchase delete(@PathVariable String id, @RequestBody Purchase purchase) throws Exception {
-        return purchaseRequestManager.delete(id, purchase);
+        return purchaseManager.delete(id, purchase);
     }
 
 
@@ -57,7 +57,7 @@ public class PurchaseController {
     @ResponseBody
     public Purchase get(@PathVariable String id) throws WebServiceException {
         System.out.println("AuthorizationRequestController.get");
-        Purchase response = purchaseRequestManager.get(id);
+        Purchase response = purchaseManager.get(id);
         return response;
     }
 
@@ -65,7 +65,7 @@ public class PurchaseController {
     @ResponseBody
     public List<Purchase> getAll() throws WebServiceException {
         System.out.println("AuthorizationRequestController.getAll");
-        List<Purchase> response = purchaseRequestManager.getAll();
+        List<Purchase> response = purchaseManager.getAll();
         return response;
     }
 
@@ -93,7 +93,7 @@ public class PurchaseController {
             purchaseSearchCriteria.setOrderNumber(orderNumber);
         }
 
-        List<Purchase> response = purchaseRequestManager.search(purchaseSearchCriteria);
+        List<Purchase> response = purchaseManager.search(purchaseSearchCriteria);
         return response;
     }
 

@@ -8,7 +8,7 @@ import android.app.Application;
 import android.app.Instrumentation;
 import android.content.Context;
 
-import com.droidshop.util.VolleyUtil;
+import com.droidshop.util.VolleyUtils;
 import com.github.kevinsawicki.http.HttpRequest;
 
 import dagger.ObjectGraph;
@@ -52,7 +52,7 @@ public class BootstrapApplication extends Application {
         objectGraph.inject(this);
         objectGraph.injectStatics();
 
-        VolleyUtil.init(this);
+        VolleyUtils.init(this);
     }
 
     private Object getRootModule() {

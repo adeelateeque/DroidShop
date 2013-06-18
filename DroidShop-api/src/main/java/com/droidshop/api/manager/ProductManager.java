@@ -1,11 +1,8 @@
 package com.droidshop.api.manager;
 
-import com.droidshop.api.dao.ProductDAO;
-import com.droidshop.api.model.error.WebServiceException;
-import com.droidshop.api.model.product.Product;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -15,9 +12,12 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.droidshop.api.dao.ProductDAO;
+import com.droidshop.api.model.Product;
+import com.droidshop.api.model.error.WebServiceException;
 
 @Component
 public class ProductManager {

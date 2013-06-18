@@ -1,7 +1,12 @@
 package com.droidshop.ui;
 
-import static com.droidshop.core.Constants.Extra.NEWS_ITEM;
 import static com.droidshop.core.Constants.Extra.USER;
+
+import java.util.Collections;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Intent;
@@ -15,13 +20,10 @@ import com.droidshop.BootstrapServiceProvider;
 import com.droidshop.R;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.core.AvatarLoader;
-import com.droidshop.core.News;
-import com.droidshop.core.User;
+import com.droidshop.model.User;
+import com.droidshop.ui.core.ItemListFragment;
+import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import javax.inject.Inject;
-
-import java.util.Collections;
-import java.util.List;
 
 public class UserListFragment  extends ItemListFragment<User> {
 
@@ -57,7 +59,7 @@ public class UserListFragment  extends ItemListFragment<User> {
     }
 
     @Override
-    LogoutService getLogoutService() {
+    protected LogoutService getLogoutService() {
         return logoutService;
     }
 

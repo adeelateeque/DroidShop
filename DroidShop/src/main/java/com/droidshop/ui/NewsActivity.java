@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.droidshop.R;
-import com.droidshop.core.News;
+import com.droidshop.model.News;
+import com.droidshop.ui.core.BootstrapActivity;
 
 import butterknife.InjectView;
 

@@ -1,23 +1,21 @@
 package com.droidshop;
 
+import javax.inject.Singleton;
+
 import android.accounts.AccountManager;
 import android.content.Context;
 
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.authenticator.LogoutService;
-import com.droidshop.core.CheckIn;
 import com.droidshop.core.TimerService;
 import com.droidshop.ui.BootstrapTimerActivity;
 import com.droidshop.ui.CarouselActivity;
 import com.droidshop.ui.CheckInsListFragment;
-import com.droidshop.ui.ItemListFragment;
 import com.droidshop.ui.NewsActivity;
 import com.droidshop.ui.NewsListFragment;
 import com.droidshop.ui.UserActivity;
 import com.droidshop.ui.UserListFragment;
 import com.squareup.otto.Bus;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -28,21 +26,20 @@ import dagger.Provides;
  */
 @Module
 (
-        complete = false,
+    complete = false,
 
-        injects = {
-                BootstrapApplication.class,
-                BootstrapAuthenticatorActivity.class,
-                CarouselActivity.class,
-                BootstrapTimerActivity.class,
-                CheckInsListFragment.class,
-                NewsActivity.class,
-                NewsListFragment.class,
-                UserActivity.class,
-                UserListFragment.class,
-                TimerService.class
-        }
-
+    injects = {
+            BootstrapApplication.class,
+            BootstrapAuthenticatorActivity.class,
+            CarouselActivity.class,
+            BootstrapTimerActivity.class,
+            CheckInsListFragment.class,
+            NewsActivity.class,
+            NewsListFragment.class,
+            UserActivity.class,
+            UserListFragment.class,
+            TimerService.class
+    }
 )
 public class BootstrapModule  {
 

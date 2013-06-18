@@ -1,5 +1,10 @@
 package com.droidshop.ui;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Intent;
@@ -13,13 +18,10 @@ import com.droidshop.BootstrapApplication;
 import com.droidshop.BootstrapServiceProvider;
 import com.droidshop.R;
 import com.droidshop.authenticator.LogoutService;
-import com.droidshop.core.CheckIn;
+import com.droidshop.model.CheckIn;
+import com.droidshop.ui.core.ItemListFragment;
+import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import javax.inject.Inject;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.List;
 
 public class CheckInsListFragment extends ItemListFragment<CheckIn> {
 
@@ -52,7 +54,7 @@ public class CheckInsListFragment extends ItemListFragment<CheckIn> {
     }
 
     @Override
-    LogoutService getLogoutService() {
+    protected LogoutService getLogoutService() {
         return logoutService;
     }
 

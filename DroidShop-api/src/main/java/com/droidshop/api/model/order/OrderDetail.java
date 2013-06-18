@@ -12,7 +12,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import com.droidshop.api.model.product.Product;
+import com.droidshop.api.model.MonetaryAmount;
+import com.droidshop.api.model.Product;
 
 @Entity
 @Table(name = "order_detail")
@@ -24,7 +25,7 @@ import com.droidshop.api.model.product.Product;
 public class OrderDetail implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	@EmbeddedId
 	protected OrderDetailPK orderDetailPK;
 
@@ -44,7 +45,7 @@ public class OrderDetail implements Serializable
 	{
 		this.orderDetailPK = new OrderDetailPK();
 		this.customerOrder = new Order();
-		this.product = new Product();
+		this.product = new Product("Unknown", MonetaryAmount.ZERO);
 	}
 
 	public OrderDetail(OrderDetailPK orderDetailPK)

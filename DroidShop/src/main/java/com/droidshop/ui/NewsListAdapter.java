@@ -3,8 +3,8 @@ package com.droidshop.ui;
 import android.view.LayoutInflater;
 
 import com.droidshop.R;
-import com.droidshop.core.News;
-import com.droidshop.ui.AlternatingColorListAdapter;
+import com.droidshop.model.News;
+import com.droidshop.ui.core.AlternatingColorListAdapter;
 
 import java.util.List;
 

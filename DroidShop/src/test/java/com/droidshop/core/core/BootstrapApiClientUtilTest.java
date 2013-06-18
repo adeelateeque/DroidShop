@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import com.droidshop.core.BootstrapService;
-import com.droidshop.core.User;
+import com.droidshop.model.User;
 
 import java.util.List;
 

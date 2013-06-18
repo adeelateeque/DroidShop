@@ -55,7 +55,6 @@ import javax.inject.Inject;
  *
  *
  */
-@SuppressWarnings({"ImplicitArrayToString"})
 public class Ln  {
     /**
      * config is initially set to BaseConfig() with sensible defaults, then replaced

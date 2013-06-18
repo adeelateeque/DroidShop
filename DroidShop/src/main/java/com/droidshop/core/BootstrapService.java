@@ -9,6 +9,9 @@ import static com.droidshop.core.Constants.Http.URL_CHECKINS;
 import static com.droidshop.core.Constants.Http.URL_NEWS;
 import static com.droidshop.core.Constants.Http.URL_USERS;
 
+import com.droidshop.model.CheckIn;
+import com.droidshop.model.News;
+import com.droidshop.model.User;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 import com.google.gson.Gson;
@@ -228,5 +231,20 @@ public class BootstrapService {
             throw e.getCause();
         }
     }
+
+	public String getApiKey()
+	{
+		return apiKey;
+	}
+
+	public String getUsername()
+	{
+		return username;
+	}
+
+	public String getPassword()
+	{
+		return password;
+	}
 
 }

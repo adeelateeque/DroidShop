@@ -6,15 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import com.droidshop.api.model.product.Product;
-import com.droidshop.api.model.product.ProductStatus;
+import com.droidshop.api.model.Product;
 
-@Component
+@Repository
 public class ProductDAO extends AbstractDAO<Product>
 {
-
 	public ProductDAO()
 	{
 		super(Product.class);
@@ -28,9 +26,7 @@ public class ProductDAO extends AbstractDAO<Product>
 		product.setCreatedAt(new Date());
 		product.setUpdatedAt(new Date());
 
-		beginTransaction();
 		save(product);
-		commitAndCloseTransaction();
 
 		System.out.println("ProductDAO: END - adding product to the database");
 
@@ -42,13 +38,11 @@ public class ProductDAO extends AbstractDAO<Product>
 		System.out.println("ProductDAO: update");
 		System.out.println("ProductDAO: START - updating product to the database");
 
-		beginTransaction();
 		Product fetchedProduct = fetch(productID);
 
 		fetchedProduct.setUpdatedAt(new Date());
 
 		update(fetchedProduct);
-		commitAndCloseTransaction();
 
 		System.out.println("ProductDAO: END - updating product to the database");
 
@@ -71,11 +65,9 @@ public class ProductDAO extends AbstractDAO<Product>
 		System.out.println("ProductDAO: fetchByProductName");
 		System.out.println("ProductDAO: START - fetching product from the database by productName");
 
-		beginTransaction();
-		Product fetchedProduct = (Product) session.createCriteria(Product.class)
+		Product fetchedProduct = (Product) getCurrentSession().createCriteria(Product.class)
 				.add(Restrictions.eq("productName", productName)).uniqueResult();
 		System.out.println("ProductDAO: END - fetching product from the database by productName");
-		closeTransaction();
 
 		return fetchedProduct;
 	}
@@ -85,7 +77,6 @@ public class ProductDAO extends AbstractDAO<Product>
 		System.out.println("ProductDAO: fetchAll");
 		System.out.println("ProductDAO: START - fetching all products from the database");
 
-		beginTransaction();
 		List<Product> fetchedProducts = getAll();
 
 		System.out.println("DEBUG: includeAll [" + includeAll + "]");
@@ -96,9 +87,9 @@ public class ProductDAO extends AbstractDAO<Product>
 			while (iterator.hasNext())
 			{
 				Product currentProduct = (Product) iterator.next();
-				ProductStatus productStatus = currentProduct.getStatus();
+				Product.Status productStatus = currentProduct.getStatus();
 				System.out.println("DEBUG: Product Status Code [" + productStatus + "]");
-				if (!productStatus.equals(ProductStatus.INSTOCK))
+				if (!productStatus.equals(Product.Status.INSTOCK))
 				{
 					System.out.println("DEBUG: Removing Product [" + currentProduct.getName() + "]");
 					iterator.remove();
@@ -119,11 +110,9 @@ public class ProductDAO extends AbstractDAO<Product>
 		System.out.println("ProductDAO: delete");
 		System.out.println("ProductDAO: START - setting product status to delete in the database");
 
-		beginTransaction();
 		Product fetchedProduct = fetch(productID);
 		fetchedProduct.setUpdatedAt(new Date());
 		update(fetchedProduct);
-		commitAndCloseTransaction();
 		System.out.println("ProductDAO: END - setting product status to delete in the database");
 
 		return fetchedProduct;

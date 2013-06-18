@@ -1,19 +1,19 @@
 package com.droidshop.core;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Locale;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 
-import com.droidshop.BootstrapApplication;
 import com.droidshop.util.Ln;
 import com.droidshop.util.Strings;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class UserAgentProvider implements Provider<String> {
@@ -49,7 +49,7 @@ public class UserAgentProvider implements Provider<String> {
 
                     // http://stackoverflow.com/questions/2641111/where-is-android-os-systemproperties
                     try{
-                        final Class SystemProperties = classLoader.loadClass("android.os.SystemProperties");
+                        final Class<?> SystemProperties = classLoader.loadClass("android.os.SystemProperties");
                         final Method get = SystemProperties.getMethod("get", String.class);
                         params.add( "clientidbase=" + get.invoke(SystemProperties, "ro.com.google.clientidbase"));
                     }catch( Exception ignored ){

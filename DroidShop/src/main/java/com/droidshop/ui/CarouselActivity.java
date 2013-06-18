@@ -2,23 +2,18 @@
 
 package com.droidshop.ui;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import butterknife.InjectView;
 
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
-import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.R.id;
-
+import com.droidshop.ui.core.BootstrapFragmentActivity;
+import com.droidshop.ui.core.BootstrapPagerAdapter;
 import com.viewpagerindicator.TitlePageIndicator;
-
-import butterknife.InjectView;
-import butterknife.Views;
 
 /**
  * Activity to view the carousel and view pager indicator with fragments.
