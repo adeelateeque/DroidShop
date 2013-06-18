@@ -1,0 +1,111 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:orientation="vertical" >
+        
+        <TextView
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:layout_marginTop="15dp"
+        	android:layout_marginBottom="5dp"
+        	android:textSize="30sp"
+       		android:text="@string/tvTodayDeal" />
+        
+        <TextView
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:layout_marginTop="15dp"
+        	android:layout_marginBottom="5dp"
+        	android:textSize="30sp"
+       		android:text="@string/tvRecently" />
+        
+        <TextView
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:layout_marginTop="15dp"
+        	android:layout_marginBottom="5dp"
+        	android:textSize="30sp"
+       		android:text="@string/tvMost" />
+        
+    </LinearLayout>
+
+    <SlidingDrawer
+        android:id="@+id/slidingDrawer"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:content="@+id/contentLayout"
+        android:handle="@+id/handle"
+        android:orientation="horizontal" >
+        
+        <LinearLayout 
+            android:id="@+id/handle"
+        	android:layout_width="wrap_content"
+        	android:layout_height="fill_parent">
+        		<Button
+            		android:id="@+id/slideButton"
+            		android:layout_width="wrap_content"
+            		android:layout_height="fill_parent"
+           	 		android:visibility="gone" />
+    	</LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dip"
+            android:background="#FFFFFF" >
+        		
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Login" >
+            </Button>
+            
+            <Button
+                android:id="@+id/btnShop"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Shop by Department" >
+            </Button>
+            
+            <Button
+                android:id="@+id/btnOrder"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Your Orders" >
+            </Button>
+            
+            <Button
+                android:id="@+id/btnReserve"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Reservations" >
+            </Button>
+            
+            <Button
+                android:id="@+id/btnWish"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Wishlist" >
+            </Button>
+            
+            <Button
+                android:id="@+id/btnLogout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Logout" >
+            </Button>
+            
+        </LinearLayout>
+    </SlidingDrawer>
+</RelativeLayout>
