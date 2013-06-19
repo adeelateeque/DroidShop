@@ -8,11 +8,6 @@ import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.view.KeyEvent.ACTION_DOWN;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
-import static com.droidshop.core.Constants.Http.HEADER_PARSE_APP_ID;
-import static com.droidshop.core.Constants.Http.HEADER_PARSE_REST_API_KEY;
-import static com.droidshop.core.Constants.Http.PARSE_APP_ID;
-import static com.droidshop.core.Constants.Http.PARSE_REST_API_KEY;
-import static com.droidshop.core.Constants.Http.URL_AUTH;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +35,6 @@ import android.widget.TextView.OnEditorActionListener;
 import butterknife.InjectView;
 import butterknife.Views;
 
-import com.android.volley.Request.Method;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
 import com.droidshop.R.id;
 import com.droidshop.R.layout;
 import com.droidshop.R.string;
@@ -52,8 +43,6 @@ import com.droidshop.model.User;
 import com.droidshop.ui.TextWatcherAdapter;
 import com.droidshop.util.GsonRequest;
 import com.droidshop.util.Ln;
-import com.droidshop.util.SafeAsyncTask;
-import com.droidshop.util.VolleyUtils;
 import com.github.kevinsawicki.wishlist.Toaster;
 
 /**
@@ -61,8 +50,6 @@ import com.github.kevinsawicki.wishlist.Toaster;
  */
 public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticatorActivity
 {
-
-	protected BootstrapAuthenticatorActivity instance = this;
 
 	/**
 	 * PARAM_CONFIRMCREDENTIALS
@@ -95,7 +82,6 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 
 	private TextWatcher watcher = validationTextWatcher();
 
-	private SafeAsyncTask<Boolean> authenticationTask;
 	private String authToken;
 	private String authTokenType;
 
@@ -121,6 +107,8 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 	 * Was the original caller asking for an entirely new account?
 	 */
 	protected boolean requestNewAccount = false;
+
+	private GsonRequest<User> request;
 
 	@Override
 	public void onCreate(Bundle bundle)
@@ -227,8 +215,8 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 		{
 			public void onCancel(DialogInterface dialog)
 			{
-				if (authenticationTask != null)
-					authenticationTask.cancel(true);
+				if (request != null)
+					request.cancel();
 			}
 		});
 		return dialog;
@@ -244,98 +232,73 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 	 */
 	public void handleLogin(final View view)
 	{
-		if (authenticationTask != null)
-			return;
+//		if (requestNewAccount)
+//			email = emailText.getText().toString();
+//
+//		password = passwordText.getText().toString();
+//		showProgress();
+//
+//		final String query = String.format("%s=%s&%s=%s", PARAM_USERNAME, email, PARAM_PASSWORD, password);
+//
+//		/*
+//		 * Map<String, String> headers = new HashMap<String, String>();
+//		 * headers.put(HEADER_PARSE_APP_ID, PARSE_APP_ID);
+//		 * headers.put(HEADER_PARSE_REST_API_KEY, PARSE_REST_API_KEY);
+//		 */
+//
+//		request = new GsonRequest<User>(Method.GET, URL_AUTH + "?" + query, User.class, null, new Listener<User>()
+//		{
+//			@Override
+//			public void onResponse(User user)
+//			{
+//				token = user.getSessionToken();
+//				Toaster.showLong(BootstrapAuthenticatorActivity.this, "in onSuccess()");
+//				onAuthenticationResult(true);
+//				hideProgress();
+//			}
+//		}, new ErrorListener()
+//		{
+//
+//			@Override
+//			public void onErrorResponse(VolleyError error)
+//			{
+//				Ln.e(error);
+//
+//				Toaster.showLong(BootstrapAuthenticatorActivity.this, "Error occured");
+//				hideProgress();
+//
+//				Throwable cause = error.getCause() != null ? error.getCause() : error;
+//
+//				String message;
+//				// A 404 is returned as an Exception with this message
+//				if ("Received authentication challenge is null".equals(cause.getMessage()))
+//					message = getResources().getString(string.message_bad_credentials);
+//				else
+//					message = cause.getMessage();
+//
+//				Toaster.showLong(BootstrapAuthenticatorActivity.this, message);
+//			}
+//
+//		});
+//
+//		try
+//		{
+//			request.getHeaders().put(HEADER_PARSE_APP_ID, PARSE_APP_ID);
+//			request.getHeaders().put(HEADER_PARSE_REST_API_KEY, PARSE_REST_API_KEY);
+//		}
+//		catch (AuthFailureError error)
+//		{
+//			Toaster.showLong(BootstrapAuthenticatorActivity.this, R.string.message_bad_credentials);
+//		}
+//
+//		Toaster.showLong(BootstrapAuthenticatorActivity.this, request.toString());
+//
+//		VolleyUtils.getRequestQueue().add(request);
+//
+//		Toaster.showLong(BootstrapAuthenticatorActivity.this, "Request added to queue");
 
-		if (requestNewAccount)
-			email = emailText.getText().toString();
-		password = passwordText.getText().toString();
-		showProgress();
-
-		authenticationTask = new SafeAsyncTask<Boolean>()
-		{
-			boolean success = false;
-			public Boolean call() throws Exception
-			{
-				final String query = String.format("%s=%s&%s=%s", PARAM_USERNAME, email, PARAM_PASSWORD, password);
-
-				GsonRequest<User> request = new GsonRequest<User>(Method.GET, URL_AUTH + "?" + query, User.class,
-						new Listener<User>()
-						{
-							@Override
-							public void onResponse(User user)
-							{
-								token = user.getSessionToken();
-								success = true;
-							}
-						}, new ErrorListener()
-						{
-
-							@Override
-							public void onErrorResponse(VolleyError error)
-							{
-								Ln.e(error);
-							}
-
-						});
-
-				request.getHeaders().put(HEADER_PARSE_APP_ID, PARSE_APP_ID);
-				request.getHeaders().put(HEADER_PARSE_REST_API_KEY, PARSE_REST_API_KEY);
-
-				VolleyUtils.getRequestQueue().add(request);
-
-				return success;
-			}
-
-			@Override
-			protected void onException(Exception e) throws RuntimeException
-			{
-				Throwable cause = e.getCause() != null ? e.getCause() : e;
-
-				String message;
-				// A 404 is returned as an Exception with this message
-				if ("Received authentication challenge is null".equals(cause.getMessage()))
-					message = getResources().getString(string.message_bad_credentials);
-				else
-					message = cause.getMessage();
-
-				Toaster.showLong(BootstrapAuthenticatorActivity.this, message);
-			}
-
-			@Override
-			public void onSuccess(Boolean authSuccess)
-			{
-				onAuthenticationResult(authSuccess);
-			}
-
-			@Override
-			protected void onFinally() throws RuntimeException
-			{
-				hideProgress();
-				authenticationTask = null;
-			}
-		};
-		authenticationTask.execute();
+		onAuthenticationResult(true);
 	}
-
-	/*
-	 * public void makeHttpCall(View view) {
-	 * StringRequest myReq = new StringRequest(Method.GET,
-	 * "http://www.google.com",
-	 * new Response.Listener<String>() {
-	 * @Override
-	 * public void onResponse(String response) {
-	 * tvHttpResult.setText(response);
-	 * }
-	 * }, new Response.ErrorListener() {
-	 * @Override
-	 * public void onErrorResponse(VolleyError error) {
-	 * tvHttpResult.setText(error.getMessage());
-	 * }
-	 * });
-	 * VolleyUtils.getRequestQueue().add(myReq);
-	 * }
-	 */
 
 	/**
 	 * Called when response is received from the server for confirm credentials

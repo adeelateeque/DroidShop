@@ -5,16 +5,7 @@ import javax.inject.Singleton;
 import android.accounts.AccountManager;
 import android.content.Context;
 
-import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.authenticator.LogoutService;
-import com.droidshop.core.TimerService;
-import com.droidshop.ui.BootstrapTimerActivity;
-import com.droidshop.ui.CarouselActivity;
-import com.droidshop.ui.CheckInsListFragment;
-import com.droidshop.ui.NewsActivity;
-import com.droidshop.ui.NewsListFragment;
-import com.droidshop.ui.UserActivity;
-import com.droidshop.ui.UserListFragment;
 import com.squareup.otto.Bus;
 
 import dagger.Module;
@@ -26,20 +17,7 @@ import dagger.Provides;
  */
 @Module
 (
-    complete = false,
-
-    injects = {
-            BootstrapApplication.class,
-            BootstrapAuthenticatorActivity.class,
-            CarouselActivity.class,
-            BootstrapTimerActivity.class,
-            CheckInsListFragment.class,
-            NewsActivity.class,
-            NewsListFragment.class,
-            UserActivity.class,
-            UserListFragment.class,
-            TimerService.class
-    }
+    complete = false, library=true
 )
 public class BootstrapModule  {
 
@@ -54,5 +32,4 @@ public class BootstrapModule  {
     LogoutService provideLogoutService(final Context context, final AccountManager accountManager) {
         return new LogoutService(context, accountManager);
     }
-
 }
