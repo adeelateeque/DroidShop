@@ -1,10 +1,12 @@
 package com.droidshop.ui;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import android.accounts.AccountsException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Intent;
@@ -15,8 +17,9 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.droidshop.BootstrapApplication;
-import com.droidshop.BootstrapServiceProvider;
 import com.droidshop.R;
+import com.droidshop.api.BootstrapApi;
+import com.droidshop.api.ApiProvider;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.model.CheckIn;
 import com.droidshop.ui.core.ItemListFragment;
@@ -25,13 +28,28 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 
 public class CheckInsListFragment extends ItemListFragment<CheckIn> {
 
-    @Inject protected BootstrapServiceProvider serviceProvider;
+    @Inject protected ApiProvider serviceProvider;
     @Inject protected LogoutService logoutService;
+
+    protected BootstrapApi api;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.getInstance().inject(this);
+
+        try
+		{
+			api = serviceProvider.getApi(getActivity());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (AccountsException e)
+		{
+			e.printStackTrace();
+		}
     }
 
     @Override
@@ -66,28 +84,37 @@ public class CheckInsListFragment extends ItemListFragment<CheckIn> {
     }
 
     @Override
-    public Loader<List<CheckIn>> onCreateLoader(int id, Bundle args) {
-        final List<CheckIn> initialItems = items;
-        return new ThrowableLoader<List<CheckIn>>(getActivity(), items) {
+	public Loader<List<CheckIn>> onCreateLoader(int id, Bundle args)
+	{
+		final List<CheckIn> initialItems = items;
+		return new ThrowableLoader<List<CheckIn>>(getActivity(), items)
+		{
+			@Override
+			public List<CheckIn> loadData() throws Exception
+			{
 
-            @Override
-            public List<CheckIn> loadData() throws Exception {
-                try {
-                    if(getActivity() != null) {
-                        return serviceProvider.getService(getActivity()).getCheckIns();
-                    } else {
-                        return Collections.emptyList();
-                    }
+				try
+				{
+					List<CheckIn> latest = null;
 
-                } catch (OperationCanceledException e) {
-                    Activity activity = getActivity();
-                    if (activity != null)
-                        activity.finish();
-                    return initialItems;
-                }
-            }
-        };
-    }
+					if (getActivity() != null)
+						latest = api.getCheckInApi().getCheckIns();
+
+					if (latest != null)
+						return latest;
+					else
+						return Collections.emptyList();
+				}
+				catch (OperationCanceledException e)
+				{
+					Activity activity = getActivity();
+					if (activity != null)
+						activity.finish();
+					return initialItems;
+				}
+			}
+		};
+	}
 
     @Override
     protected SingleTypeAdapter<CheckIn> createAdapter(List<CheckIn> items) {
@@ -110,4 +137,14 @@ public class CheckInsListFragment extends ItemListFragment<CheckIn> {
     protected int getErrorMessage(Exception exception) {
         return R.string.error_loading_checkins;
     }
+
+	public BootstrapApi getApi()
+	{
+		return api;
+	}
+
+	public void setApi(BootstrapApi api)
+	{
+		this.api = api;
+	}
 }

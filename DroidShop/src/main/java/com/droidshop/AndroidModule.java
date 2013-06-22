@@ -95,7 +95,7 @@ public class AndroidModule
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T getSystemService(Context context, String serviceConstant)
+	private <T> T getSystemService(Context context, String serviceConstant)
 	{
 		return (T) context.getSystemService(serviceConstant);
 	}

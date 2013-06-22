@@ -44,6 +44,16 @@ public class GsonRequest<T> extends Request<T>
 		this.mGson = new Gson();
 	}
 
+	public GsonRequest(int method, String url, Class<T> clazz, Listener<T> listener,
+			ErrorListener errorListener)
+	{
+		super(method, url, errorListener);
+		this.mClass = clazz;
+		this.mListener = listener;
+		this.mParams = new HashMap<String, String>();
+		this.mGson = new Gson();
+	}
+
 	/**
 	 * @param method
 	 * @param url

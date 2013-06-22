@@ -1,32 +1,31 @@
 
-package com.droidshop.core;
+package com.droidshop.api;
 
 import static com.droidshop.core.Constants.Http.HEADER_PARSE_APP_ID;
 import static com.droidshop.core.Constants.Http.HEADER_PARSE_REST_API_KEY;
 import static com.droidshop.core.Constants.Http.PARSE_APP_ID;
 import static com.droidshop.core.Constants.Http.PARSE_REST_API_KEY;
-import static com.droidshop.core.Constants.Http.URL_CHECKINS;
-import static com.droidshop.core.Constants.Http.URL_NEWS;
-import static com.droidshop.core.Constants.Http.URL_USERS;
 
-import com.droidshop.model.CheckIn;
-import com.droidshop.model.News;
-import com.droidshop.model.User;
+import java.io.IOException;
+import java.io.Reader;
+
+import android.accounts.OperationCanceledException;
+
+import com.droidshop.core.Constants;
+import com.droidshop.core.UserAgentProvider;
 import com.github.kevinsawicki.http.HttpRequest;
-import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Bootstrap API service
  */
-public class BootstrapService {
+public class BootstrapApi {
+
+	private final String apiKey;
+    private String username;
+    private String password;
 
     private UserAgentProvider userAgentProvider;
 
@@ -50,24 +49,7 @@ public class BootstrapService {
      */
     private static final int TIMEOUT = 30 * 1000;
 
-
-    private static class UsersWrapper {
-
-        private List<User> results;
-    }
-
-    private static class NewsWrapper {
-
-        private List<News> results;
-    }
-
-    private static class CheckInWrapper {
-
-        private List<CheckIn> results;
-
-    }
-
-    private static class JsonException extends IOException {
+    protected static class JsonException extends IOException {
 
         private static final long serialVersionUID = 3774706606129390273L;
 
@@ -82,18 +64,13 @@ public class BootstrapService {
         }
     }
 
-
-    private final String apiKey;
-    private final String username;
-    private final String password;
-
     /**
      * Create bootstrap service
      *
      * @param username
      * @param password
      */
-    public BootstrapService(final String username, final String password) {
+    protected BootstrapApi(final String username, final String password) {
         this.username = username;
         this.password = password;
         this.apiKey = null;
@@ -105,7 +82,7 @@ public class BootstrapService {
      * @param userAgentProvider
      * @param apiKey
      */
-    public BootstrapService(final String apiKey, final UserAgentProvider userAgentProvider) {
+    protected BootstrapApi(final String apiKey, final UserAgentProvider userAgentProvider) {
         this.userAgentProvider = userAgentProvider;
         this.username = null;
         this.password = null;
@@ -131,7 +108,6 @@ public class BootstrapService {
 
         if(isPostOrPut(request))
             request.contentType(Constants.Http.CONTENT_TYPE_JSON); // All PUT & POST requests to Parse.com api must be in JSON - https://www.parse.com/docs/rest#general-requests
-
         return addCredentialsTo(request);
     }
 
@@ -163,7 +139,7 @@ public class BootstrapService {
         return request;
     }
 
-    private <V> V fromJson(HttpRequest request, Class<V> target) throws IOException {
+    protected <V> V fromJson(HttpRequest request, Class<V> target) throws IOException {
         Reader reader = request.bufferedReader();
         try {
             return GSON.fromJson(reader, target);
@@ -178,73 +154,54 @@ public class BootstrapService {
         }
     }
 
-    /**
-     * Get all bootstrap Users that exist on Parse.com
-     *
-     * @return non-null but possibly empty list of bootstrap
-     * @throws IOException
-     */
-    public List<User> getUsers() throws IOException {
-        try {
-            HttpRequest request = execute(HttpRequest.get(URL_USERS));
-            UsersWrapper response = fromJson(request, UsersWrapper.class);
-            if (response != null && response.results != null)
-                return response.results;
-            return Collections.emptyList();
-        } catch (HttpRequestException e) {
-            throw e.getCause();
-        }
-    }
-
-    /**
-     * Get all bootstrap News that exists on Parse.com
-     *
-     * @return non-null but possibly empty list of bootstrap
-     * @throws IOException
-     */
-    public List<News> getNews() throws IOException {
-        try {
-            HttpRequest request = execute(HttpRequest.get(URL_NEWS));
-            NewsWrapper response = fromJson(request, NewsWrapper.class);
-            if (response != null && response.results != null)
-                return response.results;
-            return Collections.emptyList();
-        } catch (HttpRequestException e) {
-            throw e.getCause();
-        }
-    }
-
-    /**
-     * Get all bootstrap Checkins that exists on Parse.com
-     *
-     * @return non-null but possibly empty list of bootstrap
-     * @throws IOException
-     */
-    public List<CheckIn> getCheckIns() throws IOException {
-        try {
-            HttpRequest request = execute(HttpRequest.get(URL_CHECKINS));
-            CheckInWrapper response = fromJson(request, CheckInWrapper.class);
-            if (response != null && response.results != null)
-                return response.results;
-            return Collections.emptyList();
-        } catch (HttpRequestException e) {
-            throw e.getCause();
-        }
-    }
-
-	public String getApiKey()
+	protected String getApiKey()
 	{
 		return apiKey;
 	}
 
-	public String getUsername()
+	protected String getUsername()
 	{
 		return username;
 	}
 
-	public String getPassword()
+	protected String getPassword()
 	{
 		return password;
 	}
 
+	protected void setUsername(String username)
+	{
+		this.username = username;
+	}
+
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
+
+	//All available APIs
+	//TODO exceptions thrown are not actual
+	public UserApi getUserApi() throws OperationCanceledException
+	{
+		UserApi userApi = new UserApi(apiKey, userAgentProvider);
+		userApi.setUsername(this.username);
+		userApi.setPassword(password);
+		return userApi;
+	}
+
+	public NewsApi getNewsApi() throws OperationCanceledException
+	{
+		NewsApi newsApi = new NewsApi(apiKey, userAgentProvider);
+		newsApi.setUsername(this.username);
+		newsApi.setPassword(password);
+		return newsApi;
+	}
+
+	public CheckInApi getCheckInApi() throws OperationCanceledException
+	{
+		CheckInApi checkInApi = new CheckInApi(apiKey, userAgentProvider);
+		checkInApi.setUsername(this.username);
+		checkInApi.setPassword(password);
+		return checkInApi;
+	}
 }

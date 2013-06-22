@@ -4,7 +4,6 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 import butterknife.Views;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -36,7 +35,7 @@ public abstract class BootstrapActivity extends SherlockActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:  // This is the home button in the top left corner of the screen.
-                // Dont call finish! Because activity could have been started by an outside activity and the home button would not operated as expected!
+                // Don't call finish! Because activity could have been started by an outside activity and the home button would not operate as expected!
                 Intent homeIntent = new Intent(this, CarouselActivity.class);
                 homeIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(homeIntent);
@@ -45,10 +44,4 @@ public abstract class BootstrapActivity extends SherlockActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    protected void toast(int id) {
-        String text = getResources().getString(id);
-        Toast.makeText(BootstrapApplication.getInstance(), text, Toast.LENGTH_LONG).show();
-    }
-
 }

@@ -14,6 +14,7 @@ import com.droidshop.core.AvatarLoader;
 import com.droidshop.model.User;
 import com.droidshop.ui.core.BootstrapActivity;
 
+/** Activity to display user details */
 public class UserActivity extends BootstrapActivity {
 
     @InjectView(R.id.iv_avatar) protected ImageView avatar;
@@ -38,8 +39,5 @@ public class UserActivity extends BootstrapActivity {
 
         avatarLoader.bind(avatar, user);
         name.setText(String.format("%s %s", user.getFirstName(), user.getLastName()));
-
     }
-
-
 }

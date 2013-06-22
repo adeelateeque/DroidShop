@@ -59,7 +59,7 @@ class BootstrapAccountAuthenticator extends AbstractAccountAuthenticator {
 
     /**
      * This method gets called when the
-     * {@link com.droidshop.authenticator.ApiKeyProvider#getAuthKey()} methods gets invoked.
+     * {@link com.droidshop.api.ApiKeyProvider#getAuthKey()} methods gets invoked.
      * This happens on a different process, so debugging it can be a beast.
      * @param response
      * @param account

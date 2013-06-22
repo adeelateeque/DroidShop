@@ -1,17 +1,17 @@
 
 
-package com.droidshop.core.core;
+package com.droidshop.core.test;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
-
-import com.droidshop.core.BootstrapService;
-import com.droidshop.model.User;
 
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
+
+import com.droidshop.api.ApiProvider;
+import com.droidshop.model.User;
 
 /**
  * Unit tests of client API
@@ -19,9 +19,9 @@ import org.junit.Test;
 public class BootstrapApiClientUtilTest {
 
     @Test
-    @Ignore("Requires the API to use basic authentication. Parse.com api does not. See BootstrapService for more info.")
+    @Ignore("Requires the API to use basic authentication. Parse.com api does not. See BootstrapApi for more info.")
     public void shouldCreateClient() throws Exception {
-        List<User> users = new BootstrapService("demo@androidbootstrap.com", "foobar").getUsers();
+        List<User> users = new ApiProvider().getApi("demo@androidbootstrap.com", "foobar").getUserApi().getUsers();
 
         assertThat(users.get(0).getUsername(), notNullValue());
     }

@@ -1,6 +1,14 @@
 package com.droidshop.ui;
 
 import static com.droidshop.core.Constants.Extra.NEWS_ITEM;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import android.accounts.AccountsException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Intent;
@@ -10,29 +18,40 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.droidshop.BootstrapApplication;
-import com.droidshop.BootstrapServiceProvider;
 import com.droidshop.R;
+import com.droidshop.api.BootstrapApi;
+import com.droidshop.api.ApiProvider;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.model.News;
 import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 
-import javax.inject.Inject;
-
-import java.util.Collections;
-import java.util.List;
-
 public class NewsListFragment extends ItemListFragment<News> {
 
-    @Inject protected BootstrapServiceProvider serviceProvider;
+    @Inject protected ApiProvider serviceProvider;
     @Inject protected LogoutService logoutService;
+
+    protected BootstrapApi api;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.getInstance().inject(this);
+
+        try
+		{
+			api = serviceProvider.getApi(getActivity());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (AccountsException e)
+		{
+			e.printStackTrace();
+		}
     }
 
     @Override
@@ -69,28 +88,37 @@ public class NewsListFragment extends ItemListFragment<News> {
     }
 
     @Override
-    public Loader<List<News>> onCreateLoader(int id, Bundle args) {
-        final List<News> initialItems = items;
-        return new ThrowableLoader<List<News>>(getActivity(), items) {
+	public Loader<List<News>> onCreateLoader(int id, Bundle args)
+	{
+		final List<News> initialItems = items;
+		return new ThrowableLoader<List<News>>(getActivity(), items)
+		{
+			@Override
+			public List<News> loadData() throws Exception
+			{
 
-            @Override
-            public List<News> loadData() throws Exception {
-                try {
-                    if(getActivity() != null) {
-                        return serviceProvider.getService(getActivity()).getNews();
-                    } else {
-                        return Collections.emptyList();
-                    }
+				try
+				{
+					List<News> latest = null;
 
-                } catch (OperationCanceledException e) {
-                    Activity activity = getActivity();
-                    if (activity != null)
-                        activity.finish();
-                    return initialItems;
-                }
-            }
-        };
-    }
+					if (getActivity() != null)
+						latest = api.getNewsApi().getNews();
+
+					if (latest != null)
+						return latest;
+					else
+						return Collections.emptyList();
+				}
+				catch (OperationCanceledException e)
+				{
+					Activity activity = getActivity();
+					if (activity != null)
+						activity.finish();
+					return initialItems;
+				}
+			}
+		};
+	}
 
     @Override
     protected SingleTypeAdapter<News> createAdapter(List<News> items) {

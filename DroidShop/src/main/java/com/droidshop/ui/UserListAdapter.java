@@ -15,26 +15,24 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
  */
 public class UserListAdapter extends SingleTypeAdapter<User> {
 
-	//private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM dd");
-
-	private final AvatarLoader avatars;
+	private final AvatarLoader avatarLoader;
 
     /**
      * @param inflater
      * @param items
      */
-    public UserListAdapter(LayoutInflater inflater, List<User> items, AvatarLoader avatars) {
+    public UserListAdapter(LayoutInflater inflater, List<User> items, AvatarLoader avatarLodaer) {
         super(inflater, R.layout.user_list_item);
 
-        this.avatars = avatars;
+        this.avatarLoader = avatarLodaer;
         setItems(items);
     }
 
     /**
      * @param inflater
      */
-    public UserListAdapter(LayoutInflater inflater, AvatarLoader avatars) {
-        this(inflater, null, avatars);
+    public UserListAdapter(LayoutInflater inflater, AvatarLoader avatarLoader) {
+        this(inflater, null, avatarLoader);
 
     }
 
@@ -53,7 +51,7 @@ public class UserListAdapter extends SingleTypeAdapter<User> {
     @Override
     protected void update(int position, User user) {
 
-        avatars.bind(imageView(0), user);
+        avatarLoader.bind(imageView(0), user);
 
         setText(1, String.format("%1$s %2$s", user.getFirstName(), user.getLastName()));
     }

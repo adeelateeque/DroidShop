@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
+import com.droidshop.core.Constants.Http;
 import com.droidshop.util.VolleyUtils;
 import com.github.kevinsawicki.http.HttpRequest;
 
@@ -24,7 +25,6 @@ public class BootstrapApplication extends Application
 {
 	private static final String SET_COOKIE_KEY = "Set-Cookie";
 	private static final String COOKIE_KEY = "Cookie";
-	private static final String SESSION_COOKIE = "sessionid";
 
 	private static BootstrapApplication instance;
 	private SharedPreferences mPreferences;
@@ -35,7 +35,6 @@ public class BootstrapApplication extends Application
 	 */
 	public BootstrapApplication()
 	{
-
 		// Disable http.keepAlive on Froyo and below
 		if (SDK_INT <= FROYO)
 			HttpRequest.keepAlive(false);
@@ -65,7 +64,7 @@ public class BootstrapApplication extends Application
 
 		VolleyUtils.init(this);
 
-		this.mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 	}
 
 	private Object getRootModule()
@@ -98,12 +97,11 @@ public class BootstrapApplication extends Application
 	 * Checks the response headers for session cookie and saves it
 	 * if it finds it.
 	 *
-	 * @param headers
-	 *            Response Headers.
+	 * @param headers (Response Headers)
 	 */
 	public final void checkSessionCookie(Map<String, String> headers)
 	{
-		if (headers.containsKey(SET_COOKIE_KEY) && headers.get(SET_COOKIE_KEY).startsWith(SESSION_COOKIE))
+		if (headers.containsKey(SET_COOKIE_KEY) && headers.get(SET_COOKIE_KEY).startsWith(Http.SESSION_TOKEN))
 		{
 			String cookie = headers.get(SET_COOKIE_KEY);
 			if (cookie.length() > 0)
@@ -112,7 +110,7 @@ public class BootstrapApplication extends Application
 				String[] splitSessionId = splitCookie[0].split("=");
 				cookie = splitSessionId[1];
 				Editor prefEditor = mPreferences.edit();
-				prefEditor.putString(SESSION_COOKIE, cookie);
+				prefEditor.putString(Http.SESSION_TOKEN, cookie);
 				prefEditor.commit();
 			}
 		}
@@ -125,13 +123,13 @@ public class BootstrapApplication extends Application
 	 */
 	public final void addSessionCookie(Map<String, String> headers)
 	{
-		String sessionId = mPreferences.getString(SESSION_COOKIE, "");
-		if (sessionId.length() > 0)
+		String sessionToken = mPreferences.getString(Http.SESSION_TOKEN, "");
+		if (sessionToken.length() > 0)
 		{
 			StringBuilder builder = new StringBuilder();
-			builder.append(SESSION_COOKIE);
+			builder.append(Http.SESSION_TOKEN);
 			builder.append("=");
-			builder.append(sessionId);
+			builder.append(sessionToken);
 			if (headers.containsKey(COOKIE_KEY))
 			{
 				builder.append("; ");

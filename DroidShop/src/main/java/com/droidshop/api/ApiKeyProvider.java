@@ -1,6 +1,6 @@
 
 
-package com.droidshop.authenticator;
+package com.droidshop.api;
 
 import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 
@@ -25,7 +25,7 @@ public class ApiKeyProvider {
     /**
      * This call blocks, so shouldn't be called on the UI thread
      *
-     * @return API key to be used for authorization with a {@link com.droidshop.core.BootstrapService} instance
+     * @return API key to be used for authorization with a {@link com.droidshop.api.BootstrapApi} instance
      * @throws AccountsException
      * @throws IOException
      */

@@ -1,5 +1,3 @@
-
-
 package com.droidshop.core;
 
 /**
