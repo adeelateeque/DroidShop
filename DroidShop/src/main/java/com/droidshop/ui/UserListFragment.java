@@ -2,13 +2,11 @@ package com.droidshop.ui;
 
 import static com.droidshop.core.Constants.Extra.USER;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import android.accounts.AccountsException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Intent;
@@ -19,8 +17,8 @@ import android.widget.ListView;
 
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
-import com.droidshop.api.BootstrapApi;
 import com.droidshop.api.ApiProvider;
+import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.core.AvatarLoader;
 import com.droidshop.model.User;
@@ -37,6 +35,7 @@ public class UserListFragment extends ItemListFragment<User>
 	AvatarLoader avatars;
 	@Inject
 	LogoutService logoutService;
+
 	protected BootstrapApi api;
 
 	@Override
@@ -44,19 +43,6 @@ public class UserListFragment extends ItemListFragment<User>
 	{
 		super.onCreate(savedInstanceState);
 		BootstrapApplication.getInstance().inject(this);
-
-		try
-		{
-			api = apiProvider.getApi(getActivity());
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		catch (AccountsException e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -93,7 +79,10 @@ public class UserListFragment extends ItemListFragment<User>
 			@Override
 			public List<User> loadData() throws Exception
 			{
-
+				if(api == null)
+				{
+					api = apiProvider.getApi(getActivity());
+				}
 				try
 				{
 					List<User> latest = null;

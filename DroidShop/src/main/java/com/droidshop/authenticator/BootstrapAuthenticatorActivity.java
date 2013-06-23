@@ -255,7 +255,6 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 			public void onResponse(User user)
 			{
 				token = user.getSessionToken();
-				Toaster.showLong(BootstrapAuthenticatorActivity.this, "in onSuccess()");
 				onAuthenticationResult(true);
 				hideProgress();
 			}
@@ -267,7 +266,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 			{
 				Ln.e(error);
 
-				Toaster.showLong(BootstrapAuthenticatorActivity.this, "Error occured");
+				Toaster.showLong(BootstrapAuthenticatorActivity.this, "An error has occured");
 				hideProgress();
 
 				Throwable cause = error.getCause() != null ? error.getCause() : error;
@@ -294,13 +293,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 			Toaster.showLong(BootstrapAuthenticatorActivity.this, R.string.message_bad_credentials);
 		}
 
-		Toaster.showLong(BootstrapAuthenticatorActivity.this, request.toString());
-
 		VolleyUtils.getRequestQueue().add(request);
-
-		Toaster.showLong(BootstrapAuthenticatorActivity.this, "Request added to queue");
-
-		onAuthenticationResult(true);
 	}
 
 	/**

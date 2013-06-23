@@ -2,13 +2,11 @@ package com.droidshop.ui;
 
 import static com.droidshop.core.Constants.Extra.NEWS_ITEM;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import android.accounts.AccountsException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Intent;
@@ -19,8 +17,8 @@ import android.widget.ListView;
 
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
-import com.droidshop.api.BootstrapApi;
 import com.droidshop.api.ApiProvider;
+import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.model.News;
 import com.droidshop.ui.core.ItemListFragment;
@@ -29,29 +27,15 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 
 public class NewsListFragment extends ItemListFragment<News> {
 
-    @Inject protected ApiProvider serviceProvider;
+    @Inject protected ApiProvider apiProvider;
     @Inject protected LogoutService logoutService;
 
     protected BootstrapApi api;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BootstrapApplication.getInstance().inject(this);
-
-        try
-		{
-			api = serviceProvider.getApi(getActivity());
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		catch (AccountsException e)
-		{
-			e.printStackTrace();
-		}
     }
 
     @Override
@@ -59,8 +43,6 @@ public class NewsListFragment extends ItemListFragment<News> {
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(R.string.no_news);
-
-
     }
 
     @Override
@@ -96,6 +78,10 @@ public class NewsListFragment extends ItemListFragment<News> {
 			@Override
 			public List<News> loadData() throws Exception
 			{
+				if(api == null)
+				{
+					api = apiProvider.getApi(getActivity());
+				}
 
 				try
 				{
