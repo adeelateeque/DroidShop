@@ -2,11 +2,13 @@ package com.droidshop.api.model;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -25,11 +27,14 @@ import javax.ws.rs.POST;
 
 import lombok.EqualsAndHashCode;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.CollectionTable;
-
+@Document
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "product")
 @EqualsAndHashCode(callSuper = true)
@@ -61,7 +66,7 @@ public class Product extends AbstractEntity
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "product_review", joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "review_id", referencedColumnName = "id"))
-	private List<Review> reviews;
+	protected List<Review> reviews;
 
 	@JsonProperty("created_at")
 	@Temporal(TIMESTAMP)
@@ -77,7 +82,8 @@ public class Product extends AbstractEntity
 
 	protected Product()
 	{
-
+		this.reviews = new ArrayList<Review>();
+		this.categories = new ArrayList<Category>();
 	}
 
 	public Product(String name, MonetaryAmount price)
@@ -96,6 +102,8 @@ public class Product extends AbstractEntity
 		this.name = name;
 		this.quantity = quantity;
 		this.price = price;
+		this.reviews = new ArrayList<Review>();
+		this.categories = new ArrayList<Category>();
 	}
 
 	public String getName()
