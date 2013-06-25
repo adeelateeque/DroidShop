@@ -35,7 +35,7 @@ public class LoginActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(LoginActivity.this, ShoppingTab.class);
+				Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 				startActivity(intent);
 			}
 	    	

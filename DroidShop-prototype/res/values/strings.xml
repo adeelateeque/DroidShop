@@ -7,6 +7,9 @@
     <string name="tvTodayDeal">Today Deals</string>
     <string name="tvRecently">Recently Viewed</string>
     <string name="tvMost">Most Popular</string>
+    <string name="tvCategory">Category</string>
+    <string name="tvSearch">Search</string>
+    <string name="etSearch">Enter here</string>
     <string name="admin_login">Login as admin</string>
     <string name="tvAdmin">Admin</string>
     <string name="btnClear">Clear</string>
@@ -32,6 +35,19 @@
     <string name="htSQns">Secret Question</string>
     <string name="htSAns">Secret Answer</string>
     <string name="btnReset">Reset</string>
-
+    <string-array name="logoutArray">
+        <item>Login/Register</item>
+    </string-array>
+    <string-array name="loginArray">
+    	<item>Profile</item>
+        <item>Your Orders</item>
+        <item>Reservations</item>
+        <item>Wishlist</item>
+        <item>Logout</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
 
 </resources>
