@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     
     <FrameLayout
-        android:id="@+id/content_frame"
+        android:id="@+id/flUser"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
         
@@ -129,6 +129,212 @@
         
     	</LinearLayout>
     
+    </FrameLayout>
+    
+    <FrameLayout
+        android:id="@+id/flAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        
+       	<LinearLayout
+        	android:id="@+id/llCProduct"
+        	android:layout_width="fill_parent"
+    		android:layout_height="fill_parent"
+    		android:orientation="vertical" >
+    	    
+       	    <LinearLayout
+       	        android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:orientation="horizontal"
+    			android:weightSum="1" >
+       	        
+       	        <ImageButton
+       	        	android:id="@+id/ibPImage"
+        			android:layout_width="0dp"
+    				android:layout_height="300dp"
+    				android:layout_weight="0.5" />
+       	    
+       	    	<LinearLayout
+        			android:layout_width="0dp"
+    				android:layout_height="wrap_content"
+    				android:orientation="vertical"
+    				android:layout_weight="0.5" >
+    	    	
+       	        	<EditText
+       	           		android:id="@+id/etPName"
+       	            	android:layout_width="match_parent"
+    	    			android:layout_height="wrap_content"
+            			android:ems="5"
+            			android:hint="@string/etPName" />
+       	        
+       	        	<Spinner
+       	            	android:id="@+id/spCategory"
+        				android:layout_width="match_parent"
+        				android:layout_height="wrap_content" />
+       	        
+       	        	<EditText
+       	            	android:id="@+id/etPPrice"
+       	            	android:layout_width="match_parent"
+    	    			android:layout_height="wrap_content"
+            			android:ems="5"
+            			android:hint="@string/etPPrice"
+            			android:inputType="phone" />
+       	        
+       	        	<EditText
+       	            	android:id="@+id/etPQuantity"
+       	            	android:layout_width="match_parent"
+    	    			android:layout_height="wrap_content"
+            			android:ems="5"
+            			android:hint="@string/etPQuantity"
+            			android:inputType="phone" />
+       	        
+       	        	<EditText
+       	           	 	android:id="@+id/etPDesc"
+       	            	android:layout_width="match_parent"
+    	    			android:layout_height="wrap_content"
+            			android:ems="5"
+            			android:hint="@string/etPDesc"
+            			android:singleLine="false"
+            			android:lines="6"
+            			android:maxLines="10"
+            			android:scrollbars="vertical" />
+    	    	
+       	    	</LinearLayout>
+       	    </LinearLayout>
+       	    <LinearLayout
+       	        android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:orientation="horizontal"
+    			android:weightSum="1" >
+       	        
+       	        <Button
+            		android:id="@+id/btnClear"
+            		android:layout_width="0dp"
+            		android:layout_height="wrap_content"
+            		android:layout_weight="0.5"
+            		android:layout_gravity="center"
+            		android:text="@string/btnClear" />
+       	        
+       	        <Button
+            		android:id="@+id/btnCreate"
+            		android:layout_width="0dp"
+            		android:layout_height="wrap_content"
+            		android:layout_weight="0.5"
+            		android:layout_gravity="center"
+            		android:text="@string/btnCreate" />
+       	        
+       	    </LinearLayout>
+    	</LinearLayout>
+    	
+       	<LinearLayout
+        	android:id="@+id/llUProduct"
+        	android:layout_width="fill_parent"
+    		android:layout_height="fill_parent"
+    		android:orientation="vertical" >
+       	    
+       	    <LinearLayout
+       	        android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:orientation="horizontal"
+    			android:weightSum="1" >
+       	        
+       	        <Spinner
+       	            android:id="@+id/spRCategory"
+        			android:layout_width="match_parent"
+        			android:layout_height="wrap_content"
+        			android:layout_weight="0.5" />
+       	        
+       	        <Spinner
+       	            android:id="@+id/spRName"
+        			android:layout_width="match_parent"
+        			android:layout_height="wrap_content"
+        			android:layout_weight="0.5" />
+       	        
+       	    </LinearLayout>
+       	    
+       	    <LinearLayout
+       	        android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:orientation="horizontal"
+    			android:weightSum="1" >
+       	        
+       	        <ImageButton
+       	        	android:id="@+id/ibUImage"
+        			android:layout_width="0dp"
+    				android:layout_height="300dp"
+    				android:layout_weight="0.5" />
+       	    
+       	    	<LinearLayout
+        			android:layout_width="0dp"
+    				android:layout_height="wrap_content"
+    				android:orientation="vertical"
+    				android:layout_weight="0.5" >
+    	    	
+       	        	<EditText
+       	            	android:id="@+id/etUName"
+       	            	android:layout_width="match_parent"
+    	    			android:layout_height="wrap_content"
+            			android:ems="5"
+            			android:hint="@string/etPName" />
+       	        
+       	        	<Spinner
+       	            	android:id="@+id/spUCategory"
+        				android:layout_width="match_parent"
+        				android:layout_height="wrap_content" />
+       	        
+       	        	<EditText
+       	            	android:id="@+id/etUPrice"
+       	            	android:layout_width="match_parent"
+    	    			android:layout_height="wrap_content"
+            			android:ems="5"
+            			android:hint="@string/etPPrice"
+            			android:inputType="phone" />
+       	        
+       	        	<EditText
+       	           	 	android:id="@+id/etUQuantity"
+       	            	android:layout_width="match_parent"
+    	    			android:layout_height="wrap_content"
+            			android:ems="5"
+            			android:hint="@string/etPQuantity"
+            			android:inputType="phone" />
+       	        
+       	       	 	<EditText
+       	           	 	android:id="@+id/etUDesc"
+       	            	android:layout_width="match_parent"
+    	    			android:layout_height="wrap_content"
+            			android:ems="5"
+            			android:hint="@string/etPDesc"
+            			android:singleLine="false"
+            			android:lines="6"
+            			android:maxLines="10"
+            			android:scrollbars="vertical" />
+    	    	
+       	    	</LinearLayout>
+       	    </LinearLayout>
+       	    <LinearLayout
+       	        android:layout_width="fill_parent"
+    			android:layout_height="wrap_content"
+    			android:orientation="horizontal"
+    			android:weightSum="1" >
+       	        
+       	        <Button
+            		android:id="@+id/btnReset"
+            		android:layout_width="0dp"
+            		android:layout_height="wrap_content"
+            		android:layout_weight="0.5"
+            		android:layout_gravity="center"
+            		android:text="@string/btnReset" />
+       	        
+       	        <Button
+            		android:id="@+id/btnUpdate"
+            		android:layout_width="0dp"
+            		android:layout_height="wrap_content"
+            		android:layout_weight="0.5"
+            		android:layout_gravity="center"
+            		android:text="@string/btnUpdate" />
+       	        
+       	    </LinearLayout>
+    	</LinearLayout>
     </FrameLayout>
 
     <ListView

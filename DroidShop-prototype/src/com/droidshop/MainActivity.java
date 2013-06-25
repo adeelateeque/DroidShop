@@ -1,5 +1,7 @@
 package com.droidshop;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.ActionBar;
@@ -25,15 +27,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
-
-
  
 public class MainActivity extends Activity {
+	private FrameLayout flUser, flAdmin;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -42,9 +47,13 @@ public class MainActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mPlanetTitles;
-    private LinearLayout llMain, llCategory, llSearch;
-    private Button btnSearch;
+    private LinearLayout llMain, llCategory, llSearch, llCProduct, llUProduct;
+    private Button btnSearch, btnClear, btnCreate, btnUpdate, btnReset;
     private GridView gvToday, gvRecent, gvMost, gvCategory;
+    private EditText etPName, etPPrice, etPQuantity, etPDesc, etUName, etUPrice, etUQuantity, etUDesc;
+    private Spinner spCategory, spUCategory, spRCategory, spRName;
+    private ImageButton ibPImage, ibUImage;
+    private static boolean isAdmin = false;
 	private static boolean isLogin = true;
 
     @Override
@@ -52,14 +61,34 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        llMain = (LinearLayout)this.findViewById(R.id.llMain);
-        llCategory = (LinearLayout)this.findViewById(R.id.llCategory);
-        llSearch = (LinearLayout)this.findViewById(R.id.llSearch);
-        btnSearch = (Button)this.findViewById(R.id.btnSearch);
+        flUser = (FrameLayout) findViewById(R.id.flUser);
+        flAdmin = (FrameLayout) findViewById(R.id.flAdmin);
+        llMain = (LinearLayout) findViewById(R.id.llMain);
+        llCategory = (LinearLayout) findViewById(R.id.llCategory);
+        llSearch = (LinearLayout) findViewById(R.id.llSearch);
+        llCProduct = (LinearLayout) findViewById(R.id.llCProduct);
+        llUProduct = (LinearLayout) findViewById(R.id.llUProduct);
+        btnSearch = (Button) findViewById(R.id.btnSearch);
         gvToday = (GridView) findViewById(R.id.gvToday);
         gvRecent = (GridView) findViewById(R.id.gvRecent);
         gvMost = (GridView) findViewById(R.id.gvMost);
         gvCategory = (GridView) findViewById(R.id.gvCategory);
+        etPName = (EditText) findViewById(R.id.etPName);
+        etPPrice = (EditText) findViewById(R.id.etPPrice);
+        etPQuantity = (EditText) findViewById(R.id.etPQuantity);
+        etPDesc = (EditText) findViewById(R.id.etPDesc);
+        spCategory = (Spinner) findViewById(R.id.spCategory);
+        ibPImage = (ImageButton) findViewById(R.id.ibPImage);
+        etUName = (EditText) findViewById(R.id.etUName);
+        etUPrice = (EditText) findViewById(R.id.etUPrice);
+        etUQuantity = (EditText) findViewById(R.id.etUQuantity);
+        etUDesc = (EditText) findViewById(R.id.etUDesc);
+        spRCategory = (Spinner) findViewById(R.id.spRCategory);
+        spUCategory = (Spinner) findViewById(R.id.spUCategory);
+        ibUImage = (ImageButton) findViewById(R.id.ibUImage);
+        btnClear = (Button) findViewById(R.id.btnClear);
+        
+        addProductCategory();
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -70,15 +99,28 @@ public class MainActivity extends Activity {
         // set up the drawer's list view with items and click listener
         mAdapter = new MergeAdapter();
         
-        if (isLogin == false){
+        if ((isLogin == false)&&(isAdmin == false)){
+        	flUser.setVisibility(View.VISIBLE);
+        	flAdmin.setVisibility(View.GONE);
         	mPlanetTitles = getResources().getStringArray(R.array.logoutArray);
         	aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles);
         	mAdapter.addAdapter(new ProfileImageAdapter(this));
         	mAdapter.addAdapter(aAdapter);
         	mDrawerList.setAdapter(mAdapter);
         }
-        else if (isLogin == true){
+        else if ((isLogin == true)&&(isAdmin == false)){
+        	flUser.setVisibility(View.VISIBLE);
+        	flAdmin.setVisibility(View.GONE);
         	mPlanetTitles = getResources().getStringArray(R.array.loginArray);
+        	aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles);
+        	mAdapter.addAdapter(new ProfileImageAdapter(this));
+        	mAdapter.addAdapter(aAdapter);
+        	mDrawerList.setAdapter(mAdapter);
+        }
+        else if ((isLogin == true)&&(isAdmin == true)){
+        	flUser.setVisibility(View.GONE);
+        	flAdmin.setVisibility(View.VISIBLE);
+        	mPlanetTitles = getResources().getStringArray(R.array.adminArray);
         	aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles);
         	mAdapter.addAdapter(new ProfileImageAdapter(this));
         	mAdapter.addAdapter(aAdapter);
@@ -124,18 +166,28 @@ public class MainActivity extends Activity {
 			@Override
 			public void onTabSelected(Tab tab, FragmentTransaction ft) {
 				// TODO Auto-generated method stub
-				if(tab.getText().equals("Main")){
-					llMain.setVisibility(View.VISIBLE);
-					llCategory.setVisibility(View.GONE);
-					llSearch.setVisibility(View.GONE);
-				} else if(tab.getText().equals("Category")){
-					llMain.setVisibility(View.GONE);
-					llCategory.setVisibility(View.VISIBLE);
-					llSearch.setVisibility(View.GONE);
-				} else if(tab.getText().equals("Search")){
-					llMain.setVisibility(View.GONE);
-					llCategory.setVisibility(View.GONE);
-					llSearch.setVisibility(View.VISIBLE);
+				if (isAdmin == false){
+					if(tab.getText().equals("Main")){
+						llMain.setVisibility(View.VISIBLE);
+						llCategory.setVisibility(View.GONE);
+						llSearch.setVisibility(View.GONE);
+					} else if(tab.getText().equals("Category")){
+						llMain.setVisibility(View.GONE);
+						llCategory.setVisibility(View.VISIBLE);
+						llSearch.setVisibility(View.GONE);
+					} else if(tab.getText().equals("Search")){
+						llMain.setVisibility(View.GONE);
+						llCategory.setVisibility(View.GONE);
+						llSearch.setVisibility(View.VISIBLE);
+					}
+				} else if (isAdmin == true){
+					if(tab.getText().equals("Create Product")){
+						llCProduct.setVisibility(View.VISIBLE);
+						llUProduct.setVisibility(View.GONE);
+					} else if(tab.getText().equals("Update Product")){
+						llCProduct.setVisibility(View.GONE);
+						llUProduct.setVisibility(View.VISIBLE);
+					}
 				}
 			}
 
@@ -145,10 +197,14 @@ public class MainActivity extends Activity {
 				
 			}
         };
-        
-        actionBar.addTab(actionBar.newTab().setText("Main").setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText("Category").setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText("Search").setTabListener(tabListener));
+        if (isAdmin == false){
+        	actionBar.addTab(actionBar.newTab().setText("Main").setTabListener(tabListener));
+        	actionBar.addTab(actionBar.newTab().setText("Category").setTabListener(tabListener));
+        	actionBar.addTab(actionBar.newTab().setText("Search").setTabListener(tabListener));
+        } else if (isAdmin == true){
+        	actionBar.addTab(actionBar.newTab().setText("Create Product").setTabListener(tabListener));
+        	actionBar.addTab(actionBar.newTab().setText("Update Product").setTabListener(tabListener));
+        }
         
         gvToday.setAdapter(new ImageAdapter(this));
         gvToday.setOnItemClickListener(new OnItemClickListener() {
@@ -178,6 +234,21 @@ public class MainActivity extends Activity {
             }
         });
     }
+    
+    public void addProductCategory() {
+		List<String> list = new ArrayList<String>();
+		list.add("Cloth");
+		list.add("Console");
+		list.add("Food");
+		list.add("Mobile Phone");
+		list.add("Laptop");
+		list.add("Hard Disk");
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spCategory.setAdapter(dataAdapter);
+		spUCategory.setAdapter(dataAdapter);
+		spRCategory.setAdapter(dataAdapter);
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -238,17 +309,17 @@ public class MainActivity extends Activity {
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flUser, fragment).commit();
 
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
-        if (isLogin == false){
+        if ((isLogin == false)&&(isAdmin == false)){
         	if (position == 1){
         		Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 				startActivity(intent);
         	}
         }
-        else if (isLogin == true){
+        else if ((isLogin == true)&&(isAdmin == false)){
         	if (position == 1){
         		Intent intent = new Intent(MainActivity.this, UserProfile.class);
 				startActivity(intent);
@@ -302,10 +373,10 @@ public class MainActivity extends Activity {
             int i = getArguments().getInt(ARG_PLANET_NUMBER) - 1;
             if (i >= 0){
             	String planet = "";
-            	if (isLogin == false){
+            	if ((isLogin == false)&&(isAdmin == false)){
             		planet = getResources().getStringArray(R.array.logoutArray)[i];
             	}
-            	else if (isLogin == true){
+            	else if ((isLogin == true)&&(isAdmin == false)){
             		planet = getResources().getStringArray(R.array.loginArray)[i];
             	}
 

@@ -46,6 +46,10 @@
         <item>Wishlist</item>
         <item>Logout</item>
     </string-array>
+    <string-array name="adminArray">
+        <item>Welcome Admin</item>
+        <item>Logout</item>
+    </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -55,6 +59,12 @@
     <string name="htOPwd">Old Password</string>
     <string name="htNPwd">New Password</string>
     <string name="btnCancel">Cancel</string>
+    <string name="btnUpdate">Update</string>
+    <string name="etPName">Name</string>
+    <string name="etPPrice">Price</string>
+    <string name="etPQuantity">Quantity</string>
+    <string name="etPDesc">Description</string>
+    <string name="btnCreate">Create</string>
     <string name="btnUpdate">Update</string>
 
 </resources>
