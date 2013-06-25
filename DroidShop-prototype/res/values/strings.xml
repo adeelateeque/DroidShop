@@ -35,19 +35,26 @@
     <string name="htSQns">Secret Question</string>
     <string name="htSAns">Secret Answer</string>
     <string name="btnReset">Reset</string>
+
     <string-array name="logoutArray">
         <item>Login/Register</item>
     </string-array>
     <string-array name="loginArray">
-    	<item>Profile</item>
+        <item>Profile</item>
         <item>Your Orders</item>
         <item>Reservations</item>
         <item>Wishlist</item>
         <item>Logout</item>
     </string-array>
+
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="tvProfile">Profile</string>
+    <string name="htOPwd">Old Password</string>
+    <string name="htNPwd">New Password</string>
+    <string name="btnCancel">Cancel</string>
+    <string name="btnUpdate">Update</string>
 
 </resources>

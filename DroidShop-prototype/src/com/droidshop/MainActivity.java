@@ -249,7 +249,18 @@ public class MainActivity extends Activity {
         	}
         }
         else if (isLogin == true){
-        	
+        	if (position == 1){
+        		Intent intent = new Intent(MainActivity.this, UserProfile.class);
+				startActivity(intent);
+        	} else if (position == 2){
+        		
+        	} else if (position == 3){
+        		
+        	} else if (position == 4){
+        		
+        	} else if (position == 5){
+        		
+        	}
         }
         
         mDrawerLayout.closeDrawer(mDrawerList);

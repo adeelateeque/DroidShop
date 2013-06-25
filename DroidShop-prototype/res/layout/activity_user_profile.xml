@@ -1,0 +1,170 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical" >
+        
+        <TextView
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:layout_marginTop="15dp"
+        	android:layout_marginBottom="5dp"
+        	android:textSize="30sp"
+       		android:text="@string/tvProfile" />
+        
+        <ImageButton
+            android:id="@+id/ibUser"
+            android:layout_width="85dp"
+        	android:layout_height="85dp"
+        	android:layout_gravity="center_horizontal" />
+        
+        <EditText
+    	   	android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/htUsername"
+            android:enabled="false" />
+    	
+    	<EditText
+    	    android:id="@+id/etOPwd"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="textPassword"
+            android:hint="@string/htOPwd" />
+    	
+    	<EditText
+    	    android:id="@+id/etNPwd"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="textPassword"
+            android:hint="@string/htNPwd" />
+
+       	<EditText
+            android:id="@+id/etCPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="textPassword"
+            android:hint="@string/htCPwd" />
+       	
+       	<EditText
+           	android:id="@+id/etLName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="textPersonName"
+            android:hint="@string/htLName" />
+
+        <EditText
+            android:id="@+id/etFName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:inputType="textPersonName"
+            android:hint="@string/htFName" />
+        
+        <RadioGroup
+           	android:id="@+id/rgGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1" >
+
+        	<RadioButton
+        		android:id="@+id/rbtnMale"
+            	android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_weight="0.5"
+            	android:text="@string/rbtnMale" />
+
+        	<RadioButton
+        		android:id="@+id/rbtnFemale"
+            	android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_weight="0.5"
+            	android:text="@string/rbtnFemale" />
+        		
+        </RadioGroup>
+        
+        <Button
+            android:id="@+id/btnDOB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnDOB" />
+        
+        <EditText
+            android:id="@+id/etTele"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/htTele"
+            android:inputType="phone" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/etMPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/htMPhone"
+            android:inputType="phone" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/htEmail"
+            android:inputType="textEmailAddress" />
+
+        <Spinner
+       		android:id="@+id/spCountry"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content" />
+
+        <Spinner
+        	android:id="@+id/spCity"
+        	android:layout_width="match_parent"
+        	android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/htAddress"
+            android:inputType="textMultiLine" />
+        	
+        <LinearLayout
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:padding="10dp"
+    		android:orientation="horizontal" >
+        
+        	<Button
+            	android:id="@+id/btnCancel"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:layout_weight="0.4"
+            	android:text="@string/btnCancel" />
+			
+			<Button
+		    	android:id="@+id/btnUpdate"
+				android:layout_width="wrap_content"
+          		android:layout_height="wrap_content"
+           	 	android:layout_weight="0.4"
+           		android:text="@string/btnUpdate" />
+        
+    	</LinearLayout>
+        
+    </LinearLayout>
+
+</ScrollView>
