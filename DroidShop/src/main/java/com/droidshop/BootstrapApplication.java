@@ -19,7 +19,7 @@ import com.github.kevinsawicki.http.HttpRequest;
 import dagger.ObjectGraph;
 
 /**
- * DroidShop application
+ * droidshop application
  */
 public class BootstrapApplication extends Application
 {
@@ -96,10 +96,11 @@ public class BootstrapApplication extends Application
 	/**
 	 * Checks the response headers for session cookie and saves it
 	 * if it finds it.
+	 * Used by Volley
 	 *
 	 * @param headers (Response Headers)
 	 */
-	public final void checkSessionCookie(Map<String, String> headers)
+	public final void checkAndSaveSessionCookie(Map<String, String> headers)
 	{
 		if (headers.containsKey(SET_COOKIE_KEY) && headers.get(SET_COOKIE_KEY).startsWith(Http.SESSION_TOKEN))
 		{
@@ -118,7 +119,7 @@ public class BootstrapApplication extends Application
 
 	/**
 	 * Adds session cookie to headers if exists.
-	 *
+	 * Used by Volley
 	 * @param headers
 	 */
 	public final void addSessionCookie(Map<String, String> headers)

@@ -7,7 +7,6 @@ import static android.accounts.AccountManager.KEY_ACCOUNT_TYPE;
 import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_INTENT;
-import static com.droidshop.authenticator.BootstrapAuthenticatorActivity.PARAM_AUTHTOKEN_TYPE;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
@@ -16,7 +15,9 @@ import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import com.droidshop.core.Constants;
+import com.droidshop.core.Constants.Auth;
 import com.droidshop.util.Ln;
 
 class BootstrapAccountAuthenticator extends AbstractAccountAuthenticator {
@@ -40,7 +41,7 @@ class BootstrapAccountAuthenticator extends AbstractAccountAuthenticator {
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType,
             String[] requiredFeatures, Bundle options) throws NetworkErrorException {
         final Intent intent = new Intent(context, BootstrapAuthenticatorActivity.class);
-        intent.putExtra(PARAM_AUTHTOKEN_TYPE, authTokenType);
+        intent.putExtra(Auth.PARAM_AUTHTOKEN_TYPE, authTokenType);
         intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         final Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_INTENT, intent);

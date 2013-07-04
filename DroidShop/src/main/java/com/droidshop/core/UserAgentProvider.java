@@ -24,7 +24,7 @@ public class UserAgentProvider implements Provider<String> {
 
     protected String userAgent;
 
-    private static final String APP_NAME = "DroidShop";
+    private static final String APP_NAME = "droidshop";
 
     @Override
     public String get() {

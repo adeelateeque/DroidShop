@@ -6,10 +6,13 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import com.droidshop.core.UserAgentProvider;
-import com.droidshop.model.User;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
+import com.droidshop.core.Constants.Http;
+import com.droidshop.core.UserAgentProvider;
+import com.droidshop.model.User;
+import com.droidshop.util.Ln;
+import com.droidshop.util.Strings;
 
 public class UserApi extends BootstrapApi
 {
@@ -43,6 +46,32 @@ public class UserApi extends BootstrapApi
 			if (response != null && response.results != null)
 				return response.results;
 			return Collections.emptyList();
+		}
+		catch (HttpRequestException e)
+		{
+			throw e.getCause();
+		}
+	}
+
+	public static User authenticateUser(String username, String password) throws IOException
+	{
+		User model = null;
+		final String query = String.format("%s=%s&%s=%s", Http.PARAM_USERNAME, username, Http.PARAM_PASSWORD, password);
+		try
+		{
+			//Can't use our api helper methods yet
+			HttpRequest request = HttpRequest.get(Http.URL_AUTH + "?" + query)
+                    .header(Http.HEADER_APP_ID, Http.APP_ID)
+                    .header(Http.HEADER_REST_API_KEY, Http.REST_API_KEY);
+
+
+            Ln.d("Authentication response=%s", request.code());
+
+            if(request.ok()) {
+                model = GSON.fromJson(Strings.toString(request.buffer()), User.class);
+            }
+
+            return model;
 		}
 		catch (HttpRequestException e)
 		{

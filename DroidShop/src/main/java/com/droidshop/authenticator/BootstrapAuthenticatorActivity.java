@@ -8,7 +8,6 @@ import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.view.KeyEvent.ACTION_DOWN;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 import static android.view.inputmethod.EditorInfo.IME_ACTION_DONE;
-import static com.droidshop.core.Constants.Http;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
@@ -36,50 +33,30 @@ import android.widget.TextView.OnEditorActionListener;
 import butterknife.InjectView;
 import butterknife.Views;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request.Method;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.droidshop.R;
+import com.github.kevinsawicki.wishlist.Toaster;
 import com.droidshop.R.id;
 import com.droidshop.R.layout;
 import com.droidshop.R.string;
+import com.droidshop.api.BootstrapApi;
+import com.droidshop.api.UserApi;
 import com.droidshop.core.Constants;
+import com.droidshop.core.Constants.Auth;
+import com.droidshop.core.Constants.Http;
 import com.droidshop.model.User;
+import com.droidshop.ui.RegisterActivity;
 import com.droidshop.ui.TextWatcherAdapter;
 import com.droidshop.util.GsonRequest;
 import com.droidshop.util.Ln;
-import com.droidshop.util.VolleyUtils;
-import com.github.kevinsawicki.wishlist.Toaster;
+import com.droidshop.util.SafeAsyncTask;
 
 /**
  * Activity to authenticate the user against an API (example API on Parse.com)
  */
 public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticatorActivity
 {
-
-	/**
-	 * PARAM_CONFIRMCREDENTIALS
-	 */
-	public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
-
-	/**
-	 * PARAM_PASSWORD
-	 */
-	public static final String PARAM_PASSWORD = "password";
-
-	/**
-	 * PARAM_USERNAME
-	 */
-	public static final String PARAM_USERNAME = "username";
-
-	/**
-	 * PARAM_AUTHTOKEN_TYPE
-	 */
-	public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
-
 	private AccountManager accountManager;
+
+	protected BootstrapApi api;
 
 	@InjectView(id.et_email)
 	AutoCompleteTextView emailText;
@@ -92,6 +69,8 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 
 	private String authToken;
 	private String authTokenType;
+
+	private SafeAsyncTask<Boolean> authenticationTask;
 
 	/**
 	 * If set we are just checking that the user knows their credentials; this
@@ -125,10 +104,10 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 
 		accountManager = AccountManager.get(this);
 		final Intent intent = getIntent();
-		email = intent.getStringExtra(PARAM_USERNAME);
-		authTokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
+		email = intent.getStringExtra(Http.PARAM_USERNAME);
+		authTokenType = intent.getStringExtra(Auth.PARAM_AUTHTOKEN_TYPE);
 		requestNewAccount = email == null;
-		confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRMCREDENTIALS, false);
+		confirmCredentials = intent.getBooleanExtra(Auth.PARAM_CONFIRMCREDENTIALS, false);
 
 		setContentView(layout.login_activity);
 
@@ -167,10 +146,6 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 
 		emailText.addTextChangedListener(watcher);
 		passwordText.addTextChangedListener(watcher);
-
-		TextView signupText = (TextView) findViewById(id.tv_signup);
-		signupText.setMovementMethod(LinkMovementMethod.getInstance());
-		signupText.setText(Html.fromHtml(getString(string.signup_link)));
 	}
 
 	private List<String> userEmailAccounts()
@@ -230,6 +205,12 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 		return dialog;
 	}
 
+	public void registerUser(View view)
+	{
+		Intent intent = new Intent(this, RegisterActivity.class);
+		startActivity(intent);
+	}
+
 	/**
 	 * Handles onClick event on the Submit button. Sends username/password to
 	 * the server for authentication.
@@ -240,60 +221,55 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 	 */
 	public void handleLogin(final View view)
 	{
-		showProgress();
+		//means that the login process is still in progress
+		if (authenticationTask != null)
+            return;
 
-		if (requestNewAccount)
-			email = emailText.getText().toString();
+        if (requestNewAccount)
+            email = emailText.getText().toString();
+        password = passwordText.getText().toString();
+        showProgress();
 
-		password = passwordText.getText().toString();
+        authenticationTask = new SafeAsyncTask<Boolean>() {
+            public Boolean call() throws Exception {
 
-		final String query = String.format("%s=%s&%s=%s", PARAM_USERNAME, email, PARAM_PASSWORD, password);
+            	User user = UserApi.authenticateUser(email, password);
+            	if(user != null)
+            	{
+            		token = user.getSessionToken();
+            		return true;
+            	}
+            	return false;
+            }
 
-		request = new GsonRequest<User>(Method.GET, Http.URL_AUTH + "?" + query, User.class, new Listener<User>()
-		{
-			@Override
-			public void onResponse(User user)
-			{
-				token = user.getSessionToken();
-				onAuthenticationResult(true);
-				hideProgress();
-			}
-		}, new ErrorListener()
-		{
+            @Override
+            protected void onException(Exception e) throws RuntimeException {
+                Throwable cause = e.getCause() != null ? e.getCause() : e;
 
-			@Override
-			public void onErrorResponse(VolleyError error)
-			{
-				Ln.e(error);
+                String message;
+                // A 404 is returned as an Exception with this message
+                if ("Received authentication challenge is null".equals(cause
+                        .getMessage()))
+                    message = getResources().getString(
+                            string.message_bad_credentials);
+                else
+                    message = cause.getMessage();
 
-				Toaster.showLong(BootstrapAuthenticatorActivity.this, "An error has occured");
-				hideProgress();
+                Toaster.showLong(BootstrapAuthenticatorActivity.this, message);
+            }
 
-				Throwable cause = error.getCause() != null ? error.getCause() : error;
+            @Override
+            public void onSuccess(Boolean authSuccess) {
+                onAuthenticationResult(authSuccess);
+            }
 
-				String message;
-				// A 404 is returned as an Exception with this message
-				if ("Received authentication challenge is null".equals(cause.getMessage()))
-					message = getResources().getString(string.message_bad_credentials);
-				else
-					message = cause.getMessage();
-
-				Toaster.showLong(BootstrapAuthenticatorActivity.this, message);
-			}
-
-		});
-
-		try
-		{
-			request.getHeaders().put(Http.HEADER_PARSE_APP_ID, Http.PARSE_APP_ID);
-			request.getHeaders().put(Http.HEADER_PARSE_REST_API_KEY, Http.PARSE_REST_API_KEY);
-		}
-		catch (AuthFailureError error)
-		{
-			Toaster.showLong(BootstrapAuthenticatorActivity.this, R.string.message_bad_credentials);
-		}
-
-		VolleyUtils.getRequestQueue().add(request);
+            @Override
+            protected void onFinally() throws RuntimeException {
+                hideProgress();
+                authenticationTask = null;
+            }
+        };
+        authenticationTask.execute();
 	}
 
 	/**

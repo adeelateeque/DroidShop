@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
     private Spinner spCategory, spUCategory, spRCategory, spRName;
     private ImageButton ibPImage, ibUImage;
     private static boolean isAdmin = false;
-	private static boolean isLogin = true;
+	private static boolean isLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -88,7 +88,6 @@ public class AndroidModule
 	}
 
 	@Provides
-	@Singleton
 	RequestQueue provideRequestQueue(final Context context)
 	{
 		return VolleyUtils.getRequestQueue();

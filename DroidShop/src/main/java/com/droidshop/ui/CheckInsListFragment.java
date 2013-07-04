@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
@@ -22,7 +23,6 @@ import com.droidshop.authenticator.LogoutService;
 import com.droidshop.model.CheckIn;
 import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.util.ThrowableLoader;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 
 public class CheckInsListFragment extends ItemListFragment<CheckIn>
 {
@@ -77,21 +77,21 @@ public class CheckInsListFragment extends ItemListFragment<CheckIn>
 	public Loader<List<CheckIn>> onCreateLoader(int id, Bundle args)
 	{
 		final List<CheckIn> initialItems = items;
-		return new ThrowableLoader<List<CheckIn>>(getActivity(), items)
+		return new ThrowableLoader<List<CheckIn>>(getSherlockActivity(), items)
 		{
 			@Override
 			public List<CheckIn> loadData() throws Exception
 			{
 				if (api == null)
 				{
-					api = apiProvider.getApi(getActivity());
+					api = apiProvider.getApi(getSherlockActivity());
 				}
 
 				try
 				{
 					List<CheckIn> latest = null;
 
-					if (getActivity() != null)
+					if (getSherlockActivity() != null)
 						latest = api.getCheckInApi().getCheckIns();
 
 					if (latest != null)
@@ -101,7 +101,7 @@ public class CheckInsListFragment extends ItemListFragment<CheckIn>
 				}
 				catch (OperationCanceledException e)
 				{
-					Activity activity = getActivity();
+					Activity activity = getSherlockActivity();
 					if (activity != null)
 						activity.finish();
 					return initialItems;
@@ -113,7 +113,7 @@ public class CheckInsListFragment extends ItemListFragment<CheckIn>
 	@Override
 	protected SingleTypeAdapter<CheckIn> createAdapter(List<CheckIn> items)
 	{
-		return new CheckInsListAdapter(getActivity().getLayoutInflater(), items);
+		return new CheckInsListAdapter(getSherlockActivity().getLayoutInflater(), items);
 	}
 
 	public void onListItemClick(ListView l, View v, int position, long id)

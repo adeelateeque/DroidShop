@@ -44,8 +44,7 @@ public class GsonRequest<T> extends Request<T>
 		this.mGson = new Gson();
 	}
 
-	public GsonRequest(int method, String url, Class<T> clazz, Listener<T> listener,
-			ErrorListener errorListener)
+	public GsonRequest(int method, String url, Class<T> clazz, Listener<T> listener, ErrorListener errorListener)
 	{
 		super(method, url, errorListener);
 		this.mClass = clazz;
@@ -107,9 +106,11 @@ public class GsonRequest<T> extends Request<T>
 	@Override
 	protected Response<T> parseNetworkResponse(NetworkResponse response)
 	{
-		// Since we don't know which of the two underlying network vehicles
-		// will Volley use, we have to handle and store session cookies manually
-		BootstrapApplication.getInstance().checkSessionCookie(response.headers);
+		/*
+		 * Since we don't know which of the two underlying network vehicles will
+		 * Volley use, we have to handle and store session cookies manually
+		 */
+		BootstrapApplication.getInstance().checkAndSaveSessionCookie(response.headers);
 
 		try
 		{

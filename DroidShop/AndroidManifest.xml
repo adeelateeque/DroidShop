@@ -5,23 +5,37 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="10"
+        android:minSdkVersion="11"
         android:targetSdkVersion="17" />
 
+    <permission
+        android:name="com.droidshop.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.droidshop.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.droidshop.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
-        android:name=".BootstrapApplication"
+        android:name="com.droidshop.BootstrapApplication"
         android:allowBackup="false"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/Theme.Bootstrap.Dark" >
         <activity
-            android:name=".ui.CarouselActivity"
+            android:name="com.droidshop.ui.CarouselActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
@@ -32,18 +46,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.BootstrapTimerActivity"
+            android:name="com.droidshop.ui.BootstrapTimerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop" />
 
         <service
-            android:name=".core.TimerService"
+            android:name="com.droidshop.core.TimerService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".authenticator.AccountAuthenticatorService"
-            android:process=":auth" android:exported="false">
+            android:name="com.droidshop.authenticator.AccountAuthenticatorService"
+            android:exported="false"
+            android:process=":auth" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -54,18 +69,26 @@
         </service>
 
         <activity
-            android:name=".authenticator.BootstrapAuthenticatorActivity"
+            android:name="com.droidshop.authenticator.BootstrapAuthenticatorActivity"
             android:excludeFromRecents="true" >
 
             <!--
                 No intent-filter here! This activity is only ever launched by
-                someone who explicitly knows the class name
+                someone who explicitly knows the class name
             -->
         </activity>
-        <activity android:name=".ui.NewsActivity" />
+        <activity android:name="com.droidshop.ui.FeedActivity" />
         <activity
-            android:name=".ui.UserActivity"
+            android:name="com.droidshop.ui.UserActivity"
             android:label="@string/app_name" />
+        <activity
+            android:name="com.droidshop.ui.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:parentActivityName="com.droidshop.authenticator.BootstrapAuthenticatorActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.droidshop.authenticator.BootstrapAuthenticatorActivity" />
+        </activity>
     </application>
 
 </manifest>

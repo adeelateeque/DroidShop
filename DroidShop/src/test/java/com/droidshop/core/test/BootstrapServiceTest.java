@@ -10,7 +10,7 @@ import android.accounts.OperationCanceledException;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.CheckIn;
-import com.droidshop.model.News;
+import com.droidshop.model.FeedItem;
 import com.droidshop.model.User;
 import com.github.kevinsawicki.http.HttpRequest;
 
@@ -95,10 +95,10 @@ public class BootstrapServiceTest {
     @Test
     public void getContentEmptyResponse() throws IOException {
         doReturn(createReader("")).when(request).bufferedReader();
-        List<News> content = null;
+        List<FeedItem> content = null;
 		try
 		{
-			content = service.getNewsApi().getNews();
+			content = service.getNewsApi().getFeedItems();
 		}
 		catch (OperationCanceledException e)
 		{

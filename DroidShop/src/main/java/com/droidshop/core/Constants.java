@@ -1,7 +1,7 @@
 package com.droidshop.core;
 
 /**
- * Bootstrap constants
+ * DroidShop constants
  */
 public class Constants {
 
@@ -16,7 +16,7 @@ public class Constants {
         /**
          * Account name
          */
-        public static final String BOOTSTRAP_ACCOUNT_NAME = "DroidShop";
+        public static final String BOOTSTRAP_ACCOUNT_NAME = "droidshop";
 
         /**
          * Provider id
@@ -27,17 +27,23 @@ public class Constants {
          * Auth token type
          */
         public static final String AUTHTOKEN_TYPE = BOOTSTRAP_ACCOUNT_TYPE;
+
+        /**
+    	 * PARAM_CONFIRMCREDENTIALS
+    	 */
+    	public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
+
+    	/**
+    	 * PARAM_AUTHTOKEN_TYPE
+    	 */
+    	public static final String PARAM_AUTHTOKEN_TYPE = "authtokenType";
     }
 
     /**
-     * All HTTP is done through a REST style API built for demonstration purposes on Parse.com
-     * Thanks to the nice people at Parse for creating such a nice system for us to use for bootstrap!
+     * All HTTP is done through a REST style API
      */
     public static class Http {
         private Http() {}
-
-
-
         /**
          * Base URL for all requests
          */
@@ -54,7 +60,7 @@ public class Constants {
         public static final String URL_USERS = URL_BASE + "/1/users";
 
         /**
-         * List News URL
+         * List FeedItem URL
          */
         public static final String URL_NEWS = URL_BASE + "/1/classes/News";
 
@@ -63,16 +69,14 @@ public class Constants {
          */
         public static final String URL_CHECKINS = URL_BASE + "/1/classes/Locations";
 
-        public static final String PARSE_APP_ID = "zHb2bVia6kgilYRWWdmTiEJooYA17NnkBSUVsr4H";
-        public static final String PARSE_REST_API_KEY = "N2kCY1T3t3Jfhf9zpJ5MCURn3b25UpACILhnf5u9";
-        public static final String HEADER_PARSE_REST_API_KEY = "X-Parse-REST-API-Key";
-        public static final String HEADER_PARSE_APP_ID = "X-Parse-Application-Id";
+        public static final String APP_ID = "zHb2bVia6kgilYRWWdmTiEJooYA17NnkBSUVsr4H";
+        public static final String REST_API_KEY = "N2kCY1T3t3Jfhf9zpJ5MCURn3b25UpACILhnf5u9";
+        public static final String HEADER_REST_API_KEY = "X-Parse-REST-API-Key";
+        public static final String HEADER_APP_ID = "X-Parse-Application-Id";
         public static final String CONTENT_TYPE_JSON = "application/json";
-        public static final String USERNAME = "username";
-        public static final String PASSWORD = "password";
+        public static final String PARAM_USERNAME = "username";
+        public static final String PARAM_PASSWORD = "password";
         public static final String SESSION_TOKEN = "sessionToken";
-
-
     }
 
 
@@ -92,7 +96,6 @@ public class Constants {
          * Action prefix for all intents created
          */
         public static final String INTENT_PREFIX = "com.droidshop.";
-
     }
 
     public static class Notification{

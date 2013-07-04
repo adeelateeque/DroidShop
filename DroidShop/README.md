@@ -1,2 +1,2 @@
-DroidShop - android app
+droidshop - android app
 =========

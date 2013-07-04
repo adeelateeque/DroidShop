@@ -1,10 +1,10 @@
 
 package com.droidshop.api;
 
-import static com.droidshop.core.Constants.Http.HEADER_PARSE_APP_ID;
-import static com.droidshop.core.Constants.Http.HEADER_PARSE_REST_API_KEY;
-import static com.droidshop.core.Constants.Http.PARSE_APP_ID;
-import static com.droidshop.core.Constants.Http.PARSE_REST_API_KEY;
+import static com.droidshop.core.Constants.Http.HEADER_APP_ID;
+import static com.droidshop.core.Constants.Http.HEADER_REST_API_KEY;
+import static com.droidshop.core.Constants.Http.APP_ID;
+import static com.droidshop.core.Constants.Http.REST_API_KEY;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,6 +14,7 @@ import android.accounts.OperationCanceledException;
 import com.droidshop.core.Constants;
 import com.droidshop.core.UserAgentProvider;
 import com.github.kevinsawicki.http.HttpRequest;
+import com.google.analytics.tracking.android.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
@@ -103,11 +104,10 @@ public class BootstrapApi {
     }
 
     private HttpRequest configure(final HttpRequest request) {
-        request.connectTimeout(TIMEOUT).readTimeout(TIMEOUT);
-        request.userAgent(userAgentProvider.get());
+        request.connectTimeout(TIMEOUT).readTimeout(TIMEOUT).userAgent(userAgentProvider.get());
 
         if(isPostOrPut(request))
-            request.contentType(Constants.Http.CONTENT_TYPE_JSON); // All PUT & POST requests to Parse.com api must be in JSON - https://www.parse.com/docs/rest#general-requests
+            request.contentType(Constants.Http.CONTENT_TYPE_JSON);
         return addCredentialsTo(request);
     }
 
@@ -120,8 +120,8 @@ public class BootstrapApi {
     private HttpRequest addCredentialsTo(HttpRequest request) {
 
         // Required params for
-        request.header(HEADER_PARSE_REST_API_KEY, PARSE_REST_API_KEY );
-        request.header(HEADER_PARSE_APP_ID, PARSE_APP_ID);
+        request.header(HEADER_REST_API_KEY, REST_API_KEY);
+        request.header(HEADER_APP_ID, APP_ID);
 
         /**
          * NOTE: This may be where you want to add a header for the api token that was saved when you
@@ -136,6 +136,7 @@ public class BootstrapApi {
          * request.basic("myusername", "mypassword");
          */
 
+        Log.d(request.toString());
         return request;
     }
 
@@ -189,9 +190,9 @@ public class BootstrapApi {
 		return userApi;
 	}
 
-	public NewsApi getNewsApi() throws OperationCanceledException
+	public FeedApi getNewsApi() throws OperationCanceledException
 	{
-		NewsApi newsApi = new NewsApi(apiKey, userAgentProvider);
+		FeedApi newsApi = new FeedApi(apiKey, userAgentProvider);
 		newsApi.setUsername(this.username);
 		newsApi.setPassword(password);
 		return newsApi;

@@ -19,6 +19,7 @@ public class VolleyUtils {
             // no instances
         }
 
+        /*Call this from an Application instance*/
         public static void init(Context context) {
             mRequestQueue = Volley.newRequestQueue(context);
             mImageLoaderNoMemCache = new ImageLoader(mRequestQueue, new BitmapLruCache(MAX_IMAGE_CACHE_ENTIRES));

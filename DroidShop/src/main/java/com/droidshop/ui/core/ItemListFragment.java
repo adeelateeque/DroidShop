@@ -24,15 +24,14 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.droidshop.BootstrapApplication;
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.Toaster;
+import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.droidshop.R;
 import com.droidshop.R.id;
 import com.droidshop.R.layout;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.util.ThrowableLoader;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.Toaster;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 
 
 
@@ -429,7 +428,7 @@ public abstract class ItemListFragment<E> extends SherlockFragment
      * @param id
      */
     public void onListItemClick(ListView l, View v, int position, long id) {
-    	Toast.makeText(BootstrapApplication.getInstance(), "123", Toast.LENGTH_SHORT).show();
+    	Toast.makeText(getSherlockActivity(), "123", Toast.LENGTH_SHORT).show();
     }
 
     /**
