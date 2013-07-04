@@ -33,7 +33,6 @@ import android.widget.TextView.OnEditorActionListener;
 import butterknife.InjectView;
 import butterknife.Views;
 
-import com.github.kevinsawicki.wishlist.Toaster;
 import com.droidshop.R.id;
 import com.droidshop.R.layout;
 import com.droidshop.R.string;
@@ -45,9 +44,9 @@ import com.droidshop.core.Constants.Http;
 import com.droidshop.model.User;
 import com.droidshop.ui.RegisterActivity;
 import com.droidshop.ui.TextWatcherAdapter;
-import com.droidshop.util.GsonRequest;
 import com.droidshop.util.Ln;
 import com.droidshop.util.SafeAsyncTask;
+import com.github.kevinsawicki.wishlist.Toaster;
 
 /**
  * Activity to authenticate the user against an API (example API on Parse.com)
@@ -94,8 +93,6 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 	 * Was the original caller asking for an entirely new account?
 	 */
 	protected boolean requestNewAccount = false;
-
-	private GsonRequest<User> request;
 
 	@Override
 	public void onCreate(Bundle bundle)
@@ -198,8 +195,8 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 		{
 			public void onCancel(DialogInterface dialog)
 			{
-				if (request != null)
-					request.cancel();
+				if (authenticationTask != null)
+					authenticationTask.cancel(true);
 			}
 		});
 		return dialog;

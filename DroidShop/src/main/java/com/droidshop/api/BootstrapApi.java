@@ -205,4 +205,28 @@ public class BootstrapApi {
 		checkInApi.setPassword(password);
 		return checkInApi;
 	}
+
+	public ProductApi getProductApi() throws OperationCanceledException
+	{
+		ProductApi productApi = new ProductApi(apiKey, userAgentProvider);
+		productApi.setUsername(this.username);
+		productApi.setPassword(password);
+		return productApi;
+	}
+
+	public OrderApi getOrderApi() throws OperationCanceledException
+	{
+		OrderApi orderApi = new OrderApi(apiKey, userAgentProvider);
+		orderApi.setUsername(this.username);
+		orderApi.setPassword(password);
+		return orderApi;
+	}
+
+	public CustomerApi getCustomerApi() throws OperationCanceledException
+	{
+		CustomerApi customerApi = new CustomerApi(apiKey, userAgentProvider);
+		customerApi.setUsername(this.username);
+		customerApi.setPassword(password);
+		return customerApi;
+	}
 }

@@ -1,5 +1,7 @@
 package com.droidshop;
 
+import javax.inject.Singleton;
+
 import android.accounts.AccountManager;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -10,12 +12,6 @@ import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.view.inputmethod.InputMethodManager;
-
-import javax.inject.Singleton;
-
-import com.android.volley.RequestQueue;
-import com.droidshop.util.VolleyUtils;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -85,12 +81,6 @@ public class AndroidModule
 	NotificationManager provideNotificationManager(final Context context)
 	{
 		return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-	}
-
-	@Provides
-	RequestQueue provideRequestQueue(final Context context)
-	{
-		return VolleyUtils.getRequestQueue();
 	}
 
 	@SuppressWarnings("unchecked")
