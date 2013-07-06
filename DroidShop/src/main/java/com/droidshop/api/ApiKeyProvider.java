@@ -30,7 +30,7 @@ public class ApiKeyProvider {
      * @throws IOException
      */
     public String getAuthKey(Activity activity) throws AccountsException, IOException {
-        AccountManagerFuture<Bundle> accountManagerFuture = accountManager.getAuthTokenByFeatures(Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE,
+        AccountManagerFuture<Bundle> accountManagerFuture = accountManager.getAuthTokenByFeatures(Constants.Auth.DROIDSHOP_ACCOUNT_TYPE,
                 Constants.Auth.AUTHTOKEN_TYPE, new String[0], activity, null, null, null, null);
 
         return accountManagerFuture.getResult().getString(KEY_AUTHTOKEN);

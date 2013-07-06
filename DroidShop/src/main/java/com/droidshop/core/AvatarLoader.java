@@ -289,7 +289,7 @@ public class AvatarLoader {
         if (TextUtils.isEmpty(avatarUrl)) {
             String gravatarId = user.getGravatarId();
             if (TextUtils.isEmpty(gravatarId))
-                gravatarId = GravatarUtils.getHash(user.getUsername());
+                gravatarId = GravatarUtils.getHash(user.getUserName());
             avatarUrl = getAvatarUrl(gravatarId);
         }
         return avatarUrl;

@@ -89,6 +89,8 @@ public class CheckInsListFragment extends ItemListFragment<CheckIn>
 
 				try
 				{
+					//testing
+					api.getProductApi().getProducts();
 					List<CheckIn> latest = null;
 
 					if (getSherlockActivity() != null)
