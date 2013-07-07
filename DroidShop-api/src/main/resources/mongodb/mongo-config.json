@@ -1,0 +1,7 @@
+{
+    "hostname" : "localhost",
+    "port" : "27017",
+    "database" : "droidshop",
+    "username" : "localhost",
+    "password" : "1234567"
+}
