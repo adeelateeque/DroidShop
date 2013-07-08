@@ -74,13 +74,9 @@
 
             <!--
                 No intent-filter here! This activity is only ever launched by
-                someone who explicitly knows the class name
+                someone who explicitly knows the class name
             -->
         </activity>
-        <activity android:name="com.droidshop.ui.FeedActivity" />
-        <activity
-            android:name="com.droidshop.ui.UserActivity"
-            android:label="@string/app_name" />
         <activity
             android:name="com.droidshop.ui.RegisterActivity"
             android:label="@string/title_activity_register"
@@ -88,6 +84,30 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.droidshop.authenticator.BootstrapAuthenticatorActivity" />
+        </activity>
+        <activity
+            android:name="com.droidshop.ui.UserProfileActivity"
+            android:label="@string/profile"
+            android:parentActivityName="com.droidshop.ui.CarouselActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.droidshop.ui.CarouselActivity" />
+        </activity>
+        <activity
+            android:name="com.droidshop.ui.MyOrderActivity"
+            android:label="@string/my_order"
+            android:parentActivityName="com.droidshop.ui.CarouselActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.droidshop.ui.CarouselActivity" />
+        </activity>
+        <activity
+            android:name="com.droidshop.ui.ReservationActivity"
+            android:label="@string/reservations"
+            android:parentActivityName="com.droidshop.ui.CarouselActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.droidshop.ui.CarouselActivity" />
         </activity>
     </application>
 

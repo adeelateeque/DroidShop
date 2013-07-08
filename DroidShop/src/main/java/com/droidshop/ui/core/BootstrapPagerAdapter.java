@@ -1,5 +1,3 @@
-
-
 package com.droidshop.ui.core;
 
 import android.content.res.Resources;
@@ -9,8 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.droidshop.R;
-import com.droidshop.ui.CheckInsListFragment;
-import com.droidshop.ui.FeedFragment;
+import com.droidshop.ui.CategoryFragment;
+import com.droidshop.ui.MainFragment;
 
 /**
  * Pager adapter
@@ -40,21 +38,13 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
         Bundle bundle = new Bundle();
         switch (position) {
         case 0:
-        	FeedFragment feedFragment = new FeedFragment();
-            feedFragment.setArguments(bundle);
-            return feedFragment;
+        	MainFragment mainFragment = new MainFragment();
+        	mainFragment.setArguments(bundle);
+            return mainFragment;
         case 1:
-        	FeedFragment feedFragment2 = new FeedFragment();
-        	feedFragment2.setArguments(bundle);
-        	return feedFragment2;
-        case 2:
-        	CheckInsListFragment checkInsFragment2 = new CheckInsListFragment();
-        	checkInsFragment2.setArguments(bundle);
-            return checkInsFragment2;
-        case 3:
-            CheckInsListFragment checkInsFragment = new CheckInsListFragment();
-            checkInsFragment.setArguments(bundle);
-            return checkInsFragment;
+        	CategoryFragment categoryFragment = new CategoryFragment();
+        	categoryFragment.setArguments(bundle);
+        	return categoryFragment;
         default:
             return null;
         }
@@ -64,13 +54,9 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
         case 0:
-        	return resources.getString(R.string.page_feed);
+        	return resources.getString(R.string.page_main);
         case 1:
-        	return resources.getString(R.string.page_movies);
-        case 2:
-            return resources.getString(R.string.page_theaters);
-        case 3:
-            return resources.getString(R.string.page_checkins);
+        	return resources.getString(R.string.page_category);
         default:
             return null;
         }
