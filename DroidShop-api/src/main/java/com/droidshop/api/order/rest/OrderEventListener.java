@@ -22,7 +22,7 @@ import com.droidshop.api.order.OrderAlreadyPaidException;
  * Event listener to reject {@code DELETE} requests to Spring Data REST.
  */
 @Component
-class OrderControllerEventListener extends AbstractRepositoryEventListener<Order>
+class OrderEventListener extends AbstractRepositoryEventListener<Order>
 {
 
 	/*
