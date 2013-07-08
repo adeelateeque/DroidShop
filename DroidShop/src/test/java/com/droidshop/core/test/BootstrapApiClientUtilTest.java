@@ -21,6 +21,6 @@ public class BootstrapApiClientUtilTest {
     public void shouldCreateClient() throws Exception {
         List<User> users = new ApiProvider().getApi("demo@androidbootstrap.com", "foobar").getUserApi().getUsers();
 
-        assertThat(users.get(0).getUsername(), notNullValue());
+        assertThat(users.get(0).getUserName(), notNullValue());
     }
 }

@@ -278,7 +278,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 	 */
 	protected void finishConfirmCredentials(boolean result)
 	{
-		final Account account = new Account(email, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
+		final Account account = new Account(email, Constants.Auth.DROIDSHOP_ACCOUNT_TYPE);
 		accountManager.setPassword(account, password);
 
 		final Intent intent = new Intent();
@@ -297,7 +297,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 
 	protected void finishLogin()
 	{
-		final Account account = new Account(email, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
+		final Account account = new Account(email, Constants.Auth.DROIDSHOP_ACCOUNT_TYPE);
 
 		if (requestNewAccount)
 			accountManager.addAccountExplicitly(account, password, null);
@@ -306,7 +306,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 		final Intent intent = new Intent();
 		authToken = token;
 		intent.putExtra(KEY_ACCOUNT_NAME, email);
-		intent.putExtra(KEY_ACCOUNT_TYPE, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
+		intent.putExtra(KEY_ACCOUNT_TYPE, Constants.Auth.DROIDSHOP_ACCOUNT_TYPE);
 		if (authTokenType != null && authTokenType.equals(Constants.Auth.AUTHTOKEN_TYPE))
 			intent.putExtra(KEY_AUTHTOKEN, authToken);
 		setAccountAuthenticatorResult(intent.getExtras());

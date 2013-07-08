@@ -11,22 +11,22 @@ public class Constants {
         /**
          * Account type id
          */
-        public static final String BOOTSTRAP_ACCOUNT_TYPE = "com.droidshop";
+        public static final String DROIDSHOP_ACCOUNT_TYPE = "com.droidshop";
 
         /**
          * Account name
          */
-        public static final String BOOTSTRAP_ACCOUNT_NAME = "droidshop";
+        public static final String DROIDSHOP_ACCOUNT_NAME = "droidshop";
 
         /**
          * Provider id
          */
-        public static final String BOOTSTRAP_PROVIDER_AUTHORITY = "com.droidshop.sync";
+        public static final String DROIDSHOP_PROVIDER_AUTHORITY = "com.droidshop.sync";
 
         /**
          * Auth token type
          */
-        public static final String AUTHTOKEN_TYPE = BOOTSTRAP_ACCOUNT_TYPE;
+        public static final String AUTHTOKEN_TYPE = DROIDSHOP_ACCOUNT_TYPE;
 
         /**
     	 * PARAM_CONFIRMCREDENTIALS
@@ -58,6 +58,8 @@ public class Constants {
          * List Users URL
          */
         public static final String URL_USERS = URL_BASE + "/1/users";
+
+        public static final String URL_PRODUCTS = "http://localhost:8400/api/product";
 
         /**
          * List FeedItem URL
