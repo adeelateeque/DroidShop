@@ -1,9 +1,6 @@
 package com.droidshop.api.model;
 
-import static javax.persistence.TemporalType.TIMESTAMP;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -20,28 +17,23 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.ws.rs.POST;
 
 import lombok.EqualsAndHashCode;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Document
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "product")
 @EqualsAndHashCode(callSuper = true)
 public class Product extends AbstractEntity
 {
 	@NotNull(groups = POST.class, message = "name: Missing Required Field")
-	@JsonProperty
 	@Column(nullable = false)
 	@Basic(optional = false)
 	private String name;
@@ -50,7 +42,6 @@ public class Product extends AbstractEntity
 
 	private MonetaryAmount price;
 
-	@JsonIgnore
 	@ManyToMany
 	private List<Category> categories;
 
@@ -60,7 +51,7 @@ public class Product extends AbstractEntity
 	@Lob
 	private String description;
 
-    @ElementCollection(targetClass=String.class)
+	@ElementCollection(targetClass = String.class)
 	@CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
 	private List<String> images;
 
@@ -68,15 +59,12 @@ public class Product extends AbstractEntity
 	@JoinTable(name = "product_review", joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "review_id", referencedColumnName = "id"))
 	protected List<Review> reviews;
 
-	@JsonProperty("created_at")
-	@Temporal(TIMESTAMP)
-	private Date createdAt;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime createdAt;
 
-	@JsonProperty("updated_at")
-	@Temporal(TIMESTAMP)
-	private Date updatedAt;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime updatedAt;
 
-	@JsonProperty
 	@Enumerated(EnumType.STRING)
 	private Status status;
 
@@ -99,6 +87,7 @@ public class Product extends AbstractEntity
 	 */
 	public Product(String name, int quantity, MonetaryAmount price)
 	{
+		this();
 		this.name = name;
 		this.quantity = quantity;
 		this.price = price;
@@ -176,22 +165,22 @@ public class Product extends AbstractEntity
 		this.reviews = reviews;
 	}
 
-	public Date getCreatedAt()
+	public DateTime getCreatedAt()
 	{
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt)
+	public void setCreatedAt(DateTime createdAt)
 	{
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt()
+	public DateTime getUpdatedAt()
 	{
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt)
+	public void setUpdatedAt(DateTime updatedAt)
 	{
 		this.updatedAt = updatedAt;
 	}

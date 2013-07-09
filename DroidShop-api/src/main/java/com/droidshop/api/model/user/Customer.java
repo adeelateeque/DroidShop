@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.droidshop.api.model.Order;
+import com.droidshop.api.model.Reservation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -20,17 +21,21 @@ public class Customer extends User implements Serializable
 	
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-	private List<Order> customerOrders;
+	private List<Order> orders;
+	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+	private List<Reservation> reservations;
 
 	public Customer()
 	{
-		this.customerOrders = new ArrayList<Order>();
+		this.orders = new ArrayList<Order>();
 	}
 
 	public Customer(String userName)
 	{
 		this.userName = userName;
-		this.customerOrders = new ArrayList<Order>();
+		this.orders = new ArrayList<Order>();
 	}
 
 	public Customer(String userName, String firstname, String lastname, String email, String address, String city)
@@ -41,17 +46,28 @@ public class Customer extends User implements Serializable
 		this.email = email;
 		this.address = address;
 		this.city = city;
-		this.customerOrders = new ArrayList<Order>();
+		this.orders = new ArrayList<Order>();
+		this.reservations = new ArrayList<Reservation>();
 	}
 
-	public List<Order> getCustomerOrders()
+	public List<Order> getOrders()
 	{
-		return customerOrders;
+		return orders;
 	}
 
-	public void setCustomerOrders(List<Order> customerOrderList)
+	public void setOrders(List<Order> orders)
 	{
-		this.customerOrders = customerOrderList;
+		this.orders = orders;
+	}
+
+	public List<Reservation> getReservations()
+	{
+		return reservations;
+	}
+
+	public void setReservations(List<Reservation> reservations)
+	{
+		this.reservations = reservations;
 	}
 
 	@Override
