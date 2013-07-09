@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -178,9 +179,10 @@ public class CarouselActivity extends BootstrapFragmentActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case id.timer:
-			final Intent i = new Intent(this, BootstrapTimerActivity.class);
-			startActivity(i);
+		case id.cart_action:
+			Toast.makeText(getApplicationContext(), "Cart", Toast.LENGTH_LONG).show();
+			//final Intent i = new Intent(this, BootstrapTimerActivity.class);
+			//startActivity(i);
 			return true;
 		case android.R.id.home:
 	        if (mDrawerLayout.isDrawerOpen(mDrawerList)) {

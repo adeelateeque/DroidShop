@@ -229,4 +229,12 @@ public class BootstrapApi {
 		customerApi.setPassword(password);
 		return customerApi;
 	}
+
+	public ReservationApi getReservationApi() throws OperationCanceledException
+	{
+		ReservationApi reservationApi = new ReservationApi(apiKey, userAgentProvider);
+		reservationApi.setUsername(this.username);
+		reservationApi.setPassword(password);
+		return reservationApi;
+	}
 }

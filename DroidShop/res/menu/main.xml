@@ -6,4 +6,10 @@
         android:icon="@drawable/ic_action_search"
         android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/search_action"/>
+    
+    <item
+        android:id="@+id/cart_action"
+        android:icon="@drawable/cart"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/cart_action"/>
 </menu>
