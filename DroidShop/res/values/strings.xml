@@ -27,7 +27,7 @@
     <string name="no_news">No feed</string>
     <string name="avatar">Avatar</string>
     <string name="choose">Choose</string>
-
+    
     <!-- Drawer -->
     <string-array name="navigationArray">
         <item>Timeline</item>

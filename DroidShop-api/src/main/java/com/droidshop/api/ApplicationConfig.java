@@ -80,13 +80,11 @@ public class ApplicationConfig
 	{
 		BoneCPDataSource dataSource = new BoneCPDataSource();
 		dataSource.setDriverClass("com.mysql.jdbc.Driver");
-		dataSource.setJdbcUrl("jdbc:mysql://localhost/droidshop");
-		dataSource.setUsername("root");
-		dataSource.setPassword("1234567");
+		dataSource.setJdbcUrl(getDatabaseUrl());
 		dataSource.setIdleConnectionTestPeriodInMinutes(60);
 		dataSource.setIdleMaxAgeInMinutes(420);
-		dataSource.setMaxConnectionsPerPartition(30);
-		dataSource.setMinConnectionsPerPartition(10);
+		dataSource.setMaxConnectionsPerPartition(10);
+		dataSource.setMinConnectionsPerPartition(5);
 		dataSource.setPartitionCount(3);
 		dataSource.setAcquireIncrement(5);
 		dataSource.setStatementsCacheSize(100);
@@ -119,5 +117,19 @@ public class ApplicationConfig
 	public HibernateExceptionTranslator hibernateExceptionTranslator()
 	{
 		return new HibernateExceptionTranslator();
+	}
+	
+	private String getDatabaseUrl()
+	{
+		String dbName = System.getProperty("RDS_DB_NAME"); 
+		String userName = System.getProperty("RDS_USERNAME"); 
+		String password = System.getProperty("RDS_PASSWORD"); 
+		String hostname = System.getProperty("RDS_HOSTNAME");
+		String port = System.getProperty("RDS_PORT");
+		
+		String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
+		System.out.println("JDBC URL : "+url);
+		
+		return url;
 	}
 }
