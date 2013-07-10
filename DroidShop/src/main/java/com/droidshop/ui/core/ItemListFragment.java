@@ -1,4 +1,3 @@
-
 package com.droidshop.ui.core;
 
 import java.util.Collections;

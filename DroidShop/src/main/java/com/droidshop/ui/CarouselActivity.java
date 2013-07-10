@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -46,6 +47,9 @@ public class CarouselActivity extends BootstrapFragmentActivity
     private MergeAdapter mAdapter;
     private ArrayAdapter aAdapter;
 
+    private static boolean isAdmin = false;
+	private static boolean isLogin = true;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -62,7 +66,6 @@ public class CarouselActivity extends BootstrapFragmentActivity
 		setupNavigationTabs();
 
 		mTitle = mDrawerTitle = getTitle();
-        mSideMenu = getResources().getStringArray(R.array.navigationArray);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -70,10 +73,27 @@ public class CarouselActivity extends BootstrapFragmentActivity
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
         mAdapter = new MergeAdapter();
-        aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
-    	mAdapter.addAdapter(new ProfileImageAdapter(this));
-    	mAdapter.addAdapter(aAdapter);
-    	mDrawerList.setAdapter(mAdapter);
+
+        if ((isLogin == false)&&(isAdmin == false)){
+        	mSideMenu = getResources().getStringArray(R.array.logoutArray);
+        	aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
+        	mAdapter.addAdapter(new ProfileImageAdapter(this));
+        	mAdapter.addAdapter(aAdapter);
+        	mDrawerList.setAdapter(mAdapter);
+        }
+        else if ((isLogin == true)&&(isAdmin == false)){
+        	mSideMenu = getResources().getStringArray(R.array.loginArray);
+        	aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
+        	mAdapter.addAdapter(new ProfileImageAdapter(this));
+        	mAdapter.addAdapter(aAdapter);
+        	mDrawerList.setAdapter(mAdapter);
+        }
+        else if ((isLogin == true)&&(isAdmin == true)){
+        	mSideMenu = getResources().getStringArray(R.array.adminArray);
+        	aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
+        	mAdapter.addAdapter(aAdapter);
+        	mDrawerList.setAdapter(mAdapter);
+        }
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -110,21 +130,24 @@ public class CarouselActivity extends BootstrapFragmentActivity
 	{
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		ActionBar.Tab feedTab = mActionBar.newTab().setText(R.string.page_feed)
-				.setTabListener(new TabListener<FeedFragment>(this, "feed", FeedFragment.class));
-		mActionBar.addTab(feedTab, true);
+		if (isAdmin == false){
+			ActionBar.Tab mainTab = mActionBar.newTab().setText(R.string.page_main)
+					.setTabListener(new TabListener<MainFragment>(this, "main", MainFragment.class));
+			mActionBar.addTab(mainTab, true);
 
-		ActionBar.Tab moviesTab = mActionBar.newTab().setText(R.string.page_movies)
-				.setTabListener(new TabListener<FeedFragment>(this, "movies", FeedFragment.class));
-		mActionBar.addTab(moviesTab);
+			ActionBar.Tab categoryTab = mActionBar.newTab().setText(R.string.page_category)
+					.setTabListener(new TabListener<CategoryFragment>(this, "category", CategoryFragment.class));
+			mActionBar.addTab(categoryTab);
+		}
+		else if(isAdmin == true){
+			ActionBar.Tab createProduct = mActionBar.newTab().setText(R.string.page_create_product)
+					.setTabListener(new TabListener<CreateProductFragment>(this, "create product", CreateProductFragment.class));
+			mActionBar.addTab(createProduct, true);
 
-		ActionBar.Tab theatersTab = mActionBar.newTab().setText(R.string.page_theaters)
-				.setTabListener(new TabListener<FeedFragment>(this, "theaters", FeedFragment.class));
-		mActionBar.addTab(theatersTab);
-
-		ActionBar.Tab trailersTab = mActionBar.newTab().setText(R.string.page_trailers)
-				.setTabListener(new TabListener<FeedFragment>(this, "trailers", FeedFragment.class));
-		mActionBar.addTab(trailersTab);
+			ActionBar.Tab updateProduct = mActionBar.newTab().setText(R.string.page_update_product)
+					.setTabListener(new TabListener<UpdateProductFragment>(this, "update product", UpdateProductFragment.class));
+			mActionBar.addTab(updateProduct, true);
+		}
 	}
 
 	@Override
@@ -156,9 +179,10 @@ public class CarouselActivity extends BootstrapFragmentActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case id.timer:
-			final Intent i = new Intent(this, BootstrapTimerActivity.class);
-			startActivity(i);
+		case id.cart_action:
+			Toast.makeText(getApplicationContext(), "Cart", Toast.LENGTH_LONG).show();
+			//final Intent i = new Intent(this, BootstrapTimerActivity.class);
+			//startActivity(i);
 			return true;
 		case android.R.id.home:
 	        if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
@@ -239,11 +263,37 @@ public class CarouselActivity extends BootstrapFragmentActivity
 
     private void selectItem(int position) {
     	Intent intent;
-    	switch (position){
-    	case 0:
-    		intent = new Intent(CarouselActivity.this, BootstrapAuthenticatorActivity.class);
-        	startActivity(intent);
-        	break;
+    	if ((isLogin == false)&&(isAdmin == false)){
+    		switch (position){
+        	case 0:
+        		intent = new Intent(CarouselActivity.this, BootstrapAuthenticatorActivity.class);
+            	startActivity(intent);
+            	break;
+        	}
+    	} else if ((isLogin == true)&&(isAdmin == false)){
+    		switch (position){
+        	case 0:
+        		intent = new Intent(CarouselActivity.this, UserProfileActivity.class);
+            	startActivity(intent);
+            	break;
+        	case 1:
+        		intent = new Intent(CarouselActivity.this, MyOrderActivity.class);
+            	startActivity(intent);
+        		break;
+        	case 2:
+        		intent = new Intent(CarouselActivity.this, ReservationActivity.class);
+        		startActivity(intent);
+        		break;
+        	case 3:
+        		break;
+        	}
+    	} else if ((isLogin == true)&&(isAdmin == true)){
+    		switch (position){
+        	case 1:
+        		intent = new Intent(CarouselActivity.this, BootstrapAuthenticatorActivity.class);
+            	startActivity(intent);
+            	break;
+        	}
     	}
     	mDrawerLayout.closeDrawer(mDrawerList);
     }
