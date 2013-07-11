@@ -7,15 +7,18 @@ import com.droidshop.ui.CarouselActivity;
 import com.droidshop.ui.CategoryFragment;
 import com.droidshop.ui.CreateProductFragment;
 import com.droidshop.ui.CurrentOrderFragment;
+import com.droidshop.ui.ListItemActivity;
+import com.droidshop.ui.ListItemAdapter;
+import com.droidshop.ui.ListItemFragment;
 import com.droidshop.ui.MainFragment;
 import com.droidshop.ui.MyOrderActivity;
 import com.droidshop.ui.PastOrderFragment;
 import com.droidshop.ui.RegisterActivity;
 import com.droidshop.ui.ReservationActivity;
+import com.droidshop.ui.ReservationListAdapter;
+import com.droidshop.ui.ReservationListFragment;
 import com.droidshop.ui.UpdateProductFragment;
 import com.droidshop.ui.UserProfileActivity;
-import com.droidshop.ui.ReservationListFragment;
-import com.droidshop.ui.ReservationListAdapter;
 
 import dagger.Module;
 
@@ -45,7 +48,10 @@ import dagger.Module;
             PastOrderFragment.class,
             ReservationActivity.class,
             ReservationListFragment.class,
-            ReservationListAdapter.class
+            ReservationListAdapter.class,
+            ListItemActivity.class,
+            ListItemAdapter.class,
+            ListItemFragment.class
     }
 )
 public class RootModule {
