@@ -9,9 +9,6 @@ import java.util.List;
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.Product;
 import com.github.kevinsawicki.http.HttpRequest;
-import com.google.analytics.tracking.android.Log;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 public class ProductApi extends BootstrapApi
 {
@@ -26,17 +23,21 @@ public class ProductApi extends BootstrapApi
 		super(apiKey, userAgentProvider);
 	}
 
+	private class ProductWrapper extends BaseWrapper<Product>
+	{
+	}
+
 	public List<Product> getProducts()
 	{
-		try{
-			HttpRequest request = execute(HttpRequest.get(URL_PRODUCTS));
-			JsonParser parser = new JsonParser();
-			JsonElement element = parser.parse(request.body());
-			Log.d(element.toString());
-		}
-		catch(IOException e)
+		try
 		{
-
+			HttpRequest request = execute(HttpRequest.get(URL_PRODUCTS));
+			ProductWrapper response = fromJson(request, ProductWrapper.class);
+			if (response != null && response.getContent() != null)
+				return response.getContent();
+		}
+		catch (IOException e)
+		{
 		}
 
 		return Collections.emptyList();

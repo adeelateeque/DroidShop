@@ -23,6 +23,7 @@
     <string name="date_column">Date</string>
     <string name="avatar">Avatar</string>
     <string name="choose">Choose</string>
+    <string name="action_settings">Settings</string>
     
     <string name="today_deal">Today Deal</string>
     <string name="recent_deal">Recent Deal</string>
@@ -39,11 +40,7 @@
     <string name="current_order">Recent orders for 1 months</string>
     <string name="past_order">Past Orders</string>
     <string name="reservations">Reservations</string>
-<<<<<<< .mine
 
-=======
-
->>>>>>> .theirs
     <!-- Drawer -->
     <string-array name="logoutArray">
         <item>Login/Register</item>
@@ -92,9 +89,7 @@
     <string name="register">Register</string>
     <string name="reset">Reset</string>
     <string name="title_activity_register">Register</string>
-    <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="address">Address</string>
     <string name="phone_number">Phone number</string>
     <string name="telephone_number">Telephone number</string>
     <string name="dateofbirth">Date of birth</string>
@@ -148,7 +143,6 @@
     <!-- Number patterns -->
     <string name="lat_lng_pattern">* ###.00000000;* -###.00000000</string>
     <string name="radius_pattern">* #.0000</string>
-    <string name="action_settings">DroidShop Settings</string>
 
     <!-- Application identifiers -->
     <string name="app_tag">LocationUpdates</string>

@@ -1,5 +1,7 @@
 package com.droidshop.ui;
 
+import javax.inject.Inject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -25,6 +27,7 @@ import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.droidshop.R;
 import com.droidshop.R.id;
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
+import com.droidshop.authenticator.LogoutService;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.github.kevinsawicki.wishlist.Toaster;
 import com.google.android.gms.common.ConnectionResult;
@@ -35,6 +38,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
  */
 public class CarouselActivity extends BootstrapFragmentActivity
 {
+	@Inject LogoutService logoutService;
 	ActionBar mActionBar;
 	private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -45,7 +49,7 @@ public class CarouselActivity extends BootstrapFragmentActivity
     private String[] mSideMenu;
 
     private MergeAdapter mAdapter;
-    private ArrayAdapter aAdapter;
+    private ArrayAdapter<String> aAdapter;
 
     private static boolean isAdmin = false;
 	private static boolean isLogin = true;
@@ -253,7 +257,7 @@ public class CarouselActivity extends BootstrapFragmentActivity
 		}
 	}
 
-	/* The click listner for ListView in the navigation drawer */
+	/* The click listener for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -285,6 +289,16 @@ public class CarouselActivity extends BootstrapFragmentActivity
         		startActivity(intent);
         		break;
         	case 3:
+        		logoutService.logout(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Calling a refresh will force the service to look for a logged in user
+                        // and when it finds none the user will be requested to log in again.
+                    	finish();
+                    	Intent intent = new Intent(CarouselActivity.this, BootstrapAuthenticatorActivity.class);
+                		startActivity(intent);
+                    }
+                });
         		break;
         	}
     	} else if ((isLogin == true)&&(isAdmin == true)){

@@ -68,6 +68,7 @@ public class UserApi extends BootstrapApi
             Ln.d("Authentication response=%s", request.code());
 
             if(request.ok()) {
+            	Ln.d(request.body());
                 model = GSON.fromJson(Strings.toString(request.buffer()), User.class);
             }
 

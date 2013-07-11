@@ -55,7 +55,7 @@ public class Constants
 		/**
 		 * Base URL for all requests
 		 */
-		public static final String URL_BASE = "https://localhost/api";
+		public static final String URL_BASE = "http://droidshop.elasticbeanstalk.com/";
 
 		/**
 		 * Authentication URL
@@ -68,6 +68,12 @@ public class Constants
 		public static final String URL_USERS = URL_BASE + "/1/users";
 
 		public static final String URL_PRODUCTS = URL_BASE + "/product";
+
+		public static final String URL_CATEGORY = URL_BASE + "/category";
+
+		public static final String URL_ORDER = URL_BASE + "/order";
+
+		public static final String URL_RESERVATION = URL_BASE + "/reservation";
 
 		/**
 		 * List FeedItem URL

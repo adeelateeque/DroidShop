@@ -14,7 +14,6 @@ import com.droidshop.core.UserAgentProvider;
  */
 public class ApiProvider
 {
-
 	@Inject
 	ApiKeyProvider keyProvider;
 	@Inject
