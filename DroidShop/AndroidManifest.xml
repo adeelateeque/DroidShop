@@ -74,7 +74,7 @@
 
             <!--
                 No intent-filter here! This activity is only ever launched by
-                someone who explicitly knows the class name
+                someone who explicitly knows the class name
             -->
         </activity>
         <activity
@@ -104,6 +104,20 @@
         <activity
             android:name="com.droidshop.ui.ReservationActivity"
             android:label="@string/reservations"
+            android:parentActivityName="com.droidshop.ui.CarouselActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.droidshop.ui.CarouselActivity" />
+        </activity>
+        <activity
+            android:name="com.droidshop.ui.ListItemActivity"
+            android:parentActivityName="com.droidshop.ui.CarouselActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.droidshop.ui.CarouselActivity" />
+        </activity>
+        <activity
+            android:name="com.droidshop.ui.ItemDescriptionActivity"
             android:parentActivityName="com.droidshop.ui.CarouselActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

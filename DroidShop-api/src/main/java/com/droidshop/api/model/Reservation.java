@@ -1,6 +1,8 @@
 package com.droidshop.api.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -30,6 +32,7 @@ public class Reservation extends AbstractEntity
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime reservationDateTime;
 	
+	@Enumerated(EnumType.STRING)
 	private Status status;
 
 	public Customer getCustomer()

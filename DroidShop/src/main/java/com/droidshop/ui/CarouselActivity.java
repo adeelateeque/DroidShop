@@ -57,12 +57,12 @@ public class CarouselActivity extends BootstrapFragmentActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		/*int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 
 		if (status != ConnectionResult.SUCCESS)
 		{
 			GooglePlayServicesUtil.getErrorDialog(status, this, 1234).show();
-		}
+		}*/
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.carousel_view);

@@ -93,6 +93,13 @@ public class ApplicationConfig
 		return dataSource;
 	}
 
+	private String getDatabaseUrl()
+	{
+		String url = "jdbc:mysql://" + System.getProperty("JDBC_CONNECTION_STRING");
+		System.out.println("CONNECTING TO JDBC, URL IS: " + url);
+		return url;
+	}
+
 	@Bean
 	public PropertyPlaceholderConfigurer propertyConfigurer()
 	{
@@ -117,19 +124,5 @@ public class ApplicationConfig
 	public HibernateExceptionTranslator hibernateExceptionTranslator()
 	{
 		return new HibernateExceptionTranslator();
-	}
-	
-	private String getDatabaseUrl()
-	{
-		String dbName = System.getProperty("RDS_DB_NAME"); 
-		String userName = System.getProperty("RDS_USERNAME"); 
-		String password = System.getProperty("RDS_PASSWORD"); 
-		String hostname = System.getProperty("RDS_HOSTNAME");
-		String port = System.getProperty("RDS_PORT");
-		
-		String url = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
-		System.out.println("JDBC URL : "+url);
-		
-		return url;
 	}
 }
