@@ -3,6 +3,7 @@ package com.droidshop.api;
 import static com.droidshop.core.Constants.Http.URL_PRODUCTS;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,6 +26,20 @@ public class CategoryApi extends BootstrapApi
 
 	public class CategoryWrapper extends BaseWrapper<Category>
 	{
+		private ArrayList<Category> content;
+		private Category category;
+
+		@Override
+		protected Category getOne()
+		{
+			return category;
+		}
+
+		@Override
+		protected ArrayList<Category> getAll()
+		{
+			return content;
+		}
 	}
 
 	public List<Category> getCategories()
@@ -33,8 +48,10 @@ public class CategoryApi extends BootstrapApi
 		{
 			HttpRequest request = execute(HttpRequest.get(URL_PRODUCTS));
 			CategoryWrapper response = fromJson(request, CategoryWrapper.class);
-			if (response != null && response.getContent() != null)
-				return response.getContent();
+			if (response != null)
+			{
+				return response.getEntities();
+			}
 		}
 		catch (IOException e)
 		{

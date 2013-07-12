@@ -53,6 +53,7 @@ import com.github.kevinsawicki.wishlist.Toaster;
  */
 public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticatorActivity
 {
+	public static final String TAG = "BootstrapAuthenticatorActivity";
 	private AccountManager accountManager;
 
 	protected BootstrapApi api;
@@ -218,55 +219,57 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 	 */
 	public void handleLogin(final View view)
 	{
-		//means that the login process is still in progress
+		// means that the login process is still in progress
 		if (authenticationTask != null)
-            return;
+			return;
 
-        if (requestNewAccount)
-            email = emailText.getText().toString();
-        password = passwordText.getText().toString();
-        showProgress();
+		if (requestNewAccount)
+			email = emailText.getText().toString();
+		password = passwordText.getText().toString();
+		showProgress();
 
-        authenticationTask = new SafeAsyncTask<Boolean>() {
-            public Boolean call() throws Exception {
+		authenticationTask = new SafeAsyncTask<Boolean>()
+		{
+			public Boolean call() throws Exception
+			{
+				User user = UserApi.authenticateUser(email, password);
+				if (user != null)
+				{
+					token = user.getSessionToken();
+					return true;
+				}
+				return false;
+			}
 
-            	User user = UserApi.authenticateUser(email, password);
-            	if(user != null)
-            	{
-            		token = user.getSessionToken();
-            		return true;
-            	}
-            	return false;
-            }
+			@Override
+			protected void onException(Exception e) throws RuntimeException
+			{
+				Throwable cause = e.getCause() != null ? e.getCause() : e;
 
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                Throwable cause = e.getCause() != null ? e.getCause() : e;
+				String message;
+				// A 404 is returned as an Exception with this message
+				if ("Received authentication challenge is null".equals(cause.getMessage()))
+					message = getResources().getString(string.message_bad_credentials);
+				else
+					message = cause.getMessage();
 
-                String message;
-                // A 404 is returned as an Exception with this message
-                if ("Received authentication challenge is null".equals(cause
-                        .getMessage()))
-                    message = getResources().getString(
-                            string.message_bad_credentials);
-                else
-                    message = cause.getMessage();
+				Toaster.showLong(BootstrapAuthenticatorActivity.this, message);
+			}
 
-                Toaster.showLong(BootstrapAuthenticatorActivity.this, message);
-            }
+			@Override
+			public void onSuccess(Boolean authSuccess)
+			{
+				onAuthenticationResult(authSuccess);
+			}
 
-            @Override
-            public void onSuccess(Boolean authSuccess) {
-                onAuthenticationResult(authSuccess);
-            }
-
-            @Override
-            protected void onFinally() throws RuntimeException {
-                hideProgress();
-                authenticationTask = null;
-            }
-        };
-        authenticationTask.execute();
+			@Override
+			protected void onFinally() throws RuntimeException
+			{
+				hideProgress();
+				authenticationTask = null;
+			}
+		};
+		authenticationTask.execute();
 	}
 
 	/**

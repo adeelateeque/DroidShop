@@ -19,6 +19,7 @@ import com.droidshop.ui.ReservationListAdapter;
 import com.droidshop.ui.ReservationListFragment;
 import com.droidshop.ui.UpdateProductFragment;
 import com.droidshop.ui.UserProfileActivity;
+import com.droidshop.ui.product.NewProductsFragment;
 
 import dagger.Module;
 
@@ -51,7 +52,8 @@ import dagger.Module;
             ReservationListAdapter.class,
             ListItemActivity.class,
             ListItemAdapter.class,
-            ListItemFragment.class
+            ListItemFragment.class,
+            NewProductsFragment.class
     }
 )
 public class RootModule {

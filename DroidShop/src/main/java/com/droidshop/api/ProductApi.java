@@ -8,23 +8,38 @@ import java.util.Collections;
 import java.util.List;
 
 import com.droidshop.core.UserAgentProvider;
-import com.droidshop.model.MonetaryAmount;
 import com.droidshop.model.Product;
-import com.droidshop.model.Reservation;
 import com.github.kevinsawicki.http.HttpRequest;
 
-public class ProductApi extends BootstrapApi {
+public class ProductApi extends BootstrapApi
+{
 
-	protected ProductApi(String username, String password) {
+	protected ProductApi(String username, String password)
+	{
 		super(username, password);
 	}
 
-	public ProductApi(String apiKey, UserAgentProvider userAgentProvider) {
+	public ProductApi(String apiKey, UserAgentProvider userAgentProvider)
+	{
 		super(apiKey, userAgentProvider);
 	}
 
 	private class ProductWrapper extends BaseWrapper<Product>
 	{
+		private ArrayList<Product> content;
+		private Product product;
+
+		@Override
+		protected Product getOne()
+		{
+			return product;
+		}
+
+		@Override
+		protected ArrayList<Product> getAll()
+		{
+			return content;
+		}
 	}
 
 	public List<Product> getProducts()
@@ -33,8 +48,10 @@ public class ProductApi extends BootstrapApi {
 		{
 			HttpRequest request = execute(HttpRequest.get(URL_PRODUCTS));
 			ProductWrapper response = fromJson(request, ProductWrapper.class);
-			if (response != null && response.getContent() != null)
-				return response.getContent();
+			if (response != null)
+			{
+				return response.getEntities();
+			}
 		}
 		catch (IOException e)
 		{

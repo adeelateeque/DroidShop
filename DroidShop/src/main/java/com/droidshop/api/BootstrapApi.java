@@ -8,6 +8,8 @@ import static com.droidshop.core.Constants.Http.REST_API_KEY;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import android.accounts.OperationCanceledException;
 
@@ -202,11 +204,14 @@ public class BootstrapApi
 		this.password = password;
 	}
 
-	public class BaseWrapper<T extends AbstractEntity>
+	public abstract class BaseWrapper<T extends AbstractEntity>
 	{
 		private ArrayList<Link> links;
 		private Page page;
-		private ArrayList<T> content;
+
+		protected abstract T getOne();
+
+		protected abstract ArrayList<T> getAll();
 
 		public ArrayList<Link> getLinks()
 		{
@@ -228,88 +233,93 @@ public class BootstrapApi
 			this.page = page;
 		}
 
-		public ArrayList<T> getContent()
+		public List<T> getEntities()
 		{
-			return content;
+			if (getAll() != null)
+			{
+				return getAll();
+			}
+			else if (getOne() != null)
+			{
+				List<T> asList = new ArrayList<T>();
+				asList.add(getOne());
+				return asList;
+			}
+			return Collections.emptyList();
+		}
+	}
+
+	public class Link
+	{
+		private String rel;
+		private String href;
+
+		public String getRel()
+		{
+			return rel;
 		}
 
-		public void setContent(ArrayList<T> content)
+		public void setRel(String rel)
 		{
-			this.content = content;
+			this.rel = rel;
 		}
 
-		public class Link
+		public String getHref()
 		{
-			private String rel;
-			private String href;
-
-			public String getRel()
-			{
-				return rel;
-			}
-
-			public void setRel(String rel)
-			{
-				this.rel = rel;
-			}
-
-			public String getHref()
-			{
-				return href;
-			}
-
-			public void setHref(String href)
-			{
-				this.href = href;
-			}
+			return href;
 		}
 
-		public class Page
+		public void setHref(String href)
 		{
-			private int size;
-			private int totalElements;
-			private int totalPages;
-			private int number;
+			this.href = href;
+		}
+	}
 
-			public int getSize()
-			{
-				return size;
-			}
+	public class Page
+	{
+		private int size;
+		private int totalElements;
+		private int totalPages;
+		private int number;
 
-			public void setSize(int size)
-			{
-				this.size = size;
-			}
+		public int getSize()
+		{
+			return size;
+		}
 
-			public int getTotalElements()
-			{
-				return totalElements;
-			}
+		public void setSize(int size)
+		{
+			this.size = size;
+		}
 
-			public void setTotalElements(int totalElements)
-			{
-				this.totalElements = totalElements;
-			}
+		public int getTotalElements()
+		{
+			return totalElements;
+		}
 
-			public int getTotalPages()
-			{
-				return totalPages;
-			}
+		public void setTotalElements(int totalElements)
+		{
+			this.totalElements = totalElements;
+		}
 
-			public void setTotalPages(int totalPages)
-			{
-				this.totalPages = totalPages;
-			}
+		public int getTotalPages()
+		{
+			return totalPages;
+		}
 
-			public int getNumber()
-			{
-				return number;
-			}
+		public void setTotalPages(int totalPages)
+		{
+			this.totalPages = totalPages;
+		}
 
-			public void setNumber(int number)
-			{
-				this.number = number;
-			}
+		public int getNumber()
+		{
+			return number;
+		}
+
+		public void setNumber(int number)
+		{
+			this.number = number;
 		}
 	}
 

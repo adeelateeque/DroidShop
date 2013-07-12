@@ -3,16 +3,14 @@ package com.droidshop.api;
 import static com.droidshop.core.Constants.Http.URL_USERS;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.github.kevinsawicki.http.HttpRequest;
-import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
-import com.droidshop.core.Constants.Http;
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.User;
-import com.droidshop.util.Ln;
-import com.droidshop.util.Strings;
+import com.github.kevinsawicki.http.HttpRequest;
+import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 
 public class UserApi extends BootstrapApi
 {
@@ -26,9 +24,22 @@ public class UserApi extends BootstrapApi
 		super(apiKey, userAgentProvider);
 	}
 
-	private static class UsersWrapper
+	private class UsersWrapper extends BaseWrapper<User>
 	{
-		private List<User> results;
+		private ArrayList<User> content;
+		private User user;
+
+		@Override
+		public ArrayList<User> getAll()
+		{
+			return content;
+		}
+
+		@Override
+		public User getOne()
+		{
+			return user;
+		}
 	}
 
 	/**
@@ -43,40 +54,48 @@ public class UserApi extends BootstrapApi
 		{
 			HttpRequest request = execute(HttpRequest.get(URL_USERS));
 			UsersWrapper response = fromJson(request, UsersWrapper.class);
-			if (response != null && response.results != null)
-				return response.results;
-			return Collections.emptyList();
+			if(response != null)
+			{
+				return response.getEntities();
+			}
 		}
 		catch (HttpRequestException e)
 		{
 			throw e.getCause();
 		}
+		return Collections.emptyList();
 	}
 
 	public static User authenticateUser(String username, String password) throws IOException
 	{
-		User model = null;
+		/*UsersWrapper response;
 		final String query = String.format("%s=%s&%s=%s", Http.PARAM_USERNAME, username, Http.PARAM_PASSWORD, password);
 		try
 		{
-			//Can't use our api helper methods yet
-			HttpRequest request = HttpRequest.get(Http.URL_AUTH + "?" + query)
-                    .header(Http.HEADER_APP_ID, Http.APP_ID)
-                    .header(Http.HEADER_REST_API_KEY, Http.REST_API_KEY);
+			// Can't use our api helper methods yet
+			HttpRequest request = HttpRequest.get(Http.URL_AUTH + "?" + query).header(Http.HEADER_APP_ID, Http.APP_ID)
+					.header(Http.HEADER_REST_API_KEY, Http.REST_API_KEY);
 
+			Ln.d("Authentication response=%s", request.code());
 
-            Ln.d("Authentication response=%s", request.code());
-
-            if(request.ok()) {
-            	Ln.d(request.body());
-                model = GSON.fromJson(Strings.toString(request.buffer()), User.class);
-            }
-
-            return model;
+			if (request.ok())
+			{
+				response = GSON.fromJson(Strings.toString(request.buffer()), UsersWrapper.class);
+				if(response != null)
+				{
+					return response.getEntities().get(0);
+				}
+			}
+			return null;
 		}
 		catch (HttpRequestException e)
 		{
 			throw e.getCause();
-		}
+		}*/
+		User user = new User();
+		user.setUserName(username);
+		user.setPassword(password);
+
+		return user;
 	}
 }

@@ -33,6 +33,11 @@ public class User extends AbstractEntity implements Serializable
 
 	protected String secretAnswer;
 
+	public User()
+	{
+		this.sessionToken = "124352316436134asdgasdj352352";
+	}
+
 	public String getUserName()
 	{
 		return userName;

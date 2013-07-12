@@ -2,9 +2,8 @@ package com.droidshop.model;
 
 import java.util.ArrayList;
 
-import com.droidshop.api.BootstrapApi.BaseWrapper.Link;
+import com.droidshop.api.BootstrapApi.Link;
 
-@SuppressWarnings("rawtypes")
 public class AbstractEntity{
 
 	protected Long id;

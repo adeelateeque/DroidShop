@@ -29,40 +29,41 @@ import com.droidshop.R.id;
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
+import com.droidshop.ui.product.NewProductsFragment;
 import com.github.kevinsawicki.wishlist.Toaster;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 
 /**
  * Activity to view the tabs with fragments.
  */
 public class CarouselActivity extends BootstrapFragmentActivity
 {
-	@Inject LogoutService logoutService;
+	@Inject
+	LogoutService logoutService;
 	ActionBar mActionBar;
 	private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
+	private ListView mDrawerList;
+	private ActionBarDrawerToggle mDrawerToggle;
 
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    private String[] mSideMenu;
+	private CharSequence mDrawerTitle;
+	private CharSequence mTitle;
+	private String[] mSideMenu;
 
-    private MergeAdapter mAdapter;
-    private ArrayAdapter<String> aAdapter;
+	private MergeAdapter mAdapter;
+	private ArrayAdapter<String> aAdapter;
 
-    private static boolean isAdmin = false;
+	private static boolean isAdmin = false;
 	private static boolean isLogin = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		/*int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-
-		if (status != ConnectionResult.SUCCESS)
-		{
-			GooglePlayServicesUtil.getErrorDialog(status, this, 1234).show();
-		}*/
+		/*
+		 * int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		 * if (status != ConnectionResult.SUCCESS)
+		 * {
+		 * GooglePlayServicesUtil.getErrorDialog(status, this, 1234).show();
+		 * }
+		 */
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.carousel_view);
@@ -70,86 +71,99 @@ public class CarouselActivity extends BootstrapFragmentActivity
 		setupNavigationTabs();
 
 		mTitle = mDrawerTitle = getTitle();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        // set up the drawer's list view with items and click listener
-        mAdapter = new MergeAdapter();
+		// set a custom shadow that overlays the main content when the drawer opens
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+		// set up the drawer's list view with items and click listener
+		mAdapter = new MergeAdapter();
 
-        if ((isLogin == false)&&(isAdmin == false)){
-        	mSideMenu = getResources().getStringArray(R.array.logoutArray);
-        	aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
-        	mAdapter.addAdapter(new ProfileImageAdapter(this));
-        	mAdapter.addAdapter(aAdapter);
-        	mDrawerList.setAdapter(mAdapter);
-        }
-        else if ((isLogin == true)&&(isAdmin == false)){
-        	mSideMenu = getResources().getStringArray(R.array.loginArray);
-        	aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
-        	mAdapter.addAdapter(new ProfileImageAdapter(this));
-        	mAdapter.addAdapter(aAdapter);
-        	mDrawerList.setAdapter(mAdapter);
-        }
-        else if ((isLogin == true)&&(isAdmin == true)){
-        	mSideMenu = getResources().getStringArray(R.array.adminArray);
-        	aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
-        	mAdapter.addAdapter(aAdapter);
-        	mDrawerList.setAdapter(mAdapter);
-        }
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		if ((isLogin == false) && (isAdmin == false))
+		{
+			mSideMenu = getResources().getStringArray(R.array.logoutArray);
+			aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
+			mAdapter.addAdapter(new ProfileImageAdapter(this));
+			mAdapter.addAdapter(aAdapter);
+			mDrawerList.setAdapter(mAdapter);
+		}
+		else if ((isLogin == true) && (isAdmin == false))
+		{
+			mSideMenu = getResources().getStringArray(R.array.loginArray);
+			aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
+			mAdapter.addAdapter(new ProfileImageAdapter(this));
+			mAdapter.addAdapter(aAdapter);
+			mDrawerList.setAdapter(mAdapter);
+		}
+		else if ((isLogin == true) && (isAdmin == true))
+		{
+			mSideMenu = getResources().getStringArray(R.array.adminArray);
+			aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
+			mAdapter.addAdapter(aAdapter);
+			mDrawerList.setAdapter(mAdapter);
+		}
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        // enable ActionBar app icon to behave as action to toggle nav drawer
-        mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setHomeButtonEnabled(true);
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		mActionBar.setDisplayHomeAsUpEnabled(true);
+		mActionBar.setHomeButtonEnabled(true);
 
-        // ActionBarDrawerToggle ties together the the proper interactions
-        // between the sliding drawer and the action bar app icon
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-                ) {
-            public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
+		// ActionBarDrawerToggle ties together the the proper interactions
+		// between the sliding drawer and the action bar app icon
+		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+		mDrawerLayout, /* DrawerLayout object */
+		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+		R.string.drawer_open, /* "open drawer" description for accessibility */
+		R.string.drawer_close /* "close drawer" description for accessibility */
+		)
+		{
+			public void onDrawerClosed(View view)
+			{
+				getActionBar().setTitle(mTitle);
+				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+			}
 
-            public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+			public void onDrawerOpened(View drawerView)
+			{
+				getActionBar().setTitle(mDrawerTitle);
+				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+			}
+		};
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        //if (savedInstanceState == null) {
-        //    selectItem(0);
-        //}
+		// if (savedInstanceState == null) {
+		// selectItem(0);
+		// }
 	}
 
 	private void setupNavigationTabs()
 	{
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		if (isAdmin == false){
+		if (isAdmin == false)
+		{
 			ActionBar.Tab mainTab = mActionBar.newTab().setText(R.string.page_main)
-					.setTabListener(new TabListener<MainFragment>(this, "main", MainFragment.class));
+					.setTabListener(new TabListener<NewProductsFragment>(this, "product", NewProductsFragment.class));
 			mActionBar.addTab(mainTab, true);
 
 			ActionBar.Tab categoryTab = mActionBar.newTab().setText(R.string.page_category)
 					.setTabListener(new TabListener<CategoryFragment>(this, "category", CategoryFragment.class));
 			mActionBar.addTab(categoryTab);
 		}
-		else if(isAdmin == true){
-			ActionBar.Tab createProduct = mActionBar.newTab().setText(R.string.page_create_product)
-					.setTabListener(new TabListener<CreateProductFragment>(this, "create product", CreateProductFragment.class));
+		else if (isAdmin == true)
+		{
+			ActionBar.Tab createProduct = mActionBar
+					.newTab()
+					.setText(R.string.page_create_product)
+					.setTabListener(
+							new TabListener<CreateProductFragment>(this, "create product", CreateProductFragment.class));
 			mActionBar.addTab(createProduct, true);
 
-			ActionBar.Tab updateProduct = mActionBar.newTab().setText(R.string.page_update_product)
-					.setTabListener(new TabListener<UpdateProductFragment>(this, "update product", UpdateProductFragment.class));
+			ActionBar.Tab updateProduct = mActionBar
+					.newTab()
+					.setText(R.string.page_update_product)
+					.setTabListener(
+							new TabListener<UpdateProductFragment>(this, "update product", UpdateProductFragment.class));
 			mActionBar.addTab(updateProduct, true);
 		}
 	}
@@ -181,22 +195,27 @@ public class CarouselActivity extends BootstrapFragmentActivity
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case id.cart_action:
-			Toast.makeText(getApplicationContext(), "Cart", Toast.LENGTH_LONG).show();
-			//final Intent i = new Intent(this, BootstrapTimerActivity.class);
-			//startActivity(i);
-			return true;
-		case android.R.id.home:
-	        if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
-	            mDrawerLayout.closeDrawer(mDrawerList);
-	        } else {
-	            mDrawerLayout.openDrawer(mDrawerList);
-	        }
-	        return true;
-		default:
-			return super.onOptionsItemSelected(item);
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case id.cart_action:
+				Toast.makeText(getApplicationContext(), "Cart", Toast.LENGTH_LONG).show();
+				// final Intent i = new Intent(this, BootstrapTimerActivity.class);
+				// startActivity(i);
+				return true;
+			case android.R.id.home:
+				if (mDrawerLayout.isDrawerOpen(mDrawerList))
+				{
+					mDrawerLayout.closeDrawer(mDrawerList);
+				}
+				else
+				{
+					mDrawerLayout.openDrawer(mDrawerList);
+				}
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -258,76 +277,91 @@ public class CarouselActivity extends BootstrapFragmentActivity
 	}
 
 	/* The click listener for ListView in the navigation drawer */
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
+	private class DrawerItemClickListener implements ListView.OnItemClickListener
+	{
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+		{
+			selectItem(position);
+		}
+	}
 
-    private void selectItem(int position) {
-    	Intent intent;
-    	if ((isLogin == false)&&(isAdmin == false)){
-    		switch (position){
-        	case 0:
-        		intent = new Intent(CarouselActivity.this, BootstrapAuthenticatorActivity.class);
-            	startActivity(intent);
-            	break;
-        	}
-    	} else if ((isLogin == true)&&(isAdmin == false)){
-    		switch (position){
-        	case 0:
-        		intent = new Intent(CarouselActivity.this, UserProfileActivity.class);
-            	startActivity(intent);
-            	break;
-        	case 1:
-        		intent = new Intent(CarouselActivity.this, MyOrderActivity.class);
-            	startActivity(intent);
-        		break;
-        	case 2:
-        		intent = new Intent(CarouselActivity.this, ReservationActivity.class);
-        		startActivity(intent);
-        		break;
-        	case 3:
-        		logoutService.logout(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Calling a refresh will force the service to look for a logged in user
-                        // and when it finds none the user will be requested to log in again.
-                    	finish();
-                    	Intent intent = new Intent(CarouselActivity.this, BootstrapAuthenticatorActivity.class);
-                		startActivity(intent);
-                    }
-                });
-        		break;
-        	}
-    	} else if ((isLogin == true)&&(isAdmin == true)){
-    		switch (position){
-        	case 1:
-        		intent = new Intent(CarouselActivity.this, BootstrapAuthenticatorActivity.class);
-            	startActivity(intent);
-            	break;
-        	}
-    	}
-    	mDrawerLayout.closeDrawer(mDrawerList);
-    }
+	private void selectItem(int position)
+	{
+		Intent intent;
+		if ((isLogin == false) && (isAdmin == false))
+		{
+			switch (position)
+			{
+				case 0:
+					intent = new Intent(CarouselActivity.this, BootstrapAuthenticatorActivity.class);
+					startActivity(intent);
+					break;
+			}
+		}
+		else if ((isLogin == true) && (isAdmin == false))
+		{
+			switch (position)
+			{
+				case 0:
+					intent = new Intent(CarouselActivity.this, UserProfileActivity.class);
+					startActivity(intent);
+					break;
+				case 1:
+					intent = new Intent(CarouselActivity.this, MyOrderActivity.class);
+					startActivity(intent);
+					break;
+				case 2:
+					intent = new Intent(CarouselActivity.this, ReservationActivity.class);
+					startActivity(intent);
+					break;
+				case 3:
+					logoutService.logout(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							// Calling a refresh will force the service to look for a logged in user
+							// and when it finds none the user will be requested to log in again.
+							finish();
+							Intent intent = new Intent(CarouselActivity.this, BootstrapAuthenticatorActivity.class);
+							startActivity(intent);
+						}
+					});
+					break;
+			}
+		}
+		else if ((isLogin == true) && (isAdmin == true))
+		{
+			switch (position)
+			{
+				case 1:
+					intent = new Intent(CarouselActivity.this, BootstrapAuthenticatorActivity.class);
+					startActivity(intent);
+					break;
+			}
+		}
+		mDrawerLayout.closeDrawer(mDrawerList);
+	}
 
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
+	/**
+	 * When using the ActionBarDrawerToggle, you must call it during
+	 * onPostCreate() and onConfigurationChanged()...
+	 */
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState)
+	{
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggls
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
 }
