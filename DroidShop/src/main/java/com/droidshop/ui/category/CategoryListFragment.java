@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.model.Category;
 import com.droidshop.ui.core.ItemListFragment;
+import com.droidshop.ui.product.ProductDescriptionFragment;
+import com.droidshop.ui.product.ProductListFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 
@@ -114,6 +117,8 @@ public class CategoryListFragment extends ItemListFragment<Category>
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
 		// Category category = ((Category) l.getItemAtPosition(position));
+		Intent intent = new Intent(getActivity(), ProductListFragment.class);
+		startActivity(intent);
 	}
 
 	@Override

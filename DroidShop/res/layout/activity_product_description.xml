@@ -1,89 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#ffffff"
-    android:orientation="vertical" >
-
-    <LinearLayout
-        android:id="@+id/LinearLayoutHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <ImageView
-            android:id="@+id/ImageViewProduct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dip"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_launcher" >
-        </ImageView>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/TextViewProductDetails"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dip"
-        android:layout_weight="1"
-        android:text="Product description"
-        android:textColor="#000000" >
-    </TextView>
-
-    <TextView
-        android:id="@+id/TextViewProductTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dip"
-        android:text="Dead or Alive"
-        android:textColor="#000000"
-        android:textSize="26dip" >
-    </TextView>
-
-    <TextView
-        android:id="@+id/TextViewProductPrice"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dip"
-        android:text="Product Price"
-        android:textColor="#000000"
-        android:textStyle="bold" >
-    </TextView>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutAddLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dip"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quantity:"
-            android:textColor="#000000" >
-        </TextView>
-
-        <EditText
-            android:id="@+id/editTextQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:inputType="number" >
-        </EditText>
-
-        <Button
-            android:id="@+id/ButtonAddToCart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="Set Quantity" >
-        </Button>
-    </LinearLayout>
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/productDescriptionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProductDescriptionActivity" >
 
 </LinearLayout>

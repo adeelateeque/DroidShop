@@ -12,18 +12,21 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
+import com.droidshop.model.MonetaryAmount;
 import com.droidshop.model.Product;
-import com.droidshop.ui.core.ItemGridFragment;
+import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.kevinsawicki.wishlist.Toaster;
 
-public class NewProductsFragment extends ItemGridFragment<Product> {
+public class ProductDescriptionFragment extends ItemListFragment<Product> {
 
 	@Inject
 	protected ApiProvider apiProvider;
@@ -44,18 +47,28 @@ public class NewProductsFragment extends ItemGridFragment<Product> {
 	}
 
 	@Override
+	protected void configureList(Activity activity, ListView listView) {
+		super.configureList(activity, listView);
+
+		listView.setFastScrollEnabled(true);
+		listView.setDividerHeight(0);
+
+		// getListAdapter().addHeader(activity.getLayoutInflater().inflate(R.layout.checkins_list_item_labels,
+		// null));
+	}
+
+	@Override
 	protected LogoutService getLogoutService() {
 		return logoutService;
 	}
 
 	@Override
 	public void onDestroyView() {
-		setGridAdapter(null);
+		setListAdapter(null);
 
 		super.onDestroyView();
 	}
 
-	@Override
 	public Loader<List<Product>> onCreateLoader(int id, Bundle args) {
 		final List<Product> initialItems = items;
 		return new ThrowableLoader<List<Product>>(getSherlockActivity(), items) {
@@ -87,20 +100,13 @@ public class NewProductsFragment extends ItemGridFragment<Product> {
 
 	@Override
 	protected SingleTypeAdapter<Product> createAdapter(List<Product> items) {
-		return new NewProductsAdapter(
+		return new ProductListAdapter(
 				getSherlockActivity().getLayoutInflater(), items);
 	}
 
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		// Product product = ((Product) l.getItemAtPosition(position));
-
-		// startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW,
-		// Uri.parse(uri)),
-		// getString(R.string.choose)));
-		Intent intent = new Intent(getActivity(),
-				ProductDescriptionActivity.class);
-		intent.putExtra("position", position);
-		startActivity(intent);
+//		Intent intent = new Intent(getActivity(), ProductListFragment.class);
+//		startActivity(intent);
 	}
 
 	@Override

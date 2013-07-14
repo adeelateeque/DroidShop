@@ -425,6 +425,7 @@ public abstract class ItemListFragment<E> extends SherlockFragment
      * @param v
      * @param position
      * @param id
+     * @return
      */
     public void onListItemClick(ListView l, View v, int position, long id) {
     	Toast.makeText(getSherlockActivity(), "123", Toast.LENGTH_SHORT).show();

@@ -34,6 +34,7 @@ import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.order.OrderActivity;
 import com.droidshop.ui.product.NewProductsFragment;
+import com.droidshop.ui.product.ProductDescriptionActivity;
 import com.droidshop.ui.reservation.ReservationActivity;
 import com.droidshop.ui.user.UserProfileActivity;
 import com.github.kevinsawicki.wishlist.Toaster;

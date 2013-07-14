@@ -23,30 +23,30 @@ public class MainFragment extends SherlockFragment {
 			Bundle savedInstanceState) {
 		ScrollView view = (ScrollView) inflater.inflate(R.layout.main_view, null);
 
-		GridView gvToday = (GridView) view.findViewById(R.id.gvToday);
-		GridView gvRecent = (GridView) view.findViewById(R.id.gvRecent);
-		GridView gvMost = (GridView) view.findViewById(R.id.gvMost);
-
-		gvToday.setAdapter(new ImageAdapter(this.getSherlockActivity()));
-		gvToday.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(MainFragment.this.getSherlockActivity(), "" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        gvRecent.setAdapter(new ImageAdapter(this.getSherlockActivity()));
-        gvRecent.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(MainFragment.this.getSherlockActivity(), "" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        gvMost.setAdapter(new ImageAdapter(this.getSherlockActivity()));
-        gvMost.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(MainFragment.this.getSherlockActivity(), "" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+//		GridView gvToday = (GridView) view.findViewById(R.id.gvToday);
+//		GridView gvRecent = (GridView) view.findViewById(R.id.gvRecent);
+//		GridView gvMost = (GridView) view.findViewById(R.id.gvMost);
+//
+//		gvToday.setAdapter(new ImageAdapter(this.getSherlockActivity()));
+//		gvToday.setOnItemClickListener(new OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                Toast.makeText(MainFragment.this.getSherlockActivity(), "" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        gvRecent.setAdapter(new ImageAdapter(this.getSherlockActivity()));
+//        gvRecent.setOnItemClickListener(new OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                Toast.makeText(MainFragment.this.getSherlockActivity(), "" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        gvMost.setAdapter(new ImageAdapter(this.getSherlockActivity()));
+//        gvMost.setOnItemClickListener(new OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//                Toast.makeText(MainFragment.this.getSherlockActivity(), "" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 		return view;
 	}
 

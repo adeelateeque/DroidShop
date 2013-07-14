@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:adjustViewBounds="true"
+        android:gravity="center"
+        android:text="SALES INVOICE"
+        android:textSize="25dip"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:adjustViewBounds="true"
+        android:text="Invoice No: "
+        android:textSize="15dip" />
+
+    <TextView
+        android:id="@+id/invoiceID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:adjustViewBounds="true"
+        android:textSize="15dip" />
+
+    <TextView
+        android:id="@+id/itemDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:adjustViewBounds="true"
+        android:text="MINION DESP $14"
+        android:textSize="15dip" />
+
+    <TextView
+        android:id="@+id/totalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="10dip"
+        android:adjustViewBounds="true"
+        android:text="Total Price: $14"
+        android:textSize="15dip" />
+
+</LinearLayout>
