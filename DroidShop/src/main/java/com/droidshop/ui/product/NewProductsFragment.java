@@ -7,8 +7,6 @@ import javax.inject.Inject;
 
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -19,7 +17,6 @@ import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
-import com.droidshop.model.CheckIn;
 import com.droidshop.model.Product;
 import com.droidshop.ui.core.ItemGridFragment;
 import com.droidshop.util.ThrowableLoader;
@@ -108,14 +105,9 @@ public class NewProductsFragment extends ItemGridFragment<Product>
 
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
-		CheckIn checkIn = ((CheckIn) l.getItemAtPosition(position));
+		//Product product = ((Product) l.getItemAtPosition(position));
 
-		String uri = String.format("geo:%s,%s?q=%s", checkIn.getLocation().getLatitude(), checkIn.getLocation()
-				.getLongitude(), checkIn.getName());
-
-		// Show a chooser that allows the user to decide how to display this data, in this case, map
-		// data.
-		startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)), getString(R.string.choose)));
+		//startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)), getString(R.string.choose)));
 	}
 
 	@Override

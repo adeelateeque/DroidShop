@@ -55,7 +55,7 @@ public class Constants
 		/**
 		 * Base URL for all requests
 		 */
-		public static final String URL_BASE = "http://droidshop.elasticbeanstalk.com/";
+		public static final String URL_BASE = "http://droidshop.elasticbeanstalk.com";
 
 		/**
 		 * Authentication URL

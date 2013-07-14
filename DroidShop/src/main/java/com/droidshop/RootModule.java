@@ -1,25 +1,23 @@
 package com.droidshop;
 
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
-import com.droidshop.core.TimerService;
-import com.droidshop.ui.BootstrapTimerActivity;
-import com.droidshop.ui.CarouselActivity;
-import com.droidshop.ui.CategoryFragment;
-import com.droidshop.ui.CreateProductFragment;
-import com.droidshop.ui.CurrentOrderFragment;
-import com.droidshop.ui.ListItemActivity;
-import com.droidshop.ui.ListItemAdapter;
-import com.droidshop.ui.ListItemFragment;
+import com.droidshop.ui.HomeActivity;
 import com.droidshop.ui.MainFragment;
-import com.droidshop.ui.MyOrderActivity;
-import com.droidshop.ui.PastOrderFragment;
-import com.droidshop.ui.RegisterActivity;
-import com.droidshop.ui.ReservationActivity;
-import com.droidshop.ui.ReservationListAdapter;
-import com.droidshop.ui.ReservationListFragment;
-import com.droidshop.ui.UpdateProductFragment;
-import com.droidshop.ui.UserProfileActivity;
+import com.droidshop.ui.category.CategoryFragment;
+import com.droidshop.ui.order.CurrentOrderFragment;
+import com.droidshop.ui.order.OrderActivity;
+import com.droidshop.ui.order.PastOrderFragment;
+import com.droidshop.ui.product.CreateProductFragment;
 import com.droidshop.ui.product.NewProductsFragment;
+import com.droidshop.ui.product.ProductListActivity;
+import com.droidshop.ui.product.ProductListAdapter;
+import com.droidshop.ui.product.ProductListFragment;
+import com.droidshop.ui.product.UpdateProductFragment;
+import com.droidshop.ui.reservation.ReservationActivity;
+import com.droidshop.ui.reservation.ReservationListAdapter;
+import com.droidshop.ui.reservation.ReservationListFragment;
+import com.droidshop.ui.user.RegisterActivity;
+import com.droidshop.ui.user.UserProfileActivity;
 
 import dagger.Module;
 
@@ -36,23 +34,21 @@ import dagger.Module;
     		RegisterActivity.class,
             BootstrapApplication.class,
             BootstrapAuthenticatorActivity.class,
-            CarouselActivity.class,
-            BootstrapTimerActivity.class,
-            TimerService.class,
+            HomeActivity.class,
             MainFragment.class,
             CategoryFragment.class,
             CreateProductFragment.class,
             UpdateProductFragment.class,
             UserProfileActivity.class,
-            MyOrderActivity.class,
+            OrderActivity.class,
             CurrentOrderFragment.class,
             PastOrderFragment.class,
             ReservationActivity.class,
             ReservationListFragment.class,
             ReservationListAdapter.class,
-            ListItemActivity.class,
-            ListItemAdapter.class,
-            ListItemFragment.class,
+            ProductListActivity.class,
+            ProductListAdapter.class,
+            ProductListFragment.class,
             NewProductsFragment.class
     }
 )

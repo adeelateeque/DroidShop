@@ -42,8 +42,8 @@ import com.droidshop.core.Constants;
 import com.droidshop.core.Constants.Auth;
 import com.droidshop.core.Constants.Http;
 import com.droidshop.model.User;
-import com.droidshop.ui.RegisterActivity;
-import com.droidshop.ui.TextWatcherAdapter;
+import com.droidshop.ui.core.TextWatcherAdapter;
+import com.droidshop.ui.user.RegisterActivity;
 import com.droidshop.util.Ln;
 import com.droidshop.util.SafeAsyncTask;
 import com.github.kevinsawicki.wishlist.Toaster;
@@ -159,6 +159,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 	{
 		return new TextWatcherAdapter()
 		{
+			@Override
 			public void afterTextChanged(Editable gitDirEditText)
 			{
 				updateUIWithValidation();

@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.droidshop.R;
-import com.droidshop.ui.CategoryFragment;
 import com.droidshop.ui.MainFragment;
+import com.droidshop.ui.category.CategoryFragment;
 
 /**
  * Pager adapter

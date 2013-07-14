@@ -9,7 +9,7 @@ import butterknife.Views;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.droidshop.BootstrapApplication;
-import com.droidshop.ui.CarouselActivity;
+import com.droidshop.ui.HomeActivity;
 
 /**
  * Base activity for a Bootstrap activity which does not use fragments.
@@ -36,7 +36,7 @@ public abstract class BootstrapActivity extends SherlockActivity{
         switch (item.getItemId()) {
             case android.R.id.home:  // This is the home button in the top left corner of the screen.
                 // Don't call finish! Because activity could have been started by an outside activity and the home button would not operate as expected!
-                Intent homeIntent = new Intent(this, CarouselActivity.class);
+                Intent homeIntent = new Intent(this, HomeActivity.class);
                 homeIntent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(homeIntent);
                 return true;

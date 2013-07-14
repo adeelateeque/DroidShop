@@ -208,44 +208,32 @@ public class BootstrapApi
 	{
 		private ArrayList<Link> links;
 		private Page page;
+		private ArrayList<T> content;
+		private T entity;
 
-		protected abstract T getOne();
-
-		protected abstract ArrayList<T> getAll();
+		protected List<T> getContent()
+		{
+			if (entity != null)
+			{
+				List<T> asList = new ArrayList<T>();
+				asList.add(entity);
+				return asList;
+			}
+			else if (content != null)
+			{
+				return content;
+			}
+			return Collections.emptyList();
+		}
 
 		public ArrayList<Link> getLinks()
 		{
 			return links;
 		}
 
-		public void setLinks(ArrayList<Link> links)
-		{
-			this.links = links;
-		}
-
 		public Page getPage()
 		{
 			return page;
-		}
-
-		public void setPage(Page page)
-		{
-			this.page = page;
-		}
-
-		public List<T> getEntities()
-		{
-			if (getAll() != null)
-			{
-				return getAll();
-			}
-			else if (getOne() != null)
-			{
-				List<T> asList = new ArrayList<T>();
-				asList.add(getOne());
-				return asList;
-			}
-			return Collections.emptyList();
 		}
 	}
 
@@ -324,29 +312,12 @@ public class BootstrapApi
 	}
 
 	// All available APIs
-	// TODO exceptions thrown are not actual
 	public UserApi getUserApi() throws OperationCanceledException
 	{
 		UserApi userApi = new UserApi(apiKey, userAgentProvider);
 		userApi.setUsername(this.username);
 		userApi.setPassword(password);
 		return userApi;
-	}
-
-	public FeedApi getNewsApi() throws OperationCanceledException
-	{
-		FeedApi newsApi = new FeedApi(apiKey, userAgentProvider);
-		newsApi.setUsername(this.username);
-		newsApi.setPassword(password);
-		return newsApi;
-	}
-
-	public CheckInApi getCheckInApi() throws OperationCanceledException
-	{
-		CheckInApi checkInApi = new CheckInApi(apiKey, userAgentProvider);
-		checkInApi.setUsername(this.username);
-		checkInApi.setPassword(password);
-		return checkInApi;
 	}
 
 	public ProductApi getProductApi() throws OperationCanceledException
@@ -379,5 +350,13 @@ public class BootstrapApi
 		reservationApi.setUsername(this.username);
 		reservationApi.setPassword(password);
 		return reservationApi;
+	}
+
+	public CategoryApi getCategoryApi() throws OperationCanceledException
+	{
+		CategoryApi categoryApi = new CategoryApi(apiKey, userAgentProvider);
+		categoryApi.setUsername(this.username);
+		categoryApi.setPassword(password);
+		return categoryApi;
 	}
 }

@@ -3,12 +3,14 @@ package com.droidshop.api;
 import static com.droidshop.core.Constants.Http.URL_USERS;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.droidshop.core.Constants.Http;
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.User;
+import com.droidshop.util.Ln;
+import com.droidshop.util.Strings;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 
@@ -26,20 +28,6 @@ public class UserApi extends BootstrapApi
 
 	private class UsersWrapper extends BaseWrapper<User>
 	{
-		private ArrayList<User> content;
-		private User user;
-
-		@Override
-		public ArrayList<User> getAll()
-		{
-			return content;
-		}
-
-		@Override
-		public User getOne()
-		{
-			return user;
-		}
 	}
 
 	/**
@@ -56,7 +44,7 @@ public class UserApi extends BootstrapApi
 			UsersWrapper response = fromJson(request, UsersWrapper.class);
 			if(response != null)
 			{
-				return response.getEntities();
+				return response.getContent();
 			}
 		}
 		catch (HttpRequestException e)
@@ -68,7 +56,7 @@ public class UserApi extends BootstrapApi
 
 	public static User authenticateUser(String username, String password) throws IOException
 	{
-		/*UsersWrapper response;
+		UsersWrapper response;
 		final String query = String.format("%s=%s&%s=%s", Http.PARAM_USERNAME, username, Http.PARAM_PASSWORD, password);
 		try
 		{
@@ -83,19 +71,14 @@ public class UserApi extends BootstrapApi
 				response = GSON.fromJson(Strings.toString(request.buffer()), UsersWrapper.class);
 				if(response != null)
 				{
-					return response.getEntities().get(0);
+					return response.getContent().get(0);
 				}
 			}
-			return null;
 		}
 		catch (HttpRequestException e)
 		{
 			throw e.getCause();
-		}*/
-		User user = new User();
-		user.setUserName(username);
-		user.setPassword(password);
-
-		return user;
+		}
+		return null;
 	}
 }
