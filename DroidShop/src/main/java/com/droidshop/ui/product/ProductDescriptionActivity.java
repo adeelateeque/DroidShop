@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.droidshop.R;
+import com.droidshop.ui.cart.Cart;
 
 public class ProductDescriptionActivity extends Activity {
 
@@ -21,14 +22,13 @@ public class ProductDescriptionActivity extends Activity {
 		setContentView(R.layout.activity_product_description);
 
 
-		int selectedProduct = getIntent().getExtras().getInt("position");
+		final int selectedProduct = getIntent().getExtras().getInt("position");
 
 		// Set the proper image and text
 		ImageView productImageView = (ImageView) findViewById(R.id.ImageViewProduct);
 		productImageView.setImageDrawable(getResources().getDrawable(R.drawable.icon));
 		TextView productTitleTextView = (TextView) findViewById(R.id.TextViewProductTitle);
 		productTitleTextView.setText("Product " + selectedProduct);
-		//productTitleTextView.setText("Product 1");
 		TextView productDetailsTextView = (TextView) findViewById(R.id.TextViewProductDetails);
 		productDetailsTextView.setText("Description of products here!");
 		TextView productPriceTextView = (TextView) findViewById(R.id.TextViewProductPrice);
@@ -66,8 +66,7 @@ public class ProductDescriptionActivity extends Activity {
 				}
 
 				// If we make it here, a valid quantity was entered
-				//Product product = new Product();
-				//product.setQuantity(selectedProduct, quantity);
+				Cart.addProduct(selectedProduct, quantity);
 
 				// Close the activity
 				finish();
