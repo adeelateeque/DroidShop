@@ -2,6 +2,8 @@ package com.droidshop.ui;
 
 import javax.inject.Inject;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -26,14 +28,12 @@ import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.droidshop.R;
 import com.droidshop.R.id;
-import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.authenticator.LogoutService;
+import com.droidshop.core.Constants;
 import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.order.OrderActivity;
-import com.droidshop.ui.product.CreateProductFragment;
 import com.droidshop.ui.product.NewProductsFragment;
-import com.droidshop.ui.product.UpdateProductFragment;
 import com.droidshop.ui.reservation.ReservationActivity;
 import com.droidshop.ui.user.UserProfileActivity;
 import com.github.kevinsawicki.wishlist.Toaster;
@@ -51,7 +51,6 @@ public class HomeActivity extends BootstrapFragmentActivity
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
-	private String[] mSideMenu;
 
 	private MergeAdapter mAdapter;
 	private ArrayAdapter<String> aAdapter;
@@ -71,6 +70,34 @@ public class HomeActivity extends BootstrapFragmentActivity
 		setupDrawer();
 	}
 
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+
+		checkUserType();
+	}
+
+	private void checkUserType()
+	{
+		AccountManager accountManager = AccountManager.get(this);
+		Account[] accounts = accountManager.getAccountsByType(Constants.Auth.DROIDSHOP_ACCOUNT_TYPE);
+		if (accounts.length == 0)
+		{
+			accountManager.addAccount(Constants.Auth.DROIDSHOP_ACCOUNT_TYPE, null, null, null, this, null, null);
+		}
+		else
+		{
+			isUser = !(isAdmin = accounts[0].name.equals("admin@droidshop.com"));
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
 	private void setupDrawer()
 	{
 		mTitle = mDrawerTitle = getTitle();
@@ -79,37 +106,6 @@ public class HomeActivity extends BootstrapFragmentActivity
 
 		// set a custom shadow that overlays the main content when the drawer opens
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-		// set up the drawer's list view with items and click listener
-		mAdapter = new MergeAdapter();
-
-		if ((isUser == false) && (isAdmin == false))
-		{
-			mSideMenu = getResources().getStringArray(R.array.logoutArray);
-			aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
-			mAdapter.addAdapter(new ProfileImageAdapter(this));
-			mAdapter.addAdapter(aAdapter);
-			mDrawerList.setAdapter(mAdapter);
-		}
-		else if ((isUser == true) && (isAdmin == false))
-		{
-			mSideMenu = getResources().getStringArray(R.array.loginArray);
-			aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
-			mAdapter.addAdapter(new ProfileImageAdapter(this));
-			mAdapter.addAdapter(aAdapter);
-			mDrawerList.setAdapter(mAdapter);
-		}
-		else if ((isUser == true) && (isAdmin == true))
-		{
-			mSideMenu = getResources().getStringArray(R.array.adminArray);
-			aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSideMenu);
-			mAdapter.addAdapter(aAdapter);
-			mDrawerList.setAdapter(mAdapter);
-		}
-		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-		// enable ActionBar app icon to behave as action to toggle nav drawer
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setHomeButtonEnabled(true);
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
@@ -133,6 +129,30 @@ public class HomeActivity extends BootstrapFragmentActivity
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+		// set up the drawer's list view with items and click listener
+		mAdapter = new MergeAdapter();
+
+		if (isUser == true)
+		{
+			// enable ActionBar app icon to behave as action to toggle nav drawer
+			mActionBar.setDisplayHomeAsUpEnabled(true);
+			mActionBar.setHomeButtonEnabled(true);
+			aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, getResources().getStringArray(
+					R.array.user_drawer_items));
+			mAdapter.addAdapter(new ProfileImageAdapter(this));
+			mAdapter.addAdapter(aAdapter);
+			mDrawerList.setAdapter(mAdapter);
+		}
+		else if (isAdmin == true)
+		{
+			mActionBar.setDisplayHomeAsUpEnabled(false);
+			mActionBar.setHomeButtonEnabled(false);
+			mDrawerToggle.setDrawerIndicatorEnabled(false);
+			mDrawerLayout.setEnabled(true);
+			mDrawerList.setVisibility(View.GONE);
+		}
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 	}
 
 	private void ensureGoogplePlayService()
@@ -148,57 +168,45 @@ public class HomeActivity extends BootstrapFragmentActivity
 	{
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		if (isAdmin == false)
-		{
-			ActionBar.Tab mainTab = mActionBar.newTab().setText(R.string.page_main)
-					.setTabListener(new TabListener<NewProductsFragment>(this, "product", NewProductsFragment.class));
-			mActionBar.addTab(mainTab, true);
+		ActionBar.Tab mainTab = mActionBar.newTab().setText(R.string.page_main)
+				.setTabListener(new TabListener<NewProductsFragment>(this, "product", NewProductsFragment.class));
+		mActionBar.addTab(mainTab, true);
 
-			ActionBar.Tab categoryTab = mActionBar.newTab().setText(R.string.page_category)
-					.setTabListener(new TabListener<CategoryListFragment>(this, "category", CategoryListFragment.class));
-			mActionBar.addTab(categoryTab);
-		}
-		else if (isAdmin == true)
-		{
-			ActionBar.Tab createProduct = mActionBar
-					.newTab()
-					.setText(R.string.page_create_product)
-					.setTabListener(
-							new TabListener<CreateProductFragment>(this, "create product", CreateProductFragment.class));
-			mActionBar.addTab(createProduct, true);
-
-			ActionBar.Tab updateProduct = mActionBar
-					.newTab()
-					.setText(R.string.page_update_product)
-					.setTabListener(
-							new TabListener<UpdateProductFragment>(this, "update product", UpdateProductFragment.class));
-			mActionBar.addTab(updateProduct, true);
-		}
+		ActionBar.Tab categoryTab = mActionBar.newTab().setText(R.string.page_category)
+				.setTabListener(new TabListener<CategoryListFragment>(this, "category", CategoryListFragment.class));
+		mActionBar.addTab(categoryTab);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		getSupportMenuInflater().inflate(R.menu.main, menu);
-		SearchView searchView = (SearchView) menu.findItem(R.id.search_action).getActionView();
-		searchView.setOnQueryTextListener(new OnQueryTextListener()
+		if (isAdmin)
 		{
-			@Override
-			public boolean onQueryTextSubmit(String text)
+			getSupportMenuInflater().inflate(R.menu.admin, menu);
+		}
+		else
+		{
+			getSupportMenuInflater().inflate(R.menu.main, menu);
+			SearchView searchView = (SearchView) menu.findItem(R.id.search_action).getActionView();
+			searchView.setOnQueryTextListener(new OnQueryTextListener()
 			{
-				Toaster.showLong(HomeActivity.this, text);
-				return true;
-			}
+				@Override
+				public boolean onQueryTextSubmit(String text)
+				{
+					Toaster.showLong(HomeActivity.this, text);
+					return true;
+				}
 
-			@Override
-			public boolean onQueryTextChange(String text)
-			{
-				Toaster.showLong(HomeActivity.this, text);
-				return true;
-			}
-		});
-		searchView.setQueryHint(getResources().getString(R.string.search_action));
-		// Configure the search info and add any event listeners
+				@Override
+				public boolean onQueryTextChange(String text)
+				{
+					Toaster.showLong(HomeActivity.this, text);
+					return true;
+				}
+			});
+			searchView.setQueryHint(getResources().getString(R.string.search_action));
+		}
+
 		return true;
 	}
 
@@ -221,6 +229,16 @@ public class HomeActivity extends BootstrapFragmentActivity
 				{
 					mDrawerLayout.openDrawer(mDrawerList);
 				}
+				return true;
+			case id.logout:
+				logoutService.logout(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						finish();
+					}
+				});
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -291,55 +309,30 @@ public class HomeActivity extends BootstrapFragmentActivity
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 		{
 			Intent intent;
-			if ((isUser == false) && (isAdmin == false))
+			switch (position)
 			{
-				switch (position)
-				{
-					case 0:
-						intent = new Intent(HomeActivity.this, BootstrapAuthenticatorActivity.class);
-						startActivity(intent);
-						break;
-				}
-			}
-			else if ((isUser == true) && (isAdmin == false))
-			{
-				switch (position)
-				{
-					case 0:
-						intent = new Intent(HomeActivity.this, UserProfileActivity.class);
-						startActivity(intent);
-						break;
-					case 1:
-						intent = new Intent(HomeActivity.this, OrderActivity.class);
-						startActivity(intent);
-						break;
-					case 2:
-						intent = new Intent(HomeActivity.this, ReservationActivity.class);
-						startActivity(intent);
-						break;
-					case 3:
-						logoutService.logout(new Runnable()
+				case 0:
+					intent = new Intent(HomeActivity.this, UserProfileActivity.class);
+					startActivity(intent);
+					break;
+				case 1:
+					intent = new Intent(HomeActivity.this, OrderActivity.class);
+					startActivity(intent);
+					break;
+				case 2:
+					intent = new Intent(HomeActivity.this, ReservationActivity.class);
+					startActivity(intent);
+					break;
+				case 3:
+					logoutService.logout(new Runnable()
+					{
+						@Override
+						public void run()
 						{
-							@Override
-							public void run()
-							{
-								finish();
-								Intent intent = new Intent(HomeActivity.this, BootstrapAuthenticatorActivity.class);
-								startActivity(intent);
-							}
-						});
-						break;
-				}
-			}
-			else if ((isUser == true) && (isAdmin == true))
-			{
-				switch (position)
-				{
-					case 1:
-						intent = new Intent(HomeActivity.this, BootstrapAuthenticatorActivity.class);
-						startActivity(intent);
-						break;
-				}
+							finish();
+						}
+					});
+					break;
 			}
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}
@@ -362,7 +355,7 @@ public class HomeActivity extends BootstrapFragmentActivity
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
+		// Pass any configuration change to the drawer toggle
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 }

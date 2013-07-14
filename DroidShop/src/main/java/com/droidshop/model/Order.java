@@ -3,9 +3,10 @@ package com.droidshop.model;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.joda.time.DateTime;
 
 import com.droidshop.model.Customer;
 
@@ -15,8 +16,7 @@ public class Order extends AbstractEntity implements Serializable
 
 	private Status status;
 
-	private Date orderedDate;
-
+	private DateTime orderedDate;
 	private Set<Product> products = new HashSet<Product>();
 
 	private Customer customer;
@@ -34,7 +34,7 @@ public class Order extends AbstractEntity implements Serializable
 	{
 		this.status = Status.PAYMENT_EXPECTED;
 		this.products.addAll(products);
-		this.orderedDate = new Date();
+		this.orderedDate = new DateTime();
 	}
 
 	public Order()
@@ -190,12 +190,12 @@ public class Order extends AbstractEntity implements Serializable
 		this.status = status;
 	}
 
-	public Date getOrderedDate()
+	public DateTime getOrderedDate()
 	{
 		return orderedDate;
 	}
 
-	public void setOrderedDate(Date orderedDate)
+	public void setOrderedDate(DateTime orderedDate)
 	{
 		this.orderedDate = orderedDate;
 	}

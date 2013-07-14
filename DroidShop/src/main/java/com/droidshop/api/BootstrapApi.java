@@ -7,9 +7,13 @@ import static com.droidshop.core.Constants.Http.REST_API_KEY;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.List;
+
+import org.joda.time.DateTime;
 
 import com.droidshop.core.Constants;
 import com.droidshop.core.UserAgentProvider;
@@ -18,7 +22,13 @@ import com.github.kevinsawicki.http.HttpRequest;
 import com.google.analytics.tracking.android.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 /**
  * Bootstrap API service
@@ -34,7 +44,7 @@ public class BootstrapApi
 	/**
 	 * GSON instance to use for all request with date format set up for proper parsing.
 	 */
-	public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+	public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd").registerTypeAdapter(Currency.class, new CurrencyConverter()).registerTypeAdapter(DateTime.class, new DateTimeConverter()).create();
 
 	/**
 	 * You can also configure GSON with different naming policies for your API. Maybe your api is
@@ -348,5 +358,36 @@ public class BootstrapApi
 		categoryApi.setUsername(this.username);
 		categoryApi.setPassword(password);
 		return categoryApi;
+	}
+}
+
+class DateTimeConverter implements JsonSerializer<DateTime>, JsonDeserializer<DateTime>
+{
+	@Override
+	public JsonElement serialize(DateTime src, Type srcType, JsonSerializationContext context)
+	{
+		return new JsonPrimitive(src.toString());
+	}
+
+	@Override
+	public DateTime deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException
+	{
+		//return new DateTime(json.getAsString());
+		return new DateTime();
+	}
+}
+
+class CurrencyConverter implements JsonSerializer<Currency>, JsonDeserializer<Currency>
+{
+	@Override
+	public JsonElement serialize(Currency src, Type srcType, JsonSerializationContext context)
+	{
+		return new JsonPrimitive(src.toString());
+	}
+
+	@Override
+	public Currency deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException
+	{
+		return Currency.getInstance(json.getAsString());
 	}
 }

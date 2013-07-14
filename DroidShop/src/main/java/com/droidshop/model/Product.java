@@ -1,8 +1,9 @@
 package com.droidshop.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import org.joda.time.DateTime;
 
 public class Product extends AbstractEntity {
 	private String name;
@@ -17,9 +18,9 @@ public class Product extends AbstractEntity {
 
 	protected List<Review> reviews;
 
-	private Date createdAt;
+	private DateTime createdAt;
 
-	private Date updatedAt;
+	private DateTime updatedAt;
 
 	private Status status;
 
@@ -102,19 +103,19 @@ public class Product extends AbstractEntity {
 		this.reviews = reviews;
 	}
 
-	public Date getCreatedAt() {
+	public DateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(DateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt() {
+	public DateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(DateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

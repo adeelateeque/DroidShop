@@ -282,7 +282,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 */
 	protected void showError(final int message)
 	{
-		Toaster.showLong(getActivity(), message);
+		Toaster.showLong(getSherlockActivity(), message);
 	}
 
 	/**

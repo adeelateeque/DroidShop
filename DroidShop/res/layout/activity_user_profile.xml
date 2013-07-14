@@ -7,100 +7,100 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="vertical" >
-        
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
         <TextView
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_gravity="center_horizontal"
-        	android:layout_marginTop="15dp"
-        	android:layout_marginBottom="5dp"
-        	android:textSize="30sp"
-       		android:text="@string/profile" />
-        
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/profile"
+            android:textSize="30sp" />
+
         <ImageButton
             android:id="@+id/ibUser"
-            android:layout_width="85dp"
-        	android:layout_height="85dp"
-        	android:layout_gravity="center_horizontal" />
-        
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name" />
+
         <EditText
-    	   	android:id="@+id/etUsername"
+            android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/username"
-            android:enabled="false" />
-    	
-    	<EditText
-    	    android:id="@+id/etOPwd"
-    	    android:layout_width="match_parent"
-    	    android:layout_height="wrap_content"
-            android:ems="5"
-            android:inputType="textPassword"
-            android:hint="@string/label_old_password" />
-    	
-    	<EditText
-    	    android:id="@+id/etNPwd"
-    	    android:layout_width="match_parent"
-    	    android:layout_height="wrap_content"
-            android:ems="5"
-            android:inputType="textPassword"
-            android:hint="@string/label_new_password" />
+            android:enabled="false"
+            android:hint="@string/username" />
 
-       	<EditText
+        <EditText
+            android:id="@+id/etOPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/label_old_password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/etNPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="@string/label_new_password"
+            android:inputType="textPassword" />
+
+        <EditText
             android:id="@+id/etCPwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="5"
-            android:inputType="textPassword"
-            android:hint="@string/label_confirm_password" />
-       	
-       	<EditText
-           	android:id="@+id/etLName"
+            android:hint="@string/label_confirm_password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/etLName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="5"
-            android:inputType="textPersonName"
-            android:hint="@string/lastname" />
+            android:hint="@string/lastname"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/etFName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="5"
-            android:inputType="textPersonName"
-            android:hint="@string/firstname" />
-        
+            android:hint="@string/firstname"
+            android:inputType="textPersonName" />
+
         <RadioGroup
-           	android:id="@+id/rgGender"
+            android:id="@+id/rgGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="1" >
 
-        	<RadioButton
-        		android:id="@+id/rbtnMale"
-            	android:layout_width="match_parent"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.5"
-            	android:text="@string/male" />
+            <RadioButton
+                android:id="@+id/rbtnMale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/male" />
 
-        	<RadioButton
-        		android:id="@+id/rbtnFemale"
-            	android:layout_width="match_parent"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.5"
-            	android:text="@string/female" />
-        		
+            <RadioButton
+                android:id="@+id/rbtnFemale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="@string/female" />
         </RadioGroup>
-        
+
         <Button
             android:id="@+id/btnDOB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dateofbirth" />
-        
+
         <EditText
             android:id="@+id/etTele"
             android:layout_width="match_parent"
@@ -128,14 +128,14 @@
             android:inputType="textEmailAddress" />
 
         <Spinner
-       		android:id="@+id/spCountry"
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content" />
+            android:id="@+id/spCountry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Spinner
-        	android:id="@+id/spCity"
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content" />
+            android:id="@+id/spCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/etAddress"
@@ -144,29 +144,12 @@
             android:ems="5"
             android:hint="@string/address"
             android:inputType="textMultiLine" />
-        	
-        <LinearLayout
-        	android:layout_width="match_parent"
-    		android:layout_height="wrap_content"
-    		android:padding="10dp"
-    		android:orientation="horizontal" >
-        
-        	<Button
-            	android:id="@+id/btnReset"
-            	android:layout_width="wrap_content"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="0.4"
-            	android:text="@string/reset" />
-			
-			<Button
-		    	android:id="@+id/btnUpdate"
-				android:layout_width="wrap_content"
-          		android:layout_height="wrap_content"
-           	 	android:layout_weight="0.4"
-           		android:text="@string/update" />
-        
-    	</LinearLayout>
-        
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/update" />
     </LinearLayout>
 
 </ScrollView>

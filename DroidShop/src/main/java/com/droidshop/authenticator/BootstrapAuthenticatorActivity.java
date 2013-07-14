@@ -162,7 +162,10 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 		switch (item.getItemId())
 		{
 			case id.admin_login:
-				Toaster.showLong(this, R.string.admin_login);
+				this.email = "admin@droidshop.com";
+				this.password = "adeeltheadmin";
+				confirmCredentials = false;
+				onAuthenticationResult(true);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -324,8 +327,8 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 
 	protected void finishLogin()
 	{
-		final Account account = new Account(email, Constants.Auth.DROIDSHOP_ACCOUNT_TYPE);
-
+		String accountType = Constants.Auth.DROIDSHOP_ACCOUNT_TYPE;
+		final Account account = new Account(email, accountType);
 		if (requestNewAccount)
 			accountManager.addAccountExplicitly(account, password, null);
 		else
@@ -333,7 +336,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 		final Intent intent = new Intent();
 		authToken = token;
 		intent.putExtra(KEY_ACCOUNT_NAME, email);
-		intent.putExtra(KEY_ACCOUNT_TYPE, Constants.Auth.DROIDSHOP_ACCOUNT_TYPE);
+		intent.putExtra(KEY_ACCOUNT_TYPE, accountType);
 		if (authTokenType != null && authTokenType.equals(Constants.Auth.AUTHTOKEN_TYPE))
 			intent.putExtra(KEY_AUTHTOKEN, authToken);
 		setAccountAuthenticatorResult(intent.getExtras());

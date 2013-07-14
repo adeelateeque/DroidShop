@@ -13,12 +13,14 @@ import android.widget.Spinner;
 import com.droidshop.R;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 
-public class UserProfileActivity extends BootstrapFragmentActivity {
+public class UserProfileActivity extends BootstrapFragmentActivity
+{
 
 	private Spinner spCountry;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_profile);
 
@@ -27,30 +29,25 @@ public class UserProfileActivity extends BootstrapFragmentActivity {
 
 		addItemsOnCountrySpinner();
 
-		findViewById(R.id.btnDOB).setOnClickListener(new OnClickListener() {
+		findViewById(R.id.btnDOB).setOnClickListener(new OnClickListener()
+		{
 
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				// TODO Auto-generated method stub
 				DialogFragment newFragment = new DialogFragment();
-			    newFragment.show(getSupportFragmentManager(), "datePicker");
+				newFragment.show(getSupportFragmentManager(), "datePicker");
 			}
 
 		});
 
-		findViewById(R.id.btnReset).setOnClickListener(new OnClickListener(){
+		findViewById(R.id.btnUpdate).setOnClickListener(new OnClickListener()
+		{
 
 			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-			}
-
-		});
-
-		findViewById(R.id.btnUpdate).setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				// TODO Auto-generated method stub
 
 			}
@@ -58,7 +55,8 @@ public class UserProfileActivity extends BootstrapFragmentActivity {
 		});
 	}
 
-	public void addItemsOnCountrySpinner() {
+	public void addItemsOnCountrySpinner()
+	{
 
 		spCountry = (Spinner) findViewById(R.id.spCountry);
 		List<String> list = new ArrayList<String>();

@@ -23,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import butterknife.InjectView;
 
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
@@ -145,14 +144,6 @@ public class RegisterActivity extends BootstrapFragmentActivity
 		{
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.register, menu);
-		return true;
 	}
 
 	/**
