@@ -6,26 +6,26 @@ import android.support.v4.app.NavUtils;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
-import com.droidshop.R;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 
 public class OrderActivity extends BootstrapFragmentActivity
 {
-
 	ActionBar mActionBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_order);
 
 		mActionBar = getSupportActionBar();
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setHomeButtonEnabled(true);
 
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.add(R.id.content_frame, new OrderListFragment()).commit();
+		if (savedInstanceState == null)
+		{
+			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			ft.add(android.R.id.content, new OrderListFragment()).commit();
+		}
 	}
 
 	@Override

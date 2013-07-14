@@ -45,7 +45,6 @@ public class NewProductsFragment extends ItemGridFragment<Product>
 		super.onActivityCreated(savedInstanceState);
 	}
 
-
 	@Override
 	protected LogoutService getLogoutService()
 	{
@@ -105,14 +104,15 @@ public class NewProductsFragment extends ItemGridFragment<Product>
 
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
-		//Product product = ((Product) l.getItemAtPosition(position));
+		// Product product = ((Product) l.getItemAtPosition(position));
 
-		//startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)), getString(R.string.choose)));
+		// startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)),
+		// getString(R.string.choose)));
 	}
 
 	@Override
 	protected int getErrorMessage(Exception exception)
 	{
-		return R.string.error_loading_reservation;
+		return R.string.error_loading_product;
 	}
 }

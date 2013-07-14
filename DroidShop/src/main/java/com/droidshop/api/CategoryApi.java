@@ -31,7 +31,7 @@ public class CategoryApi extends BootstrapApi
 	{
 		try
 		{
-			HttpRequest request = execute(HttpRequest.get(URL_CATEGORY));
+			HttpRequest request = execute(HttpRequest.get(URL_CATEGORY + "?size=0"));
 			CategoryWrapper response = fromJson(request, CategoryWrapper.class);
 			if (response != null)
 			{

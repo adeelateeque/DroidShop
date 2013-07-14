@@ -31,7 +31,7 @@ public class ProductApi extends BootstrapApi
 	{
 		try
 		{
-			HttpRequest request = execute(HttpRequest.get(URL_PRODUCTS));
+			HttpRequest request = execute(HttpRequest.get(URL_PRODUCTS + "?size=0"));
 			ProductWrapper response = fromJson(request, ProductWrapper.class);
 			if (response != null)
 			{

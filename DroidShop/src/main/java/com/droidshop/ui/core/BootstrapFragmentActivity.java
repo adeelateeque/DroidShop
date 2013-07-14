@@ -1,11 +1,10 @@
 package com.droidshop.ui.core;
 
 import android.os.Bundle;
+import butterknife.Views;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.droidshop.BootstrapApplication;
-
-import butterknife.Views;
 
 /**
  * Base class for all Bootstrap Activities that need fragments.

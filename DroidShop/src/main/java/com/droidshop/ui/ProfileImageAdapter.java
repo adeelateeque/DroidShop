@@ -32,6 +32,8 @@ public class ProfileImageAdapter extends BaseAdapter {
         ImageView imageView;
         imageView = new ImageView(mContext);
         imageView.setImageResource(R.drawable.ic_action_person);
+        imageView.setMinimumHeight(75);
+        imageView.setMaxWidth(75);
         return imageView;
     }
 }
