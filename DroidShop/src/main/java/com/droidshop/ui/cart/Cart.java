@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import com.droidshop.model.CartEntry;
 import com.droidshop.model.Product;
 
 public class Cart

@@ -117,8 +117,7 @@ public class ProductListFragment extends ItemListFragment<Product>
 
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
-		// Toast.makeText(getSherlockActivity(), l.getItemAtPosition(position).toString() +
-		// position, Toast.LENGTH_SHORT).show();
+
 		Intent intent = new Intent(getActivity(), ProductDescriptionActivity.class);
 		intent.putExtra("position", position);
 		startActivity(intent);

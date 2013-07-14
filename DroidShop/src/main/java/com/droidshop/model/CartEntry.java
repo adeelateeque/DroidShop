@@ -1,6 +1,5 @@
-package com.droidshop.ui.cart;
+package com.droidshop.model;
 
-import com.droidshop.model.Product;
 
 public class CartEntry {
 
