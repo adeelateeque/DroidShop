@@ -1,9 +1,11 @@
 package com.droidshop.api.login.rest;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.Resource;
-import org.springframework.http.HttpEntity;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,21 +37,28 @@ public class LoginController extends AbstractController
 	}
 
 	@RequestMapping(value = "customer", method = RequestMethod.GET, produces = "application/json")
-	HttpEntity<Resource<Customer>> loginCustomer(@RequestParam("username") String username,
+	ResponseEntity<Resources<Resource<Customer>>> loginCustomer(@RequestParam("username") String username,
 			@RequestParam("password") String password)
 	{
 		Customer customer = loginService.loginCustomer(username, password);
-		Resource<Customer> resource = new Resource<Customer>(customer, entityLinks.linkForSingleResource(customer)
-				.withSelfRel());
-		return new ResponseEntity<Resource<Customer>>(resource, HttpStatus.OK);
+		Resource<Customer> resource = new Resource<Customer>(customer);
+		resource.add(entityLinks.linkToSingleResource(customer).withSelfRel());
+		ArrayList<Resource<Customer>> resourceList = new ArrayList<Resource<Customer>>();
+		resourceList.add(resource);
+		Resources<Resource<Customer>> resources = new Resources<Resource<Customer>>(resourceList);
+		return new ResponseEntity<Resources<Resource<Customer>>>(resources, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "admin", method = RequestMethod.GET, produces = "application/json")
-	HttpEntity<Resource<Admin>> loginAdmin(@RequestParam("username") String username,
+	ResponseEntity<Resources<Resource<Admin>>> loginAdmin(@RequestParam("username") String username,
 			@RequestParam("password") String password)
 	{
 		Admin admin = loginService.loginAdmin(username, password);
-		Resource<Admin> resource = new Resource<Admin>(admin, entityLinks.linkForSingleResource(admin).withSelfRel());
-		return new ResponseEntity<Resource<Admin>>(resource, HttpStatus.OK);
+		Resource<Admin> resource = new Resource<Admin>(admin);
+		resource.add(entityLinks.linkToSingleResource(admin).withSelfRel());
+		ArrayList<Resource<Admin>> resourceList = new ArrayList<Resource<Admin>>();
+		resourceList.add(resource);
+		Resources<Resource<Admin>> resources = new Resources<Resource<Admin>>(resourceList);
+		return new ResponseEntity<Resources<Resource<Admin>>>(resources, HttpStatus.OK);
 	}
 }

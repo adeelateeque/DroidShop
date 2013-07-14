@@ -4,9 +4,7 @@ import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.ui.HomeActivity;
 import com.droidshop.ui.MainFragment;
 import com.droidshop.ui.category.CategoryListFragment;
-import com.droidshop.ui.order.CurrentOrderFragment;
 import com.droidshop.ui.order.OrderActivity;
-import com.droidshop.ui.order.PastOrderFragment;
 import com.droidshop.ui.product.CreateProductFragment;
 import com.droidshop.ui.product.NewProductsFragment;
 import com.droidshop.ui.product.ProductListActivity;
@@ -41,8 +39,6 @@ import dagger.Module;
             UpdateProductFragment.class,
             UserProfileActivity.class,
             OrderActivity.class,
-            CurrentOrderFragment.class,
-            PastOrderFragment.class,
             ReservationActivity.class,
             ReservationListFragment.class,
             ReservationListAdapter.class,

@@ -11,12 +11,12 @@ import com.droidshop.ui.core.AlternatingColorListAdapter;
 public class ProductListAdapter extends AlternatingColorListAdapter<Product> {
 
 	public ProductListAdapter(LayoutInflater inflater, List<Product> items, boolean selectable) {
-		super(R.layout.itemlist, inflater, items, selectable);
+		super(R.layout.product_list_item, inflater, items, selectable);
 	}
 
 	public ProductListAdapter(LayoutInflater inflater,
 			List<Product> items) {
-		super(R.layout.itemlist, inflater, items);
+		super(R.layout.product_list_item, inflater, items);
 	}
 
 	@Override

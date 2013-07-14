@@ -8,6 +8,11 @@
 
 	<web>
 		<link target="/">
+			<dir name="C:/Users/Adeel/Dropbox/School/IT3176 Mobile Applications Development/Assignment/DroidShop-api/target/m2e-wtp/web-resources">
+				<exclude name="/"/>
+			</dir>
+		</link>
+		<link target="/">
 			<dir name="C:/Users/Adeel/Dropbox/School/IT3176 Mobile Applications Development/Assignment/DroidShop-api/src/main/webapp">
 			</dir>
 		</link>

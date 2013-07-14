@@ -1,4 +1,4 @@
-package com.droidshop.ui.category;
+package com.droidshop.ui.order;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,24 +9,25 @@ import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
-import com.droidshop.model.Category;
+import com.droidshop.model.Order;
+import com.droidshop.ui.category.OrderListAdapter;
 import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 
-public class CategoryListFragment extends ItemListFragment<Category>
+public class OrderListFragment extends ItemListFragment<Order>
 {
+
 	@Inject
 	protected ApiProvider apiProvider;
-
 	@Inject
 	protected LogoutService logoutService;
 
@@ -52,6 +53,9 @@ public class CategoryListFragment extends ItemListFragment<Category>
 
 		listView.setFastScrollEnabled(true);
 		listView.setDividerHeight(0);
+
+		// getListAdapter().addHeader(activity.getLayoutInflater().inflate(R.layout.checkins_list_item_labels,
+		// null));
 	}
 
 	@Override
@@ -68,14 +72,14 @@ public class CategoryListFragment extends ItemListFragment<Category>
 		super.onDestroyView();
 	}
 
-	@Override
-	public Loader<List<Category>> onCreateLoader(int id, Bundle args)
+	public Loader<List<Order>> onCreateLoader(int id, Bundle args)
 	{
-		final List<Category> initialItems = items;
-		return new ThrowableLoader<List<Category>>(getSherlockActivity(), items)
+		final List<Order> initialItems = items;
+		Toast.makeText(getSherlockActivity(), Integer.toString(items.size()), Toast.LENGTH_LONG).show();
+		return new ThrowableLoader<List<Order>>(getSherlockActivity(), items)
 		{
 			@Override
-			public List<Category> loadData() throws Exception
+			public List<Order> loadData() throws Exception
 			{
 				try
 				{
@@ -83,11 +87,10 @@ public class CategoryListFragment extends ItemListFragment<Category>
 					{
 						api = apiProvider.getApi(getSherlockActivity());
 					}
-
-					List<Category> loaded = null;
+					List<Order> loaded = null;
 
 					if (getSherlockActivity() != null)
-						loaded = api.getCategoryApi().getCategories();
+						loaded = api.getOrderApi().getOrders();
 
 					if (loaded != null)
 						return loaded;
@@ -106,19 +109,14 @@ public class CategoryListFragment extends ItemListFragment<Category>
 	}
 
 	@Override
-	protected SingleTypeAdapter<Category> createAdapter(List<Category> items)
+	protected SingleTypeAdapter<Order> createAdapter(List<Order> items)
 	{
-		return new CategoryListAdapter(getSherlockActivity().getLayoutInflater(), items);
-	}
-
-	public void onListItemClick(ListView l, View v, int position, long id)
-	{
-		// Category category = ((Category) l.getItemAtPosition(position));
+		return new OrderListAdapter(getSherlockActivity().getLayoutInflater(), items);
 	}
 
 	@Override
 	protected int getErrorMessage(Exception exception)
 	{
-		return R.string.error_loading_category;
+		return R.string.error_loading_reservation;
 	}
 }

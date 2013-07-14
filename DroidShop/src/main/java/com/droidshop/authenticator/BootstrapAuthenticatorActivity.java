@@ -33,6 +33,9 @@ import android.widget.TextView.OnEditorActionListener;
 import butterknife.InjectView;
 import butterknife.Views;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.droidshop.R;
 import com.droidshop.R.id;
 import com.droidshop.R.layout;
 import com.droidshop.R.string;
@@ -144,6 +147,26 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 
 		emailText.addTextChangedListener(watcher);
 		passwordText.addTextChangedListener(watcher);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getSupportMenuInflater().inflate(R.menu.login, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case id.admin_login:
+				Toaster.showLong(this, R.string.admin_login);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private List<String> userEmailAccounts()
