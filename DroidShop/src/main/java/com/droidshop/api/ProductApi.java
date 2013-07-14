@@ -18,7 +18,7 @@ public class ProductApi extends BootstrapApi
 		super(username, password);
 	}
 
-	public ProductApi(String apiKey, UserAgentProvider userAgentProvider)
+	protected ProductApi(String apiKey, UserAgentProvider userAgentProvider)
 	{
 		super(apiKey, userAgentProvider);
 	}

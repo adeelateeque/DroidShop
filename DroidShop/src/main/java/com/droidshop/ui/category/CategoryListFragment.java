@@ -16,12 +16,12 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.droidshop.R;
 import com.droidshop.ui.product.ProductListActivity;
 
-public class CategoryFragment extends SherlockFragment
+public class CategoryListFragment extends SherlockFragment
 {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View view = (View) inflater.inflate(R.layout.category_view, null);
+		View view = (View) inflater.inflate(R.layout.fragment_category, null);
 
 		GridView gvCategory = (GridView) view.findViewById(R.id.gvCategory);
 
@@ -30,7 +30,7 @@ public class CategoryFragment extends SherlockFragment
 		{
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 			{
-				// Toast.makeText(CategoryFragment.this.getSherlockActivity(),
+				// Toast.makeText(CategoryListFragment.this.getSherlockActivity(),
 				// "" + position, Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent(getActivity(), ProductListActivity.class);
 				startActivity(intent);

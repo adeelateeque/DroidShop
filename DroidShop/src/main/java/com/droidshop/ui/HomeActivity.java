@@ -28,7 +28,7 @@ import com.droidshop.R;
 import com.droidshop.R.id;
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.authenticator.LogoutService;
-import com.droidshop.ui.category.CategoryFragment;
+import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.order.OrderActivity;
 import com.droidshop.ui.product.CreateProductFragment;
@@ -40,13 +40,10 @@ import com.github.kevinsawicki.wishlist.Toaster;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-/**
- * Activity to view the tabs with fragments.
- */
 public class HomeActivity extends BootstrapFragmentActivity
 {
 	@Inject
-	private LogoutService logoutService;
+	LogoutService logoutService;
 	private ActionBar mActionBar;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -68,10 +65,14 @@ public class HomeActivity extends BootstrapFragmentActivity
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		ensureGoogplePlayService();
-		setContentView(R.layout.carousel_view);
+		setContentView(R.layout.activity_home);
 		mActionBar = getSupportActionBar();
 		setupNavigationTabs();
+		setupDrawer();
+	}
 
+	private void setupDrawer()
+	{
 		mTitle = mDrawerTitle = getTitle();
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -132,10 +133,6 @@ public class HomeActivity extends BootstrapFragmentActivity
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-		// if (savedInstanceState == null) {
-		// selectItem(0);
-		// }
 	}
 
 	private void ensureGoogplePlayService()
@@ -158,7 +155,7 @@ public class HomeActivity extends BootstrapFragmentActivity
 			mActionBar.addTab(mainTab, true);
 
 			ActionBar.Tab categoryTab = mActionBar.newTab().setText(R.string.page_category)
-					.setTabListener(new TabListener<CategoryFragment>(this, "category", CategoryFragment.class));
+					.setTabListener(new TabListener<CategoryListFragment>(this, "category", CategoryListFragment.class));
 			mActionBar.addTab(categoryTab);
 		}
 		else if (isAdmin == true)

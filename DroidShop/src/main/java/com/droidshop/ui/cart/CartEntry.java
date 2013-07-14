@@ -23,5 +23,4 @@ public class CartEntry {
 	public void setQuantity(int quantity) {
 		mQuantity = quantity;
 	}
-
 }

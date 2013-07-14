@@ -11,12 +11,12 @@ import com.droidshop.ui.core.AlternatingColorListAdapter;
 public class ReservationListAdapter extends AlternatingColorListAdapter<Reservation> {
 
 	public ReservationListAdapter(LayoutInflater inflater, List<Reservation> items, boolean selectable) {
-		super(R.layout.reservation_list_row, inflater, items, selectable);
+		super(R.layout.reservation_list_item, inflater, items, selectable);
 	}
 
 	public ReservationListAdapter(LayoutInflater inflater,
 			List<Reservation> items) {
-		super(R.layout.reservation_list_row, inflater, items);
+		super(R.layout.reservation_list_item, inflater, items);
 	}
 
 	@Override

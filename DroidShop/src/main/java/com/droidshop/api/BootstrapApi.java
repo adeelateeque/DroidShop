@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.accounts.OperationCanceledException;
-
 import com.droidshop.core.Constants;
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.AbstractEntity;
@@ -72,7 +70,7 @@ public class BootstrapApi
 	}
 
 	/**
-	 * Create bootstrap service
+	 * Create DroidShop API
 	 *
 	 * @param username
 	 * @param password
@@ -85,7 +83,7 @@ public class BootstrapApi
 	}
 
 	/**
-	 * Create bootstrap service
+	 * Create DroidShop API
 	 *
 	 * @param userAgentProvider
 	 * @param apiKey
@@ -312,7 +310,7 @@ public class BootstrapApi
 	}
 
 	// All available APIs
-	public UserApi getUserApi() throws OperationCanceledException
+	public UserApi getUserApi()
 	{
 		UserApi userApi = new UserApi(apiKey, userAgentProvider);
 		userApi.setUsername(this.username);
@@ -320,7 +318,7 @@ public class BootstrapApi
 		return userApi;
 	}
 
-	public ProductApi getProductApi() throws OperationCanceledException
+	public ProductApi getProductApi()
 	{
 		ProductApi productApi = new ProductApi(apiKey, userAgentProvider);
 		productApi.setUsername(this.username);
@@ -328,7 +326,7 @@ public class BootstrapApi
 		return productApi;
 	}
 
-	public OrderApi getOrderApi() throws OperationCanceledException
+	public OrderApi getOrderApi()
 	{
 		OrderApi orderApi = new OrderApi(apiKey, userAgentProvider);
 		orderApi.setUsername(this.username);
@@ -336,15 +334,7 @@ public class BootstrapApi
 		return orderApi;
 	}
 
-	public CustomerApi getCustomerApi() throws OperationCanceledException
-	{
-		CustomerApi customerApi = new CustomerApi(apiKey, userAgentProvider);
-		customerApi.setUsername(this.username);
-		customerApi.setPassword(password);
-		return customerApi;
-	}
-
-	public ReservationApi getReservationApi() throws OperationCanceledException
+	public ReservationApi getReservationApi()
 	{
 		ReservationApi reservationApi = new ReservationApi(apiKey, userAgentProvider);
 		reservationApi.setUsername(this.username);
@@ -352,7 +342,7 @@ public class BootstrapApi
 		return reservationApi;
 	}
 
-	public CategoryApi getCategoryApi() throws OperationCanceledException
+	public CategoryApi getCategoryApi()
 	{
 		CategoryApi categoryApi = new CategoryApi(apiKey, userAgentProvider);
 		categoryApi.setUsername(this.username);

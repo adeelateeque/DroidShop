@@ -13,17 +13,17 @@ import com.github.kevinsawicki.http.HttpRequest;
 public class CategoryApi extends BootstrapApi
 {
 
-	public CategoryApi(String username, String password)
+	protected CategoryApi(String username, String password)
 	{
 		super(username, password);
 	}
 
-	public CategoryApi(String apiKey, UserAgentProvider userAgentProvider)
+	protected CategoryApi(String apiKey, UserAgentProvider userAgentProvider)
 	{
 		super(apiKey, userAgentProvider);
 	}
 
-	public class CategoryWrapper extends BaseWrapper<Category>
+	private class CategoryWrapper extends BaseWrapper<Category>
 	{
 	}
 

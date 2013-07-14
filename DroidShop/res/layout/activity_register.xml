@@ -59,12 +59,6 @@
             android:hint="@string/secret_answer"
             android:textColor="@color/text" />
 
-        <!--
-                <com.facebook.widget.LoginButton
-   	        android:id="@+id/fb_loginButton"
-   	        android:layout_width="wrap_content"
-   	        android:layout_height="wrap_content"
-   	        android:layout_gravity="center_horizontal" />-->
         <EditText
             android:id="@+id/et_firstname"
             style="@style/ShadowText"
@@ -113,25 +107,13 @@
                 android:textColor="@color/text" />
         </RadioGroup>
 
-        <EditText
+        <TextView
             android:id="@+id/et_dateofbirth"
             style="@style/ShadowText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"
             android:text="@string/dateofbirth"
             android:textColor="@color/text" />
-
-        <EditText
-            android:id="@+id/et_phonenumber"
-            style="@style/ShadowText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="5"
-            android:hint="@string/telephone_number"
-            android:inputType="phone"
-            android:textColor="@color/text" >
-        </EditText>
 
         <EditText
             android:id="@+id/et_mobilenumber"

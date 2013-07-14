@@ -69,13 +69,13 @@ public class NewProductsFragment extends ItemGridFragment<Product>
 			@Override
 			public List<Product> loadData() throws Exception
 			{
-				if (api == null)
-				{
-					api = apiProvider.getApi(getSherlockActivity());
-				}
-
 				try
 				{
+					if (api == null)
+					{
+						api = apiProvider.getApi(getSherlockActivity());
+					}
+
 					List<Product> latest = null;
 
 					if (getSherlockActivity() != null)

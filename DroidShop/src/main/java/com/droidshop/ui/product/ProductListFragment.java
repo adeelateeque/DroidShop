@@ -24,7 +24,8 @@ import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 
-public class ProductListFragment extends ItemListFragment<Product> {
+public class ProductListFragment extends ItemListFragment<Product>
+{
 
 	@Inject
 	protected ApiProvider apiProvider;
@@ -34,49 +35,59 @@ public class ProductListFragment extends ItemListFragment<Product> {
 	protected BootstrapApi api;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		BootstrapApplication.getInstance().inject(this);
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
+	public void onActivityCreated(Bundle savedInstanceState)
+	{
 		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
-	protected void configureList(Activity activity, ListView listView) {
+	protected void configureList(Activity activity, ListView listView)
+	{
 		super.configureList(activity, listView);
 
 		listView.setFastScrollEnabled(true);
 		listView.setDividerHeight(0);
 
-		//getListAdapter().addHeader(activity.getLayoutInflater().inflate(R.layout.checkins_list_item_labels, null));
+		// getListAdapter().addHeader(activity.getLayoutInflater().inflate(R.layout.checkins_list_item_labels,
+		// null));
 	}
 
 	@Override
-	protected LogoutService getLogoutService() {
+	protected LogoutService getLogoutService()
+	{
 		return logoutService;
 	}
 
 	@Override
-	public void onDestroyView() {
+	public void onDestroyView()
+	{
 		setListAdapter(null);
 
 		super.onDestroyView();
 	}
 
-	public Loader<List<Product>> onCreateLoader(int id, Bundle args) {
+	public Loader<List<Product>> onCreateLoader(int id, Bundle args)
+	{
 		final List<Product> initialItems = items;
 		Toast.makeText(getSherlockActivity(), Integer.toString(items.size()), Toast.LENGTH_LONG).show();
-		return new ThrowableLoader<List<Product>>(getSherlockActivity(), items) {
+		return new ThrowableLoader<List<Product>>(getSherlockActivity(), items)
+		{
 			@Override
-			public List<Product> loadData() throws Exception {
-				if (api == null) {
-					api = apiProvider.getApi(getSherlockActivity());
-				}
-
-				try {
+			public List<Product> loadData() throws Exception
+			{
+				try
+				{
+					if (api == null)
+					{
+						api = apiProvider.getApi(getSherlockActivity());
+					}
 					List<Product> latest = null;
 
 					if (getSherlockActivity() != null)
@@ -86,7 +97,9 @@ public class ProductListFragment extends ItemListFragment<Product> {
 						return latest;
 					else
 						return Collections.emptyList();
-				} catch (OperationCanceledException e) {
+				}
+				catch (OperationCanceledException e)
+				{
 					Activity activity = getSherlockActivity();
 					if (activity != null)
 						activity.finish();
@@ -97,19 +110,23 @@ public class ProductListFragment extends ItemListFragment<Product> {
 	}
 
 	@Override
-	protected SingleTypeAdapter<Product> createAdapter(List<Product> items) {
+	protected SingleTypeAdapter<Product> createAdapter(List<Product> items)
+	{
 		return new ProductListAdapter(getSherlockActivity().getLayoutInflater(), items);
 	}
 
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		//Toast.makeText(getSherlockActivity(), l.getItemAtPosition(position).toString() + position, Toast.LENGTH_SHORT).show();
+	public void onListItemClick(ListView l, View v, int position, long id)
+	{
+		// Toast.makeText(getSherlockActivity(), l.getItemAtPosition(position).toString() +
+		// position, Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(getActivity(), ProductDescriptionActivity.class);
 		intent.putExtra("position", position);
 		startActivity(intent);
 	}
 
 	@Override
-	protected int getErrorMessage(Exception exception) {
+	protected int getErrorMessage(Exception exception)
+	{
 		return R.string.error_loading_reservation;
 	}
 }

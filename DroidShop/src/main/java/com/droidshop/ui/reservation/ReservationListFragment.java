@@ -24,7 +24,8 @@ import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.Toaster;
 
-public class ReservationListFragment extends ItemListFragment<Reservation> {
+public class ReservationListFragment extends ItemListFragment<Reservation>
+{
 
 	@Inject
 	protected ApiProvider apiProvider;
@@ -34,49 +35,60 @@ public class ReservationListFragment extends ItemListFragment<Reservation> {
 	protected BootstrapApi api;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		BootstrapApplication.getInstance().inject(this);
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
+	public void onActivityCreated(Bundle savedInstanceState)
+	{
 		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
-	protected void configureList(Activity activity, ListView listView) {
+	protected void configureList(Activity activity, ListView listView)
+	{
 		super.configureList(activity, listView);
 
 		listView.setFastScrollEnabled(true);
 		listView.setDividerHeight(0);
 
-		//getListAdapter().addHeader(activity.getLayoutInflater().inflate(R.layout.checkins_list_item_labels, null));
+		// getListAdapter().addHeader(activity.getLayoutInflater().inflate(R.layout.checkins_list_item_labels,
+		// null));
 	}
 
 	@Override
-	protected LogoutService getLogoutService() {
+	protected LogoutService getLogoutService()
+	{
 		return logoutService;
 	}
 
 	@Override
-	public void onDestroyView() {
+	public void onDestroyView()
+	{
 		setListAdapter(null);
 
 		super.onDestroyView();
 	}
 
-	public Loader<List<Reservation>> onCreateLoader(int id, Bundle args) {
+	public Loader<List<Reservation>> onCreateLoader(int id, Bundle args)
+	{
 		final List<Reservation> initialItems = items;
 		Toast.makeText(getSherlockActivity(), Integer.toString(items.size()), Toast.LENGTH_LONG).show();
-		return new ThrowableLoader<List<Reservation>>(getSherlockActivity(), items) {
+		return new ThrowableLoader<List<Reservation>>(getSherlockActivity(), items)
+		{
 			@Override
-			public List<Reservation> loadData() throws Exception {
-				if (api == null) {
-					api = apiProvider.getApi(getSherlockActivity());
-				}
+			public List<Reservation> loadData() throws Exception
+			{
+				try
+				{
+					if (api == null)
+					{
+						api = apiProvider.getApi(getSherlockActivity());
+					}
 
-				try {
 					List<Reservation> latest = null;
 
 					if (getSherlockActivity() != null)
@@ -86,7 +98,9 @@ public class ReservationListFragment extends ItemListFragment<Reservation> {
 						return latest;
 					else
 						return Collections.emptyList();
-				} catch (OperationCanceledException e) {
+				}
+				catch (OperationCanceledException e)
+				{
 					Activity activity = getSherlockActivity();
 					if (activity != null)
 						activity.finish();
@@ -97,16 +111,19 @@ public class ReservationListFragment extends ItemListFragment<Reservation> {
 	}
 
 	@Override
-	protected SingleTypeAdapter<Reservation> createAdapter(List<Reservation> items) {
+	protected SingleTypeAdapter<Reservation> createAdapter(List<Reservation> items)
+	{
 		return new ReservationListAdapter(getSherlockActivity().getLayoutInflater(), items);
 	}
 
-	public void onListItemClick(ListView l, View v, int position, long id) {
+	public void onListItemClick(ListView l, View v, int position, long id)
+	{
 		Toaster.showLong(getSherlockActivity(), l.getItemAtPosition(position).toString());
 	}
 
 	@Override
-	protected int getErrorMessage(Exception exception) {
+	protected int getErrorMessage(Exception exception)
+	{
 		return R.string.error_loading_reservation;
 	}
 }

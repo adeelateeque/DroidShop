@@ -81,4 +81,9 @@ public class UserApi extends BootstrapApi
 		}
 		return null;
 	}
+
+	public boolean registerUser(User user)
+	{
+		return true;
+	}
 }

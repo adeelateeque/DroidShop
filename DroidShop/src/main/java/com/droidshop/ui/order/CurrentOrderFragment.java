@@ -21,7 +21,7 @@ public class CurrentOrderFragment extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = (View) inflater.inflate(R.layout.current_order_view, null);
+		View view = (View) inflater.inflate(R.layout.fragment_current_order, null);
 		tlCurrentOrder = (TableLayout) view.findViewById(R.id.tl_current_order);
 
 		for(int i = 0; i < 5; i++){

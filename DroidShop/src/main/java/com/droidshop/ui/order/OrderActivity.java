@@ -17,7 +17,7 @@ public class OrderActivity extends BootstrapFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_my_order);
+		setContentView(R.layout.activity_order);
 
 		mActionBar = getSupportActionBar();
 		mActionBar.setDisplayHomeAsUpEnabled(true);

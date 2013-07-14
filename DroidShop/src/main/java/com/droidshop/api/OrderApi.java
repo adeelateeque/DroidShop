@@ -4,11 +4,11 @@ import com.droidshop.core.UserAgentProvider;
 
 public class OrderApi extends BootstrapApi {
 
-	public OrderApi(String username, String password) {
+	protected OrderApi(String username, String password) {
 		super(username, password);
 	}
 
-	public OrderApi(String apiKey, UserAgentProvider userAgentProvider) {
+	protected OrderApi(String apiKey, UserAgentProvider userAgentProvider) {
 		super(apiKey, userAgentProvider);
 	}
 

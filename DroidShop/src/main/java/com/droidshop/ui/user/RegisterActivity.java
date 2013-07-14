@@ -3,7 +3,10 @@ package com.droidshop.ui.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -17,16 +20,27 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import butterknife.InjectView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.droidshop.R;
+import com.droidshop.api.ApiProvider;
+import com.droidshop.api.BootstrapApi;
+import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
+import com.droidshop.model.User;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.core.DatePickerFragment;
+import com.droidshop.util.SafeAsyncTask;
+import com.github.kevinsawicki.wishlist.Toaster;
 
 public class RegisterActivity extends BootstrapFragmentActivity
 {
+	User newUser = new User();
+	BootstrapApi api;
+	@Inject
+	ApiProvider apiProvider;
 	@InjectView(R.id.et_username)
 	EditText etUsername;
 	@InjectView(R.id.et_password)
@@ -39,8 +53,6 @@ public class RegisterActivity extends BootstrapFragmentActivity
 	EditText etLastName;
 	@InjectView(R.id.et_mobilenumber)
 	EditText etMobileNumber;
-	@InjectView(R.id.et_phonenumber)
-	EditText etPhoneNumber;
 	@InjectView(R.id.et_email)
 	EditText etEmail;
 	@InjectView(R.id.et_address)
@@ -52,11 +64,13 @@ public class RegisterActivity extends BootstrapFragmentActivity
 	@InjectView(R.id.rg_gender)
 	RadioGroup rgGender;
 	@InjectView(R.id.et_dateofbirth)
-	EditText et_dateofbirth;
+	TextView tv_dateofbirth;
 	@InjectView(R.id.sp_country)
 	Spinner spCountry;
 	@InjectView(R.id.sp_city)
 	Spinner spCity;
+
+	private SafeAsyncTask<Boolean> registrationTask;
 
 	private List<String> countries;
 
@@ -67,12 +81,10 @@ public class RegisterActivity extends BootstrapFragmentActivity
 		setContentView(R.layout.activity_register);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		setupFacebook();
 		setupCountrySpinner();
 
-		et_dateofbirth.setOnClickListener(new OnClickListener()
+		tv_dateofbirth.setOnClickListener(new OnClickListener()
 		{
-
 			@Override
 			public void onClick(View v)
 			{
@@ -93,12 +105,11 @@ public class RegisterActivity extends BootstrapFragmentActivity
 						{
 							dd = "0" + dd;
 						}
-						et_dateofbirth.setText(yy + "/" + mm + "/" + dd);
+						tv_dateofbirth.setText(yy + "/" + mm + "/" + dd);
 					}
 
 				};
 				newFragment.show(getSupportFragmentManager(), "datePicker");
-
 			}
 
 		});
@@ -196,26 +207,76 @@ public class RegisterActivity extends BootstrapFragmentActivity
 		etConfirmPassword.setText("");
 		etLastName.setText("");
 		etFirstName.setText("");
-		etPhoneNumber.setText("");
 		etEmail.setText("");
 		etMobileNumber.setText("");
 		etAddress.setText("");
 		etSecretQuestion.setText("");
 		etSecretAnswer.setText("");
 		rgGender.clearCheck();
-		et_dateofbirth.setText(R.string.dateofbirth);
+		tv_dateofbirth.setText(R.string.dateofbirth);
 		spCountry.setSelection(0);
 		spCity.setSelection(0);
 	}
 
 	public void registerUser(View view)
 	{
+		// means that the registration process is still in progress
+		if (registrationTask != null)
+			return;
 
+		newUser.setUserName(etUsername.getText().toString());
+		newUser.setPassword(etPassword.getText().toString());
+		newUser.setLastName(etLastName.getText().toString());
+		newUser.setFirstName(etFirstName.getText().toString());
+		newUser.setEmail(etEmail.getText().toString());
+		newUser.setHandphoneNo(etMobileNumber.getText().toString());
+		newUser.setAddress(etAddress.getText().toString());
+		newUser.setSecretQuestion(etSecretQuestion.getText().toString());
+		newUser.setSecretAnswer(etSecretAnswer.getText().toString());
+		newUser.setCountry(spCountry.getSelectedItem().toString());
+		newUser.setCity(spCity.getSelectedItem().toString());
+
+		registrationTask = new SafeAsyncTask<Boolean>()
+		{
+			public Boolean call() throws Exception
+			{
+				if (api == null)
+				{
+					api = apiProvider.getApi(RegisterActivity.this);
+				}
+
+				return api.getUserApi().registerUser(newUser);
+			}
+
+			@Override
+			protected void onException(Exception e) throws RuntimeException
+			{
+				Throwable cause = e.getCause() != null ? e.getCause() : e;
+
+				String message = cause.getMessage();
+
+				Toaster.showLong(RegisterActivity.this, message);
+			}
+
+			@Override
+			public void onSuccess(Boolean authSuccess)
+			{
+				registrationSuccessful();
+			}
+
+			@Override
+			protected void onFinally() throws RuntimeException
+			{
+				registrationTask = null;
+			}
+		};
+		registrationTask.execute();
 	}
 
-	public void setupFacebook()
+	private void registrationSuccessful()
 	{
-
+		Toaster.showLong(this, "Registration successful");
+		Intent intent = new Intent(this, BootstrapAuthenticatorActivity.class);
+		startActivity(intent);
 	}
-
 }

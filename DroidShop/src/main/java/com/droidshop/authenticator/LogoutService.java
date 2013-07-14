@@ -10,7 +10,6 @@ import com.droidshop.util.SafeAsyncTask;
 
 import javax.inject.Inject;
 
-
 /**
  * Class used for logging a user out.
  */

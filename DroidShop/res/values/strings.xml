@@ -11,7 +11,7 @@
     <string name="search_action_hint">Search for Movies, Theaters, Actors</string>
     <string name="cart_action">Cart</string>
     <string name="logout_action">Logout</string>
-    <string name="page_main">Main</string>
+    <string name="page_main">Featured</string>
     <string name="page_category">Category</string>
     <string name="page_create_product">Create Product</string>
     <string name="page_update_product">Update Product</string>

@@ -14,7 +14,7 @@ public class CreateProductFragment extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		ScrollView view = (ScrollView) inflater.inflate(R.layout.create_product_view, null);
+		ScrollView view = (ScrollView) inflater.inflate(R.layout.fragment_create_product, null);
 
 		return view;
 	}

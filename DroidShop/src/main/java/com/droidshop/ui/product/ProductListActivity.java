@@ -11,7 +11,7 @@ public class ProductListActivity extends BootstrapFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_itemlist);
+		setContentView(R.layout.activity_product_list);
 
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		ProductListFragment mFragment = new ProductListFragment();

@@ -107,7 +107,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 		requestNewAccount = email == null;
 		confirmCredentials = intent.getBooleanExtra(Auth.PARAM_CONFIRMCREDENTIALS, false);
 
-		setContentView(layout.login_activity);
+		setContentView(layout.activity_login);
 
 		Views.inject(this);
 

@@ -18,7 +18,7 @@ public class ProductDescriptionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.item_description);
+		setContentView(R.layout.activity_product_description);
 
 
 		int selectedProduct = getIntent().getExtras().getInt("position");
