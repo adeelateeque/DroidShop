@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.droidshop.R;
 import com.droidshop.model.Product;
+import com.droidshop.ui.cart.Cart;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,8 +64,8 @@ public class ProductAdapter extends BaseAdapter {
 
 		Product curProduct = mProductList.get(position);
 
-		item.productImageView.setImageDrawable(curProduct.productImage);
-		item.productTitle.setText(curProduct.title);
+		//item.productImageView.setImageDrawable(curProduct.productImage);
+		item.productTitle.setText(curProduct.getName());
 
 		// Show the quantity in the cart or not
 		if (mShowQuantity) {

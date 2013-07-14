@@ -10,6 +10,8 @@ public class Product extends AbstractEntity {
 	private int quantity;
 	private MonetaryAmount price;
 
+	public boolean selected;
+
 	private List<Category> categories;
 
 	private String description;

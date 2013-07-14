@@ -66,7 +66,7 @@ public class ProductDescriptionActivity extends Activity {
 				}
 
 				// If we make it here, a valid quantity was entered
-				Cart.addProduct(selectedProduct, quantity);
+				//Cart.addProduct(selectedProduct, quantity);
 
 				// Close the activity
 				finish();
@@ -74,5 +74,7 @@ public class ProductDescriptionActivity extends Activity {
 		});
 
 	}
+
+	//public Product
 
 }

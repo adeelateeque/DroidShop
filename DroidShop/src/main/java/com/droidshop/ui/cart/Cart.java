@@ -14,24 +14,24 @@ public class Cart
 
 	private static Map<Product, CartEntry> cartMap = new HashMap<Product, CartEntry>();
 
-	public static void addProduct(Product product, int quantity)
+	public static void addProduct(Product selectedProduct, int quantity)
 	{
 		// Get the current cart entry
-		CartEntry curEntry = cartMap.get(product);
+		CartEntry curEntry = cartMap.get(selectedProduct);
 
 		// If the quantity is zero or less, remove the products
 		if (quantity <= 0)
 		{
 			if (curEntry != null)
-				removeProduct(product);
+				removeProduct(selectedProduct);
 			return;
 		}
 
 		// If a current cart entry doesn't exist, create one
 		if (curEntry == null)
 		{
-			curEntry = new CartEntry(product, quantity);
-			cartMap.put(product, curEntry);
+			curEntry = new CartEntry(selectedProduct, quantity);
+			cartMap.put(selectedProduct, curEntry);
 			return;
 		}
 
