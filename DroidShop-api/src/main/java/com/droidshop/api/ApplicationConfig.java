@@ -80,19 +80,24 @@ public class ApplicationConfig
 	{
 		BoneCPDataSource dataSource = new BoneCPDataSource();
 		dataSource.setDriverClass("com.mysql.jdbc.Driver");
-		dataSource.setJdbcUrl("jdbc:mysql://localhost/droidshop");
-		dataSource.setUsername("root");
-		dataSource.setPassword("1234567");
+		dataSource.setJdbcUrl(getDatabaseUrl());
 		dataSource.setIdleConnectionTestPeriodInMinutes(60);
 		dataSource.setIdleMaxAgeInMinutes(420);
-		dataSource.setMaxConnectionsPerPartition(30);
-		dataSource.setMinConnectionsPerPartition(10);
+		dataSource.setMaxConnectionsPerPartition(10);
+		dataSource.setMinConnectionsPerPartition(5);
 		dataSource.setPartitionCount(3);
 		dataSource.setAcquireIncrement(5);
 		dataSource.setStatementsCacheSize(100);
 		dataSource.setReleaseHelperThreads(3);
 
 		return dataSource;
+	}
+
+	private String getDatabaseUrl()
+	{
+		String url = "jdbc:mysql://" + System.getProperty("JDBC_CONNECTION_STRING");
+		System.out.println("CONNECTING TO JDBC, URL IS: " + url);
+		return url;
 	}
 
 	@Bean

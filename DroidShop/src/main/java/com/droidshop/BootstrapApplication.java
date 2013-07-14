@@ -11,7 +11,7 @@ import com.github.kevinsawicki.http.HttpRequest;
 import dagger.ObjectGraph;
 
 /**
- * Droidshop application
+ * DroidShop application
  */
 public class BootstrapApplication extends Application
 {

@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="12"
         android:targetSdkVersion="17" />
 
     <permission
@@ -35,7 +35,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Bootstrap.Dark" >
         <activity
-            android:name="com.droidshop.ui.CarouselActivity"
+            android:name="com.droidshop.ui.HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
@@ -45,16 +45,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.droidshop.ui.BootstrapTimerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:launchMode="singleTop" />
 
-        <service
-            android:name="com.droidshop.core.TimerService"
-            android:enabled="true"
-            android:exported="false" />
         <service
             android:name="com.droidshop.authenticator.AccountAuthenticatorService"
             android:exported="false"
@@ -74,11 +65,10 @@
 
             <!--
                 No intent-filter here! This activity is only ever launched by
-                someone who explicitly knows the class name
-            -->
+                someone who explicitly knows the class name            -->
         </activity>
         <activity
-            android:name="com.droidshop.ui.RegisterActivity"
+            android:name="com.droidshop.ui.user.RegisterActivity"
             android:label="@string/title_activity_register"
             android:parentActivityName="com.droidshop.authenticator.BootstrapAuthenticatorActivity" >
             <meta-data
@@ -86,39 +76,39 @@
                 android:value="com.droidshop.authenticator.BootstrapAuthenticatorActivity" />
         </activity>
         <activity
-            android:name="com.droidshop.ui.UserProfileActivity"
+            android:name="com.droidshop.ui.user.UserProfileActivity"
             android:label="@string/profile"
-            android:parentActivityName="com.droidshop.ui.CarouselActivity" >
+            android:parentActivityName="com.droidshop.ui.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.droidshop.ui.CarouselActivity" />
         </activity>
         <activity
-            android:name="com.droidshop.ui.MyOrderActivity"
+            android:name="com.droidshop.ui.order.OrderActivity"
             android:label="@string/my_order"
-            android:parentActivityName="com.droidshop.ui.CarouselActivity" >
+            android:parentActivityName="com.droidshop.ui.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.droidshop.ui.CarouselActivity" />
         </activity>
         <activity
-            android:name="com.droidshop.ui.ReservationActivity"
+            android:name="com.droidshop.ui.reservation.ReservationActivity"
             android:label="@string/reservations"
-            android:parentActivityName="com.droidshop.ui.CarouselActivity" >
+            android:parentActivityName="com.droidshop.ui.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.droidshop.ui.CarouselActivity" />
         </activity>
         <activity
-            android:name="com.droidshop.ui.ListItemActivity"
-            android:parentActivityName="com.droidshop.ui.CarouselActivity" >
+            android:name="com.droidshop.ui.product.ProductListActivity"
+            android:parentActivityName="com.droidshop.ui.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.droidshop.ui.CarouselActivity" />
         </activity>
         <activity
-            android:name="com.droidshop.ui.ItemDescriptionActivity"
-            android:parentActivityName="com.droidshop.ui.CarouselActivity" >
+            android:name="com.droidshop.ui.product.ProductDescriptionActivity"
+            android:parentActivityName="com.droidshop.ui.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.droidshop.ui.CarouselActivity" />

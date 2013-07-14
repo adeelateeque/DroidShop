@@ -16,7 +16,7 @@ public class ReservationApi extends BootstrapApi
 		super(username, password);
 	}
 
-	public ReservationApi(String apiKey, UserAgentProvider userAgentProvider)
+	protected ReservationApi(String apiKey, UserAgentProvider userAgentProvider)
 	{
 		super(apiKey, userAgentProvider);
 	}

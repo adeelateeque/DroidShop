@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.graphics.drawable.Drawable;
-
 public class Product extends AbstractEntity {
 	private String name;
 	private int quantity;

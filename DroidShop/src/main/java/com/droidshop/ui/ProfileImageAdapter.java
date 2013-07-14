@@ -31,7 +31,7 @@ public class ProfileImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         imageView = new ImageView(mContext);
-        imageView.setImageResource(R.drawable.ic_launcher);
+        imageView.setImageResource(R.drawable.ic_action_person);
         return imageView;
     }
 }

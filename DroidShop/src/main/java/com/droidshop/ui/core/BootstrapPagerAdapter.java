@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.droidshop.R;
-import com.droidshop.ui.CategoryFragment;
 import com.droidshop.ui.MainFragment;
+import com.droidshop.ui.category.CategoryListFragment;
 
 /**
  * Pager adapter
@@ -42,9 +42,9 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
         	mainFragment.setArguments(bundle);
             return mainFragment;
         case 1:
-        	CategoryFragment categoryFragment = new CategoryFragment();
-        	categoryFragment.setArguments(bundle);
-        	return categoryFragment;
+        	CategoryListFragment categoryListFragment = new CategoryListFragment();
+        	categoryListFragment.setArguments(bundle);
+        	return categoryListFragment;
         default:
             return null;
         }

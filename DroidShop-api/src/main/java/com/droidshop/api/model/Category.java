@@ -1,10 +1,7 @@
 package com.droidshop.api.model;
 
-import static javax.persistence.TemporalType.TIMESTAMP;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -14,13 +11,14 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.POST;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -48,12 +46,12 @@ public class Category extends AbstractEntity implements Serializable
 	private List<Product> products;
 
 	@JsonProperty("created_at")
-	@Temporal(TIMESTAMP)
-	private Date createdAt;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime createdAt;
 
 	@JsonProperty("updated_at")
-	@Temporal(TIMESTAMP)
-	private Date updatedAt;
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	private DateTime updatedAt;
 
 	@JsonProperty
 	@Enumerated(EnumType.STRING)
@@ -112,26 +110,6 @@ public class Category extends AbstractEntity implements Serializable
 	}
 
 
-	public Date getCreatedAt()
-	{
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt)
-	{
-		this.createdAt = createdAt;
-	}
-
-	public Date getUpdatedAt()
-	{
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt)
-	{
-		this.updatedAt = updatedAt;
-	}
-
 	public Status getStatus()
 	{
 		return status;
@@ -140,6 +118,27 @@ public class Category extends AbstractEntity implements Serializable
 	public void setStatus(Status status)
 	{
 		this.status = status;
+	}
+
+
+	public DateTime getCreatedAt()
+	{
+		return createdAt;
+	}
+
+	public void setCreatedAt(DateTime createdAt)
+	{
+		this.createdAt = createdAt;
+	}
+
+	public DateTime getUpdatedAt()
+	{
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(DateTime updatedAt)
+	{
+		this.updatedAt = updatedAt;
 	}
 
 	public enum Status

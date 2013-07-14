@@ -33,6 +33,9 @@ import android.widget.TextView.OnEditorActionListener;
 import butterknife.InjectView;
 import butterknife.Views;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.droidshop.R;
 import com.droidshop.R.id;
 import com.droidshop.R.layout;
 import com.droidshop.R.string;
@@ -42,8 +45,8 @@ import com.droidshop.core.Constants;
 import com.droidshop.core.Constants.Auth;
 import com.droidshop.core.Constants.Http;
 import com.droidshop.model.User;
-import com.droidshop.ui.RegisterActivity;
-import com.droidshop.ui.TextWatcherAdapter;
+import com.droidshop.ui.core.TextWatcherAdapter;
+import com.droidshop.ui.user.RegisterActivity;
 import com.droidshop.util.Ln;
 import com.droidshop.util.SafeAsyncTask;
 import com.github.kevinsawicki.wishlist.Toaster;
@@ -53,6 +56,7 @@ import com.github.kevinsawicki.wishlist.Toaster;
  */
 public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticatorActivity
 {
+	public static final String TAG = "BootstrapAuthenticatorActivity";
 	private AccountManager accountManager;
 
 	protected BootstrapApi api;
@@ -106,7 +110,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 		requestNewAccount = email == null;
 		confirmCredentials = intent.getBooleanExtra(Auth.PARAM_CONFIRMCREDENTIALS, false);
 
-		setContentView(layout.login_activity);
+		setContentView(layout.activity_login);
 
 		Views.inject(this);
 
@@ -145,6 +149,26 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 		passwordText.addTextChangedListener(watcher);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getSupportMenuInflater().inflate(R.menu.login, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case id.admin_login:
+				Toaster.showLong(this, R.string.admin_login);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
 	private List<String> userEmailAccounts()
 	{
 		Account[] accounts = accountManager.getAccountsByType("com.google");
@@ -158,6 +182,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 	{
 		return new TextWatcherAdapter()
 		{
+			@Override
 			public void afterTextChanged(Editable gitDirEditText)
 			{
 				updateUIWithValidation();
@@ -218,55 +243,57 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 	 */
 	public void handleLogin(final View view)
 	{
-		//means that the login process is still in progress
+		// means that the login process is still in progress
 		if (authenticationTask != null)
-            return;
+			return;
 
-        if (requestNewAccount)
-            email = emailText.getText().toString();
-        password = passwordText.getText().toString();
-        showProgress();
+		if (requestNewAccount)
+			email = emailText.getText().toString();
+		password = passwordText.getText().toString();
+		showProgress();
 
-        authenticationTask = new SafeAsyncTask<Boolean>() {
-            public Boolean call() throws Exception {
+		authenticationTask = new SafeAsyncTask<Boolean>()
+		{
+			public Boolean call() throws Exception
+			{
+				User user = UserApi.authenticateUser(email, password);
+				if (user != null)
+				{
+					token = user.getSessionToken();
+					return true;
+				}
+				return false;
+			}
 
-            	User user = UserApi.authenticateUser(email, password);
-            	if(user != null)
-            	{
-            		token = user.getSessionToken();
-            		return true;
-            	}
-            	return false;
-            }
+			@Override
+			protected void onException(Exception e) throws RuntimeException
+			{
+				Throwable cause = e.getCause() != null ? e.getCause() : e;
 
-            @Override
-            protected void onException(Exception e) throws RuntimeException {
-                Throwable cause = e.getCause() != null ? e.getCause() : e;
+				String message;
+				// A 404 is returned as an Exception with this message
+				if ("Received authentication challenge is null".equals(cause.getMessage()))
+					message = getResources().getString(string.message_bad_credentials);
+				else
+					message = cause.getMessage();
 
-                String message;
-                // A 404 is returned as an Exception with this message
-                if ("Received authentication challenge is null".equals(cause
-                        .getMessage()))
-                    message = getResources().getString(
-                            string.message_bad_credentials);
-                else
-                    message = cause.getMessage();
+				Toaster.showLong(BootstrapAuthenticatorActivity.this, message);
+			}
 
-                Toaster.showLong(BootstrapAuthenticatorActivity.this, message);
-            }
+			@Override
+			public void onSuccess(Boolean authSuccess)
+			{
+				onAuthenticationResult(authSuccess);
+			}
 
-            @Override
-            public void onSuccess(Boolean authSuccess) {
-                onAuthenticationResult(authSuccess);
-            }
-
-            @Override
-            protected void onFinally() throws RuntimeException {
-                hideProgress();
-                authenticationTask = null;
-            }
-        };
-        authenticationTask.execute();
+			@Override
+			protected void onFinally() throws RuntimeException
+			{
+				hideProgress();
+				authenticationTask = null;
+			}
+		};
+		authenticationTask.execute();
 	}
 
 	/**

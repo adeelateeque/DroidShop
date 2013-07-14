@@ -8,7 +8,9 @@ import com.droidshop.api.model.user.Customer;
 /**
  * Repository interface to manage {@link Customer} instances.
  */
-@RestResource(path="customer", rel="customer")
+@RestResource(path = "customer", rel = "customer")
 public interface CustomerRepository extends PagingAndSortingRepository<Customer, Long>
 {
+	@RestResource(exported = false)
+	Customer findByUserNameAndPassword(String username, String password);
 }
