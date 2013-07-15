@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_marginRight="6dip"
-        android:src="@drawable/ic_launcher" android:contentDescription="@string/app_name"/>
+        android:contentDescription="@string/app_name" />
     
     <LinearLayout
         android:layout_width="0dip"
@@ -22,7 +22,8 @@
             android:id="@+id/category_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical" />
+            android:gravity="center" 
+            android:textStyle="@android:style/TextAppearance.Holo.Large"/>
         
     </LinearLayout>
 </LinearLayout>

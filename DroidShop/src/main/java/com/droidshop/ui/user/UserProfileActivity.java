@@ -35,7 +35,6 @@ public class UserProfileActivity extends BootstrapFragmentActivity
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
 				DialogFragment newFragment = new DialogFragment();
 				newFragment.show(getSupportFragmentManager(), "datePicker");
 			}
@@ -48,8 +47,6 @@ public class UserProfileActivity extends BootstrapFragmentActivity
 			@Override
 			public void onClick(View v)
 			{
-				// TODO Auto-generated method stub
-
 			}
 
 		});

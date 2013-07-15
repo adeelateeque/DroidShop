@@ -140,7 +140,6 @@ public class HomeActivity extends BootstrapFragmentActivity
 			mActionBar.setHomeButtonEnabled(true);
 			aAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, getResources().getStringArray(
 					R.array.user_drawer_items));
-			mAdapter.addAdapter(new ProfileImageAdapter(this));
 			mAdapter.addAdapter(aAdapter);
 			mDrawerList.setAdapter(mAdapter);
 		}
