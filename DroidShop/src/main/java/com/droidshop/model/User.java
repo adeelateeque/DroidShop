@@ -18,13 +18,10 @@ public class User extends AbstractEntity implements Serializable
 	protected Date updatedAt;
 	protected String email;
 
-	protected String objectId;
 	protected String address;
 	protected String sessionToken;
 	protected String city;
-	protected String gravatarId;
 	protected String country;
-	protected String avatarUrl;
 	protected String telephoneNo;
 
 	protected String handphoneNo;
@@ -46,16 +43,6 @@ public class User extends AbstractEntity implements Serializable
 	public void setUserName(String userName)
 	{
 		this.userName = userName;
-	}
-
-	public String getObjectId()
-	{
-		return objectId;
-	}
-
-	public void setObjectId(String objectId)
-	{
-		this.objectId = objectId;
 	}
 
 	public String getSessionToken()
@@ -86,16 +73,6 @@ public class User extends AbstractEntity implements Serializable
 	public void setLastName(String lastName)
 	{
 		this.lastName = lastName;
-	}
-
-	public String getGravatarId()
-	{
-		return gravatarId;
-	}
-
-	public String getAvatarUrl()
-	{
-		return avatarUrl;
 	}
 
 	public String getPassword()
@@ -236,11 +213,6 @@ public class User extends AbstractEntity implements Serializable
 	public void setSecretAnswer(String secretAnswer)
 	{
 		this.secretAnswer = secretAnswer;
-	}
-
-	public void setGravatarId(String gravatarId)
-	{
-		this.gravatarId = gravatarId;
 	}
 
 	public enum Gender

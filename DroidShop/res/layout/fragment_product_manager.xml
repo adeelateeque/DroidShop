@@ -1,5 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/product_manager_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/main_background"
@@ -54,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-    	  		android:text="Enabled"
+    	  		android:text="INSTOCK"
     	  		android:textColor="@color/text" />
        	    
        	    <RadioButton
@@ -62,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-    	  		android:text="Disabled"
+    	  		android:text="OUTOFSTOCK"
     	  		android:textColor="@color/text" />
        	    
        	</RadioGroup>
@@ -97,13 +98,13 @@
                 android:textStyle="bold" />
        	        
        	    <Button
-            	android:id="@+id/btnCreate"
+            	android:id="@+id/btnNext"
             	style="@style/BootstrapButtonGreen"
             	android:layout_width="0dp"
             	android:layout_height="wrap_content"
             	android:layout_weight="0.5"
             	android:layout_gravity="center"
-            	android:text="@string/create"
+            	android:text="@string/next"
             	android:textColor="@color/text"
                 android:textSize="20sp"
                 android:textStyle="bold" />

@@ -28,13 +28,14 @@ import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.droidshop.R;
 import com.droidshop.R.id;
+import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.core.Constants;
 import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.order.OrderActivity;
 import com.droidshop.ui.product.HomeProductsFragment;
-import com.droidshop.ui.product.ProductDescriptionActivity;
+import com.droidshop.ui.product.ProductManagerFragment;
 import com.droidshop.ui.reservation.ReservationActivity;
 import com.droidshop.ui.user.UserProfileActivity;
 import com.github.kevinsawicki.wishlist.Toaster;
@@ -75,8 +76,10 @@ public class HomeActivity extends BootstrapFragmentActivity
 	protected void onResume()
 	{
 		super.onResume();
-
 		checkUserType();
+		if(getSupportFragmentManager().beginTransaction().commit() == 1){
+			getSupportFragmentManager().findFragmentByTag("product manager").onDestroy();
+		}
 	}
 
 	private void checkUserType()
@@ -234,12 +237,18 @@ public class HomeActivity extends BootstrapFragmentActivity
 					@Override
 					public void run()
 					{
+						Intent intent = new Intent(getApplicationContext(), BootstrapAuthenticatorActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivity(intent);
 						finish();
 					}
 				});
 				return true;
 			case id.add_product:
-				Toast.makeText(getApplicationContext(), "Add product", Toast.LENGTH_SHORT).show();
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				ProductManagerFragment mFragment = new ProductManagerFragment();
+				ft.add(R.id.content_frame, mFragment, "product manager");
+				ft.commit();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

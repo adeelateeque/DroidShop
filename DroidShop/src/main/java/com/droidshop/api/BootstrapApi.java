@@ -3,7 +3,9 @@ package com.droidshop.api;
 import static com.droidshop.core.Constants.Http.APP_ID;
 import static com.droidshop.core.Constants.Http.HEADER_APP_ID;
 import static com.droidshop.core.Constants.Http.HEADER_REST_API_KEY;
+import static com.droidshop.core.Constants.Http.NO_CONTENT_RESPONSE;
 import static com.droidshop.core.Constants.Http.REST_API_KEY;
+import static com.droidshop.core.Constants.Http.URL_PRODUCTS;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,9 +17,13 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import com.droidshop.api.ProductApi.ProductConverter;
+import com.droidshop.api.UserApi.UserConverter;
 import com.droidshop.core.Constants;
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.AbstractEntity;
+import com.droidshop.model.Product;
+import com.droidshop.model.User;
 import com.droidshop.util.Ln;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.analytics.tracking.android.Log;
@@ -49,18 +55,8 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 	 */
 	public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd")
 			.registerTypeAdapter(Currency.class, new CurrencyConverter())
+			.registerTypeAdapter(Product.class, new ProductConverter()).registerTypeAdapter(User.class, new UserConverter())
 			.registerTypeAdapter(DateTime.class, new DateTimeConverter()).create();
-
-	/**
-	 * You can also configure GSON with different naming policies for your API. Maybe your api is
-	 * Rails
-	 * api and all json values are lower case with an underscore, like this "first_name" instead of
-	 * "firstName".
-	 * You can configure GSON as such below.
-	 * public static final Gson GSON = new
-	 * GsonBuilder().setDateFormat("yyyy-MM-dd").setFieldNamingPolicy
-	 * (LOWER_CASE_WITH_UNDERSCORES).create();
-	 */
 
 	/**
 	 * Read and connect timeout in milliseconds
@@ -104,7 +100,8 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 	 * @param userAgentProvider
 	 * @param endpoint
 	 */
-	protected BootstrapApi(final String apiKey, final UserAgentProvider userAgentProvider, String endpoint, Class<? extends BaseWrapper<T>> wrapperClass)
+	protected BootstrapApi(final String apiKey, final UserAgentProvider userAgentProvider, String endpoint,
+			Class<? extends BaseWrapper<T>> wrapperClass)
 	{
 		this.userAgentProvider = userAgentProvider;
 		this.apiKey = apiKey;
@@ -122,21 +119,22 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 	 * Execute request
 	 *
 	 * @param request
+	 * @param isJson
 	 * @return request
 	 * @throws IOException
 	 */
-	protected HttpRequest execute(HttpRequest request) throws IOException
+	protected HttpRequest execute(HttpRequest request, Boolean isJson) throws IOException
 	{
-		if (!configure(request).ok())
+		if (!configure(request, isJson).ok())
 			throw new IOException("Unexpected response code: " + request.code());
 		return request;
 	}
 
-	private HttpRequest configure(final HttpRequest request)
+	private HttpRequest configure(final HttpRequest request, Boolean isJson)
 	{
 		request.connectTimeout(TIMEOUT).readTimeout(TIMEOUT).userAgent(userAgentProvider.get());
 
-		if (isPostOrPut(request))
+		if (isPostOrPut(request) && isJson)
 			request.contentType(Constants.Http.CONTENT_TYPE_JSON);
 		return addCredentialsTo(request);
 	}
@@ -150,26 +148,8 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 
 	private HttpRequest addCredentialsTo(HttpRequest request)
 	{
-		// Required params for
 		request.header(HEADER_REST_API_KEY, REST_API_KEY);
 		request.header(HEADER_APP_ID, APP_ID);
-
-		/**
-		 * NOTE: This may be where you want to add a header for the api token that was saved when
-		 * you
-		 * logged in. In the bootstrap sample this is where we are saving the session id as the
-		 * token.
-		 * If you actually had received a token you'd take the "apiKey" (aka: token) and add it to
-		 * the
-		 * header or form values before you make your requests.
-		 */
-
-		/**
-		 * Add the user name and password to the request here if your service needs username or
-		 * password for each
-		 * request. You can do this like this:
-		 * request.basic("myusername", "mypassword");
-		 */
 
 		Log.d(request.toString());
 		return request;
@@ -257,7 +237,6 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 		}
 	}
 
-
 	public UserApi getUserApi()
 	{
 		UserApi userApi = new UserApi(apiKey, userAgentProvider);
@@ -299,18 +278,34 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 	}
 
 	@Override
-	public boolean save(T entity)
-	{
-		return false;
-	}
-
-	protected boolean save(String jsonData)
+	public long save(T entity)
 	{
 		HttpRequest request;
 		try
 		{
-			request = execute(HttpRequest.post(endpoint).part("status[body]", jsonData));
+			request = execute(HttpRequest.post(endpoint).send(GSON.toJson(entity)), true);
 			if (request.created())
+			{
+				return parseIdFromUrl(request.header(HttpRequest.HEADER_LOCATION), endpoint);
+			}
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+		}
+		catch (NumberFormatException e)
+		{
+		}
+		return 0;
+	}
+
+	public boolean update(T entity)
+	{
+		HttpRequest request;
+		try
+		{
+			request = execute(HttpRequest.put(URL_PRODUCTS + "/" + entity.getId()).send(GSON.toJson(entity)), true);
+			if (request.getConnection().getResponseCode() == NO_CONTENT_RESPONSE)
 			{
 				return true;
 			}
@@ -331,7 +326,7 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 			HttpRequest request;
 			try
 			{
-				request = execute(HttpRequest.delete(endpoint + "/" + id));
+				request = execute(HttpRequest.delete(endpoint + "/" + id), true);
 				if (request.ok())
 				{
 					return true;
@@ -351,7 +346,7 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 		HttpRequest request;
 		try
 		{
-			request = execute(HttpRequest.get(endpoint + "/" + id));
+			request = execute(HttpRequest.get(endpoint + "/" + id), true);
 			BaseWrapper<T> response = fromJson(request, wrapperClass);
 			if (response != null && !response.getContent().isEmpty())
 			{
@@ -376,7 +371,7 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 	{
 		try
 		{
-			HttpRequest request = execute(HttpRequest.get(endpoint + "?size=" + count));
+			HttpRequest request = execute(HttpRequest.get(endpoint + "?size=" + count), true);
 			BaseWrapper<T> response = fromJson(request, wrapperClass);
 			if (response != null)
 			{
@@ -400,7 +395,7 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 			String selfRel = item.findLink("rel").getHref();
 			try
 			{
-				id = Long.parseLong(selfRel.substring(selfRel.lastIndexOf(endpoint + "/"), +1));
+				id = parseIdFromUrl(selfRel, endpoint);
 			}
 			catch (NumberFormatException e)
 			{
@@ -408,6 +403,11 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 			}
 		}
 		return id;
+	}
+
+	protected long parseIdFromUrl(String url, String rootPath)
+	{
+		return Long.parseLong(url.substring(url.lastIndexOf(rootPath + "/"), +1));
 	}
 }
 

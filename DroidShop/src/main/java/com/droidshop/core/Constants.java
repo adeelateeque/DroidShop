@@ -65,7 +65,7 @@ public class Constants
 		/**
 		 * List Users URL
 		 */
-		public static final String URL_USERS = URL_BASE + "/1/users";
+		public static final String URL_CUSTOMER = URL_BASE + "/customer";
 
 		public static final String URL_PRODUCTS = URL_BASE + "/product";
 
@@ -89,11 +89,12 @@ public class Constants
 		public static final String REST_API_KEY = "N2kCY1T3t3Jfhf9zpJ5MCURn3b25UpACILhnf5u9";
 		public static final String HEADER_REST_API_KEY = "X-Parse-REST-API-Key";
 		public static final String HEADER_APP_ID = "X-Parse-Application-Id";
-		public static final String CONTENT_TYPE_JSON = "application/json";
 		public static final String PARAM_USERNAME = "username";
 		public static final String PARAM_PASSWORD = "password";
 		public static final String SESSION_TOKEN = "sessionToken";
 
+		public static final String CONTENT_TYPE_JSON = "application/json";
+		public static final String CONTENT_TYPE_TEXT_URI_LSIT = "text/uri-list";
 		/*The server successfully processed the request and does not have any content to return*/
 		public static final int NO_CONTENT_RESPONSE = 204;
 	}
