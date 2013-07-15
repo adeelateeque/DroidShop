@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
+import com.droidshop.model.Category;
 import com.droidshop.model.Product;
 import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.util.ThrowableLoader;
@@ -48,9 +50,6 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 
 		listView.setFastScrollEnabled(true);
 		listView.setDividerHeight(0);
-
-		// getListAdapter().addHeader(activity.getLayoutInflater().inflate(R.layout.checkins_list_item_labels,
-		// null));
 	}
 
 	@Override
@@ -74,11 +73,15 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 					if (api == null) {
 						api = apiProvider.getApi(getSherlockActivity());
 					}
-
 					List<Product> latest = null;
 
-					if (getSherlockActivity() != null)
-						latest = api.getProductApi().getProducts();
+					if (getSherlockActivity() != null) {
+						ProductDescriptionActivity activity = (ProductDescriptionActivity) getSherlockActivity();
+						Long productId = activity.productId;
+						Long categoryId = activity.categoryId;
+						latest = api.getProductApi().getProduct(categoryId,
+								productId);
+					}
 
 					if (latest != null)
 						return latest;
@@ -101,8 +104,8 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 	}
 
 	public void onListItemClick(ListView l, View v, int position, long id) {
-//		Intent intent = new Intent(getActivity(), ProductListFragment.class);
-//		startActivity(intent);
+		// Intent intent = new Intent(getActivity(), ProductListFragment.class);
+		// startActivity(intent);
 	}
 
 	@Override
