@@ -38,9 +38,8 @@ public class CategoryListAdapter extends AlternatingColorListAdapter<Category>
 		{
 			view = new ImageView(BootstrapApplication.getInstance());
 		}
-		String url = "http://factspy.net/wp-content/uploads/2013/03/iphone5black.jpg";
-		Picasso.with(BootstrapApplication.getInstance()).load(url).resizeDimen(R.dimen.list_item_image, R.dimen.list_item_image).centerCrop().into(view);
+
+		Picasso.with(BootstrapApplication.getInstance()).load(R.drawable.category_placeholder).resizeDimen(R.dimen.list_item_image, R.dimen.list_item_image).centerCrop().into(view);
 		setText(1, item.getName());
 	}
-
 }
