@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.api.BootstrapApi;
-import com.droidshop.model.Category;
 import com.droidshop.model.Product;
 import com.droidshop.ui.core.AlternatingColorListAdapter;
 import com.squareup.picasso.Picasso;
@@ -38,18 +37,10 @@ public class ProductListAdapter extends AlternatingColorListAdapter<Product> {
 		if (view == null) {
 			view = new ImageView(BootstrapApplication.getInstance());
 		}
-		int latest = api.getProductApi().getProductsList(1).size();
-
-		List<String> loaded = ((Product) api.getProductApi().getProductsList(1)).getImages();
-
-		for (int i = 0; i < latest; i++) {
-			String url = loaded.get(i);
-			Picasso.with(BootstrapApplication.getInstance())
-					.load(url)
-					.resizeDimen(R.dimen.list_item_image,
-							R.dimen.list_item_image).centerCrop().into(view);
-			setText(1, item.getName());
-		}
+		Picasso.with(BootstrapApplication.getInstance()).load(item.getImages().get(0))
+				.resizeDimen(R.dimen.list_item_image, R.dimen.list_item_image)
+				.centerCrop().into(view);
+		setText(1, item.getName());
 	}
 
 }

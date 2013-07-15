@@ -25,7 +25,6 @@
     <string name="choose">Choose</string>
     <string name="action_settings">Settings</string>
     <string name="no_data">No data</string>
-    
     <string name="today_deal">Today Deal</string>
     <string name="recent_deal">Recent Deal</string>
     <string name="most_deal">Most Deal</string>
@@ -41,7 +40,6 @@
     <string name="current_order">Recent orders for 1 months</string>
     <string name="past_order">Past Orders</string>
     <string name="reservations">Reservations</string>
-
     <string name="profile">Profile</string>
     <string name="username">Username</string>
     <string name="firstname">First name</string>
@@ -79,8 +77,8 @@
     <string name="secret_question">Secret question</string>
     <string name="secret_answer">Secret answer</string>
     <string name="error_loading_reservation">Failed to load reservations</string>
-     <string name="error_loading_order">Failed to load ordesr</string>
-      <string name="error_loading_product">Failed to load products</string>
-       <string name="error_loading_category">Failed to load categories</string>
+    <string name="error_loading_order">Failed to load ordesr</string>
+    <string name="error_loading_product">Failed to load products</string>
+    <string name="error_loading_category">Failed to load categories</string>
 
 </resources>

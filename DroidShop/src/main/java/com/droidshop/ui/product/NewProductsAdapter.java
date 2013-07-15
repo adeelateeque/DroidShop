@@ -29,7 +29,7 @@ public class NewProductsAdapter extends SingleTypeAdapter<Product> {
 		if (view == null) {
 			view = new ImageView(BootstrapApplication.getInstance());
 		}
-		String url = "";
+		String url = null;
 
 		if (!product.getImages().isEmpty()) {
 			url = product.getImages().get(0);

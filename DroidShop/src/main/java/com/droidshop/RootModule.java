@@ -6,12 +6,11 @@ import com.droidshop.ui.MainFragment;
 import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.order.OrderActivity;
 import com.droidshop.ui.order.OrderListFragment;
-import com.droidshop.ui.product.CreateProductFragment;
 import com.droidshop.ui.product.NewProductsFragment;
 import com.droidshop.ui.product.ProductListActivity;
 import com.droidshop.ui.product.ProductListAdapter;
 import com.droidshop.ui.product.ProductListFragment;
-import com.droidshop.ui.product.UpdateProductFragment;
+import com.droidshop.ui.product.ProductManagerFragment;
 import com.droidshop.ui.reservation.ReservationActivity;
 import com.droidshop.ui.reservation.ReservationListAdapter;
 import com.droidshop.ui.reservation.ReservationListFragment;
@@ -37,8 +36,7 @@ import dagger.Module;
             MainFragment.class,
             CategoryListFragment.class,
             OrderListFragment.class,
-            CreateProductFragment.class,
-            UpdateProductFragment.class,
+            ProductManagerFragment.class,
             UserProfileActivity.class,
             OrderActivity.class,
             ReservationActivity.class,
