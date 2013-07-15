@@ -23,7 +23,7 @@ import com.droidshop.ui.core.ItemGridFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 
-public class NewProductsFragment extends ItemGridFragment<Product> {
+public class HomeProductsFragment extends ItemGridFragment<Product> {
 
 	@Inject
 	protected ApiProvider apiProvider;
@@ -87,7 +87,7 @@ public class NewProductsFragment extends ItemGridFragment<Product> {
 
 	@Override
 	protected SingleTypeAdapter<Product> createAdapter(List<Product> items) {
-		return new NewProductsAdapter(
+		return new HomeProductsAdapter(
 				getSherlockActivity().getLayoutInflater(), items);
 	}
 

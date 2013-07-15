@@ -10,7 +10,6 @@
 
     <ImageView
             android:id="@+id/iv_product"
-            style="@style/AvatarLarge"
             android:layout_marginRight="10dp"
             android:contentDescription="@string/avatar"
             android:layout_width="match_parent"

@@ -2,6 +2,7 @@
 <resources>
 
     <string-array name="user_drawer_items">
+        <item>Account</item>
         <item>Your Orders</item>
         <item>Reservations</item>
         <item>Logout</item>

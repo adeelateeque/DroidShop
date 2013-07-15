@@ -7,24 +7,20 @@ import javax.inject.Inject;
 
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
-import com.droidshop.model.MonetaryAmount;
 import com.droidshop.model.Product;
 import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.Toaster;
 
 public class ProductDescriptionFragment extends ItemListFragment<Product> {
 

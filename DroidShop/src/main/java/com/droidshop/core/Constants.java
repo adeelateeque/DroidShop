@@ -93,6 +93,9 @@ public class Constants
 		public static final String PARAM_USERNAME = "username";
 		public static final String PARAM_PASSWORD = "password";
 		public static final String SESSION_TOKEN = "sessionToken";
+
+		/*The server successfully processed the request and does not have any content to return*/
+		public static final int NO_CONTENT_RESPONSE = 204;
 	}
 
 	public static class Extra

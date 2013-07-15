@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.Category;
-import com.droidshop.model.Product;
 import com.github.kevinsawicki.http.HttpRequest;
 
 public class CategoryApi extends BootstrapApi {
