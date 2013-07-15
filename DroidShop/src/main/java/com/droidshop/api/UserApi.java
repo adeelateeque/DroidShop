@@ -14,7 +14,7 @@ import com.droidshop.util.Strings;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 
-public class UserApi extends BootstrapApi
+public class UserApi extends BootstrapApi<User>
 {
 	protected UserApi(String username, String password)
 	{
@@ -23,10 +23,10 @@ public class UserApi extends BootstrapApi
 
 	protected UserApi(String apiKey, UserAgentProvider userAgentProvider)
 	{
-		super(apiKey, userAgentProvider);
+		super(apiKey, userAgentProvider, URL_USERS, UsersWrapper.class);
 	}
 
-	private class UsersWrapper extends BaseWrapper<User>
+	public class UsersWrapper extends BaseWrapper<User>
 	{
 	}
 

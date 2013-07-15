@@ -8,13 +8,14 @@ import android.widget.ImageView;
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.api.BootstrapApi;
+import com.droidshop.model.AbstractEntity;
 import com.droidshop.model.Product;
 import com.droidshop.ui.core.AlternatingColorListAdapter;
 import com.squareup.picasso.Picasso;
 
 public class ProductListAdapter extends AlternatingColorListAdapter<Product> {
 
-	protected BootstrapApi api;
+	protected BootstrapApi<AbstractEntity> api;
 
 	public ProductListAdapter(LayoutInflater inflater, List<Product> items,
 			boolean selectable) {

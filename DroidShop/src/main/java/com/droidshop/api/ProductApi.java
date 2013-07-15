@@ -1,18 +1,23 @@
 package com.droidshop.api;
 
+import static com.droidshop.core.Constants.Http.NO_CONTENT_RESPONSE;
 import static com.droidshop.core.Constants.Http.URL_CATEGORY;
 import static com.droidshop.core.Constants.Http.URL_PRODUCTS;
+<<<<<<< HEAD
 import static com.droidshop.core.Constants.Http.NO_CONTENT_RESPONSE;
+=======
+>>>>>>> 2293aad4e74dbe1bdf4bd40d32a7f07f18c22f23
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.Category;
 import com.droidshop.model.Product;
+import com.droidshop.util.Ln;
 import com.github.kevinsawicki.http.HttpRequest;
 
+<<<<<<< HEAD
 public class ProductApi extends BootstrapApi {
 	protected ProductApi(String username, String password) {
 		super(username, password);
@@ -57,6 +62,21 @@ public class ProductApi extends BootstrapApi {
 		}
 		return null;
 	}
+=======
+public class ProductApi extends BootstrapApi<Product>
+{
+	protected ProductApi(String username, String password)
+	{
+		super(username, password);
+	}
+
+	protected ProductApi(String apiKey, UserAgentProvider userAgentProvider)
+	{
+		super(apiKey, userAgentProvider, URL_PRODUCTS, ProductWrapper.class);
+	}
+
+	public class ProductWrapper extends BaseWrapper<Product>{}
+>>>>>>> 2293aad4e74dbe1bdf4bd40d32a7f07f18c22f23
 
 	public List<Product> getProduct(Long categoryId, Long productId) {
 		HttpRequest request;
@@ -67,19 +87,33 @@ public class ProductApi extends BootstrapApi {
 			if (response != null) {
 				return response.getContent();
 			}
+<<<<<<< HEAD
 		} catch (IOException e) {
 			e.printStackTrace();
+=======
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+>>>>>>> 2293aad4e74dbe1bdf4bd40d32a7f07f18c22f23
 		}
 		return null;
 	}
 
+<<<<<<< HEAD
 	public boolean save(Product product) {
+=======
+	@Override
+	public boolean save(Product product)
+	{
+>>>>>>> 2293aad4e74dbe1bdf4bd40d32a7f07f18c22f23
 		HttpRequest request;
 		try {
 			request = execute(HttpRequest.post(URL_PRODUCTS));
 			if (request.created()) {
 				return true;
 			}
+<<<<<<< HEAD
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -96,6 +130,12 @@ public class ProductApi extends BootstrapApi {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+=======
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+>>>>>>> 2293aad4e74dbe1bdf4bd40d32a7f07f18c22f23
 		}
 		return false;
 	}
@@ -108,9 +148,17 @@ public class ProductApi extends BootstrapApi {
 			if (request.getConnection().getResponseCode() == NO_CONTENT_RESPONSE) {
 				return true;
 			}
+<<<<<<< HEAD
 		} catch (IOException e) {
 			e.printStackTrace();
+=======
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+>>>>>>> 2293aad4e74dbe1bdf4bd40d32a7f07f18c22f23
 		}
 		return false;
 	}
+
 }

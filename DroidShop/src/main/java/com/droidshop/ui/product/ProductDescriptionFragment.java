@@ -18,7 +18,11 @@ import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
+<<<<<<< HEAD
 import com.droidshop.model.Category;
+=======
+import com.droidshop.model.AbstractEntity;
+>>>>>>> 2293aad4e74dbe1bdf4bd40d32a7f07f18c22f23
 import com.droidshop.model.Product;
 import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.util.ThrowableLoader;
@@ -31,7 +35,7 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 	@Inject
 	protected LogoutService logoutService;
 
-	protected BootstrapApi api;
+	protected BootstrapApi<AbstractEntity> api;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 					}
 					List<Product> latest = null;
 
+<<<<<<< HEAD
 					if (getSherlockActivity() != null) {
 						ProductDescriptionActivity activity = (ProductDescriptionActivity) getSherlockActivity();
 						Long productId = activity.productId;
@@ -82,6 +87,10 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 						latest = api.getProductApi().getProduct(categoryId,
 								productId);
 					}
+=======
+					if (getSherlockActivity() != null)
+						latest = api.getProductApi().getAll(20);
+>>>>>>> 2293aad4e74dbe1bdf4bd40d32a7f07f18c22f23
 
 					if (latest != null)
 						return latest;

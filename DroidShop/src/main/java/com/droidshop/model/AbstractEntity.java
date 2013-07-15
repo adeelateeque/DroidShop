@@ -2,7 +2,7 @@ package com.droidshop.model;
 
 import java.util.ArrayList;
 
-import com.droidshop.api.BootstrapApi.Link;
+import com.droidshop.api.Link;
 
 public class AbstractEntity{
 

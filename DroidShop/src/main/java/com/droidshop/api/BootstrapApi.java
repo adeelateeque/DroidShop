@@ -18,6 +18,7 @@ import org.joda.time.DateTime;
 import com.droidshop.core.Constants;
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.AbstractEntity;
+import com.droidshop.util.Ln;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.analytics.tracking.android.Log;
 import com.google.gson.Gson;
@@ -33,18 +34,22 @@ import com.google.gson.JsonSerializer;
 /**
  * Bootstrap API service
  */
-public class BootstrapApi
+public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 {
 	private final String apiKey;
 	private String username;
 	private String password;
 
 	private UserAgentProvider userAgentProvider;
+	private String endpoint;
+	private Class<? extends BaseWrapper<T>> wrapperClass;
 
 	/**
 	 * GSON instance to use for all request with date format set up for proper parsing.
 	 */
-	public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd").registerTypeAdapter(Currency.class, new CurrencyConverter()).registerTypeAdapter(DateTime.class, new DateTimeConverter()).create();
+	public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+			.registerTypeAdapter(Currency.class, new CurrencyConverter())
+			.registerTypeAdapter(DateTime.class, new DateTimeConverter()).create();
 
 	/**
 	 * You can also configure GSON with different naming policies for your API. Maybe your api is
@@ -95,14 +100,21 @@ public class BootstrapApi
 	/**
 	 * Create DroidShop API
 	 *
-	 * @param userAgentProvider
 	 * @param apiKey
+	 * @param userAgentProvider
+	 * @param endpoint
 	 */
-	protected BootstrapApi(final String apiKey, final UserAgentProvider userAgentProvider)
+	protected BootstrapApi(final String apiKey, final UserAgentProvider userAgentProvider, String endpoint, Class<? extends BaseWrapper<T>> wrapperClass)
 	{
 		this.userAgentProvider = userAgentProvider;
-		this.username = null;
-		this.password = null;
+		this.apiKey = apiKey;
+		this.endpoint = endpoint;
+		this.wrapperClass = wrapperClass;
+	}
+
+	public BootstrapApi(String apiKey, UserAgentProvider userAgentProvider)
+	{
+		this.userAgentProvider = userAgentProvider;
 		this.apiKey = apiKey;
 	}
 
@@ -212,18 +224,18 @@ public class BootstrapApi
 		this.password = password;
 	}
 
-	public abstract class BaseWrapper<T extends AbstractEntity>
+	public abstract class BaseWrapper<P extends AbstractEntity>
 	{
 		private ArrayList<Link> links;
 		private Page page;
-		private ArrayList<T> content;
-		private T entity;
+		private ArrayList<P> content;
+		private P entity;
 
-		protected List<T> getContent()
+		protected List<P> getContent()
 		{
 			if (entity != null)
 			{
-				List<T> asList = new ArrayList<T>();
+				List<P> asList = new ArrayList<P>();
 				asList.add(entity);
 				return asList;
 			}
@@ -245,81 +257,7 @@ public class BootstrapApi
 		}
 	}
 
-	public class Link
-	{
-		private String rel;
-		private String href;
 
-		public String getRel()
-		{
-			return rel;
-		}
-
-		public void setRel(String rel)
-		{
-			this.rel = rel;
-		}
-
-		public String getHref()
-		{
-			return href;
-		}
-
-		public void setHref(String href)
-		{
-			this.href = href;
-		}
-	}
-
-	public class Page
-	{
-		private int size;
-		private int totalElements;
-		private int totalPages;
-		private int number;
-
-		public int getSize()
-		{
-			return size;
-		}
-
-		public void setSize(int size)
-		{
-			this.size = size;
-		}
-
-		public int getTotalElements()
-		{
-			return totalElements;
-		}
-
-		public void setTotalElements(int totalElements)
-		{
-			this.totalElements = totalElements;
-		}
-
-		public int getTotalPages()
-		{
-			return totalPages;
-		}
-
-		public void setTotalPages(int totalPages)
-		{
-			this.totalPages = totalPages;
-		}
-
-		public int getNumber()
-		{
-			return number;
-		}
-
-		public void setNumber(int number)
-		{
-			this.number = number;
-		}
-	}
-
-	// All available APIs
 	public UserApi getUserApi()
 	{
 		UserApi userApi = new UserApi(apiKey, userAgentProvider);
@@ -359,6 +297,118 @@ public class BootstrapApi
 		categoryApi.setPassword(password);
 		return categoryApi;
 	}
+
+	@Override
+	public boolean save(T entity)
+	{
+		return false;
+	}
+
+	protected boolean save(String jsonData)
+	{
+		HttpRequest request;
+		try
+		{
+			request = execute(HttpRequest.post(endpoint).part("status[body]", jsonData));
+			if (request.created())
+			{
+				return true;
+			}
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean delete(T entity)
+	{
+		Long id = verifyAndGetId(entity);
+		if (id != 0)
+		{
+			HttpRequest request;
+			try
+			{
+				request = execute(HttpRequest.delete(endpoint + "/" + id));
+				if (request.ok())
+				{
+					return true;
+				}
+			}
+			catch (IOException e)
+			{
+				Ln.e(e);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public T findById(Long id)
+	{
+		HttpRequest request;
+		try
+		{
+			request = execute(HttpRequest.get(endpoint + "/" + id));
+			BaseWrapper<T> response = fromJson(request, wrapperClass);
+			if (response != null && !response.getContent().isEmpty())
+			{
+				return response.getContent().get(0);
+			}
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+		}
+		return null;
+	}
+
+	@Override
+	public List<T> getAll()
+	{
+		return getAll(0);
+	}
+
+	@Override
+	public List<T> getAll(int count)
+	{
+		try
+		{
+			HttpRequest request = execute(HttpRequest.get(endpoint + "?size=" + count));
+			BaseWrapper<T> response = fromJson(request, wrapperClass);
+			if (response != null)
+			{
+				return response.getContent();
+			}
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+		}
+
+		return Collections.emptyList();
+	}
+
+	protected long verifyAndGetId(T entity)
+	{
+		long id = 0;
+		AbstractEntity item = (AbstractEntity) entity;
+		if (item.getId() == 0 || item.getId() == null)
+		{
+			String selfRel = item.findLink("rel").getHref();
+			try
+			{
+				id = Long.parseLong(selfRel.substring(selfRel.lastIndexOf(endpoint + "/"), +1));
+			}
+			catch (NumberFormatException e)
+			{
+				return 0;
+			}
+		}
+		return id;
+	}
 }
 
 class DateTimeConverter implements JsonSerializer<DateTime>, JsonDeserializer<DateTime>
@@ -372,7 +422,7 @@ class DateTimeConverter implements JsonSerializer<DateTime>, JsonDeserializer<Da
 	@Override
 	public DateTime deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException
 	{
-		//return new DateTime(json.getAsString());
+		// return new DateTime(json.getAsString());
 		return new DateTime();
 	}
 }

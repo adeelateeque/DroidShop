@@ -44,6 +44,7 @@ import com.droidshop.api.UserApi;
 import com.droidshop.core.Constants;
 import com.droidshop.core.Constants.Auth;
 import com.droidshop.core.Constants.Http;
+import com.droidshop.model.AbstractEntity;
 import com.droidshop.model.User;
 import com.droidshop.ui.core.TextWatcherAdapter;
 import com.droidshop.ui.user.RegisterActivity;
@@ -59,7 +60,7 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 	public static final String TAG = "BootstrapAuthenticatorActivity";
 	private AccountManager accountManager;
 
-	protected BootstrapApi api;
+	protected BootstrapApi<AbstractEntity> api;
 
 	@InjectView(id.et_email)
 	AutoCompleteTextView emailText;
