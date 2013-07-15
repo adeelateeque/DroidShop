@@ -30,6 +30,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical" />
+
+        <Button
+            android:id="@+id/buyNowBtn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical" 
+            android:text="Buy Now" />
     </LinearLayout>
 
 </LinearLayout>

@@ -10,7 +10,7 @@ import com.droidshop.ui.core.BootstrapFragmentActivity;
 
 public class ProductDescriptionActivity extends BootstrapFragmentActivity {
 
-	protected Long productId, categoryId;
+	protected Long productId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +18,6 @@ public class ProductDescriptionActivity extends BootstrapFragmentActivity {
 		setContentView(R.layout.activity_product_description);
 		productId = getIntent().getExtras().getLong(
 				ProductListFragment.KEY_PRODUCT_ID);
-		categoryId = getIntent().getExtras().getLong(
-				ProductListFragment.KEY_CATEGORY_ID);
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		ProductDescriptionFragment mFragment = new ProductDescriptionFragment();
 		ft.add(R.id.productDescriptionLayout, mFragment);

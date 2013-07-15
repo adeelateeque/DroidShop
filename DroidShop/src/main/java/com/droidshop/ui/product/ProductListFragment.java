@@ -2,17 +2,20 @@ package com.droidshop.ui.product;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
 import javax.inject.Inject;
 
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,10 +43,31 @@ public class ProductListFragment extends ItemListFragment<Product> {
 
 	protected BootstrapApi<AbstractEntity> api;
 
+	private Button buyNow;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		BootstrapApplication.getInstance().inject(this);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		LinearLayout view = (LinearLayout) inflater.inflate(R.layout.product_list_item, null);
+		buyNow = (Button) view.findViewById(R.id.buyNowBtn);
+		buyNow.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				final int position = getListView().getPositionForView(v);
+		        if (position != ListView.INVALID_POSITION) {
+		            Intent intent = new Intent(getActivity(), receipt.class);
+		            startActivity(intent);
+		        }
+			}
+
+		});
+		return view;
 	}
 
 	@Override
@@ -118,10 +142,7 @@ public class ProductListFragment extends ItemListFragment<Product> {
 		url = url.substring(url.lastIndexOf("/") + 1);
 		Intent intent = new Intent(getActivity(),
 				ProductDescriptionActivity.class);
-		ProductListActivity activity = (ProductListActivity) getSherlockActivity();
-		Long categoryId = activity.categoryId;
 		intent.putExtra(KEY_PRODUCT_ID, Long.parseLong(url));
-		intent.putExtra(KEY_CATEGORY_ID, categoryId.toString());
 		startActivity(intent);
 	}
 

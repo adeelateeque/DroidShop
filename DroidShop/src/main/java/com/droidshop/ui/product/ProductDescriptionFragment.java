@@ -69,6 +69,8 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 
 	public Loader<List<Product>> onCreateLoader(int id, Bundle args) {
 		final List<Product> initialItems = items;
+		Toast.makeText(getSherlockActivity(), Integer.toString(items.size()),
+				Toast.LENGTH_LONG).show();
 		return new ThrowableLoader<List<Product>>(getSherlockActivity(), items) {
 			@Override
 			public List<Product> loadData() throws Exception {
@@ -78,17 +80,11 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 					}
 					List<Product> latest = null;
 
-					if (getSherlockActivity() != null) {
-						ProductDescriptionActivity activity = (ProductDescriptionActivity) getSherlockActivity();
-						Long productId = activity.productId;
+					if (getSherlockActivity() != null){
+						ProductListActivity activity = (ProductListActivity) getSherlockActivity();
 						Long categoryId = activity.categoryId;
-//						latest = api.getProductApi().getProduct(new Category(categoryId),
-//								new Product(productId));
-//						Toast.makeText(getActivity(), latest.toString(), Toast.LENGTH_SHORT).show();
+						latest = (List<Product>) api.getProductApi().findById(categoryId);
 					}
-
-					if (getSherlockActivity() != null)
-						latest = api.getProductApi().getAll(20);
 
 					if (latest != null)
 						return latest;
