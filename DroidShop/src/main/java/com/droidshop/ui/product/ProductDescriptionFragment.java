@@ -78,7 +78,7 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 					List<Product> latest = null;
 
 					if (getSherlockActivity() != null)
-						latest = api.getProductApi().getProducts();
+						latest = api.getProductApi().getAll(20);
 
 					if (latest != null)
 						return latest;

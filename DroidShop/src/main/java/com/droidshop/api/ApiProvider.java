@@ -8,6 +8,7 @@ import android.accounts.AccountsException;
 import android.app.Activity;
 
 import com.droidshop.core.UserAgentProvider;
+import com.droidshop.model.AbstractEntity;
 
 /**
  * Provider for a {@link com.droidshop.api.BootstrapApi} instance
@@ -28,16 +29,16 @@ public class ApiProvider
 	 * @throws IOException
 	 * @throws AccountsException
 	 */
-	public BootstrapApi getApi(Activity activity) throws IOException, AccountsException
+	public BootstrapApi<AbstractEntity> getApi(Activity activity) throws IOException, AccountsException
 	{
-		return new BootstrapApi(keyProvider.getAuthKey(activity), userAgentProvider);
+		return new BootstrapApi<AbstractEntity>(keyProvider.getAuthKey(activity), userAgentProvider);
 	}
 
 	/**
 	 * Requires the API to use basic authentication
 	 * */
-	public BootstrapApi getApi(String username, String password)
+	public BootstrapApi<AbstractEntity> getApi(String username, String password)
 	{
-		return new BootstrapApi(username, password);
+		return new BootstrapApi<AbstractEntity>(username, password);
 	}
 }

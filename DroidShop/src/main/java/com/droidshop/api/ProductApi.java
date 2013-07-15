@@ -1,18 +1,19 @@
 package com.droidshop.api;
 
+import static com.droidshop.core.Constants.Http.NO_CONTENT_RESPONSE;
 import static com.droidshop.core.Constants.Http.URL_CATEGORY;
 import static com.droidshop.core.Constants.Http.URL_PRODUCTS;
-import static com.droidshop.core.Constants.Http.NO_CONTENT_RESPONSE;
+
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.Category;
 import com.droidshop.model.Product;
+import com.droidshop.util.Ln;
 import com.github.kevinsawicki.http.HttpRequest;
 
-public class ProductApi extends BootstrapApi
+public class ProductApi extends BootstrapApi<Product>
 {
 	protected ProductApi(String username, String password)
 	{
@@ -21,72 +22,10 @@ public class ProductApi extends BootstrapApi
 
 	protected ProductApi(String apiKey, UserAgentProvider userAgentProvider)
 	{
-		super(apiKey, userAgentProvider);
+		super(apiKey, userAgentProvider, URL_PRODUCTS, ProductWrapper.class);
 	}
 
-	private class ProductWrapper extends BaseWrapper<Product>
-	{
-	}
-
-	public List<Product> getProducts()
-	{
-		return getProducts(20);
-	}
-
-	public List<Product> getProducts(int productCount)
-	{
-		try
-		{
-			HttpRequest request = execute(HttpRequest.get(URL_PRODUCTS + "?size=" + productCount));
-			ProductWrapper response = fromJson(request, ProductWrapper.class);
-			if (response != null)
-			{
-				return response.getContent();
-			}
-		}
-		catch (IOException e)
-		{
-		}
-
-		return Collections.emptyList();
-	}
-
-	public List<Product> getProductsList(Integer i)
-	{
-		try
-		{
-			HttpRequest request = execute(HttpRequest.get(URL_CATEGORY + "/" + i + "products"));
-			ProductWrapper response = fromJson(request, ProductWrapper.class);
-			if (response != null)
-			{
-				return response.getContent();
-			}
-		}
-		catch (IOException e)
-		{
-		}
-
-		return Collections.emptyList();
-	}
-
-	public Product getProductById(int id)
-	{
-		HttpRequest request;
-		try
-		{
-			request = execute(HttpRequest.get(URL_PRODUCTS + "/" + id));
-			ProductWrapper response = fromJson(request, ProductWrapper.class);
-			if (response != null)
-			{
-				return response.getContent().get(0);
-			}
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
+	public class ProductWrapper extends BaseWrapper<Product>{}
 
 	public List<Product> getProductsForCategory(Category category)
 	{
@@ -102,11 +41,12 @@ public class ProductApi extends BootstrapApi
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Ln.e(e);
 		}
 		return null;
 	}
 
+	@Override
 	public boolean save(Product product)
 	{
 		HttpRequest request;
@@ -120,25 +60,7 @@ public class ProductApi extends BootstrapApi
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	public boolean delete(Product product)
-	{
-		HttpRequest request;
-		try
-		{
-			request = execute(HttpRequest.delete(URL_PRODUCTS + "/" + product.getId()));
-			if (request.created())
-			{
-				return true;
-			}
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
+			Ln.e(e);
 		}
 		return false;
 	}
@@ -156,8 +78,9 @@ public class ProductApi extends BootstrapApi
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			Ln.e(e);
 		}
 		return false;
 	}
+
 }

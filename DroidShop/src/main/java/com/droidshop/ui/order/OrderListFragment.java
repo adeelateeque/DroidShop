@@ -90,7 +90,7 @@ public class OrderListFragment extends ItemListFragment<Order>
 					List<Order> loaded = null;
 
 					if (getSherlockActivity() != null)
-						loaded = api.getOrderApi().getOrders();
+						loaded = api.getOrderApi().getAll();
 
 					if (loaded != null)
 						return loaded;
@@ -117,6 +117,6 @@ public class OrderListFragment extends ItemListFragment<Order>
 	@Override
 	protected int getErrorMessage(Exception exception)
 	{
-		return R.string.error_loading_reservation;
+		return R.string.error_loading_order;
 	}
 }

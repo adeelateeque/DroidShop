@@ -7,8 +7,9 @@ import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.Product;
 import com.droidshop.model.MonetaryAmount;
 import com.droidshop.model.Reservation;
+import static com.droidshop.core.Constants.Http.URL_RESERVATION;
 
-public class ReservationApi extends BootstrapApi
+public class ReservationApi extends BootstrapApi<Reservation>
 {
 
 	protected ReservationApi(String username, String password)
@@ -18,8 +19,10 @@ public class ReservationApi extends BootstrapApi
 
 	protected ReservationApi(String apiKey, UserAgentProvider userAgentProvider)
 	{
-		super(apiKey, userAgentProvider);
+		super(apiKey, userAgentProvider, URL_RESERVATION, ReservationWrapper.class);
 	}
+
+	public class ReservationWrapper extends BaseWrapper<Reservation>{}
 
 	public List<Reservation> getReservations()
 	{
