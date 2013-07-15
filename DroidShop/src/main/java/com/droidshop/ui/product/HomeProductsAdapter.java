@@ -11,8 +11,8 @@ import com.droidshop.model.Product;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.squareup.picasso.Picasso;
 
-public class NewProductsAdapter extends SingleTypeAdapter<Product> {
-	public NewProductsAdapter(LayoutInflater inflater, List<Product> items) {
+public class HomeProductsAdapter extends SingleTypeAdapter<Product> {
+	public HomeProductsAdapter(LayoutInflater inflater, List<Product> items) {
 		super(inflater, R.layout.product_grid_item);
 
 		setItems(items);
@@ -34,7 +34,8 @@ public class NewProductsAdapter extends SingleTypeAdapter<Product> {
 		if (!product.getImages().isEmpty()) {
 			url = product.getImages().get(0);
 		}
-		Picasso.with(BootstrapApplication.getInstance()).load(url).placeholder(R.drawable.no_image).error(R.drawable.no_image).fit().into(view);
+		Picasso.with(BootstrapApplication.getInstance()).load(url).placeholder(R.drawable.no_image).error(R.drawable.no_image).resize(R.dimen.list_item_image, R.dimen.list_item_image).centerInside().into(view);
 		setText(1, String.format("%1$s %2$s", product.getName(), product.getPrice().getValue()));
 	}
+
 }

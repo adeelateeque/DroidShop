@@ -20,7 +20,6 @@ import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.model.Category;
 import com.droidshop.ui.core.ItemListFragment;
-import com.droidshop.ui.product.ProductDescriptionFragment;
 import com.droidshop.ui.product.ProductListFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;

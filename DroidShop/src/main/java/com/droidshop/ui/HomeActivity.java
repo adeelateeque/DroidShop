@@ -33,7 +33,7 @@ import com.droidshop.core.Constants;
 import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.order.OrderActivity;
-import com.droidshop.ui.product.NewProductsFragment;
+import com.droidshop.ui.product.HomeProductsFragment;
 import com.droidshop.ui.product.ProductDescriptionActivity;
 import com.droidshop.ui.reservation.ReservationActivity;
 import com.droidshop.ui.user.UserProfileActivity;
@@ -169,7 +169,7 @@ public class HomeActivity extends BootstrapFragmentActivity
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		ActionBar.Tab mainTab = mActionBar.newTab().setText(R.string.page_main)
-				.setTabListener(new TabListener<NewProductsFragment>(this, "product", NewProductsFragment.class));
+				.setTabListener(new TabListener<HomeProductsFragment>(this, "product", HomeProductsFragment.class));
 		mActionBar.addTab(mainTab, true);
 
 		ActionBar.Tab categoryTab = mActionBar.newTab().setText(R.string.page_category)
