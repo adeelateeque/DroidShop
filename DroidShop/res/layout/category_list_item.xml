@@ -22,8 +22,8 @@
             android:id="@+id/category_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center" 
-            android:textStyle="@android:style/TextAppearance.Holo.Large"/>
+            android:gravity="center_vertical|center_horizontal"
+            style="@android:style/TextAppearance.Large.Inverse" />
         
     </LinearLayout>
 </LinearLayout>
