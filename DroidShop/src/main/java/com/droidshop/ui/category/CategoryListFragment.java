@@ -20,12 +20,14 @@ import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.model.Category;
 import com.droidshop.ui.core.ItemListFragment;
+import com.droidshop.ui.product.ProductListActivity;
 import com.droidshop.ui.product.ProductListFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 
 public class CategoryListFragment extends ItemListFragment<Category>
 {
+	public static String KEY_CATEGORY_ID;
 	@Inject
 	protected ApiProvider apiProvider;
 
@@ -115,8 +117,11 @@ public class CategoryListFragment extends ItemListFragment<Category>
 
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
-		// Category category = ((Category) l.getItemAtPosition(position));
-		Intent intent = new Intent(getActivity(), ProductListFragment.class);
+		Category catgory = (Category) l.getItemAtPosition(position);
+		String url = catgory.findLink("self").getHref();
+		url = url.substring(url.lastIndexOf("/") + 1);
+		Intent intent = new Intent(getActivity(), ProductListActivity.class);
+		intent.putExtra(KEY_CATEGORY_ID, Long.parseLong(url));
 		startActivity(intent);
 	}
 

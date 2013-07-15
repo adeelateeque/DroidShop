@@ -146,11 +146,9 @@ public class HomeActivity extends BootstrapFragmentActivity
 		}
 		else if (isAdmin == true)
 		{
-			mActionBar.setDisplayHomeAsUpEnabled(false);
-			mActionBar.setHomeButtonEnabled(false);
-			mDrawerToggle.setDrawerIndicatorEnabled(false);
-			mDrawerLayout.setEnabled(true);
-			mDrawerList.setVisibility(View.GONE);
+			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+			getSupportActionBar().setHomeButtonEnabled(false);
+			mDrawerLayout.setEnabled(false);
 		}
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 	}
@@ -239,6 +237,9 @@ public class HomeActivity extends BootstrapFragmentActivity
 						finish();
 					}
 				});
+				return true;
+			case id.add_product:
+				Toast.makeText(getApplicationContext(), "Add product", Toast.LENGTH_SHORT).show();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
