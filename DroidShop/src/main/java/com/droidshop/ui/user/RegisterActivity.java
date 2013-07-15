@@ -28,6 +28,7 @@ import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
+import com.droidshop.model.AbstractEntity;
 import com.droidshop.model.User;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.core.DatePickerFragment;
@@ -37,7 +38,7 @@ import com.github.kevinsawicki.wishlist.Toaster;
 public class RegisterActivity extends BootstrapFragmentActivity
 {
 	User newUser = new User();
-	BootstrapApi api;
+	BootstrapApi<AbstractEntity> api;
 	@Inject
 	ApiProvider apiProvider;
 	@InjectView(R.id.et_username)
