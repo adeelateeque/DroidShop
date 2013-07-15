@@ -85,12 +85,7 @@ public class ProductListFragment extends ItemListFragment<Product> {
 					}
 					List<Product> latest = null;
 
-<<<<<<< HEAD
-					if (getSherlockActivity() != null) {
-=======
-
 					if (getSherlockActivity() != null){
->>>>>>> 2293aad4e74dbe1bdf4bd40d32a7f07f18c22f23
 						ProductListActivity activity = (ProductListActivity) getSherlockActivity();
 						Long categoryId = activity.categoryId;
 						latest = api.getProductApi().getProductsForCategory(

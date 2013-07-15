@@ -41,7 +41,7 @@ public class ProductListAdapter extends AlternatingColorListAdapter<Product> {
 		Picasso.with(BootstrapApplication.getInstance()).load(item.getImages().get(0))
 				.resizeDimen(R.dimen.list_item_image, R.dimen.list_item_image)
 				.centerCrop().into(view);
-		setText(1, item.getName());
+		setText(1, item.getName(), "$" + item.getPrice());
 	}
 
 }
