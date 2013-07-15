@@ -18,6 +18,7 @@ import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
+import com.droidshop.model.AbstractEntity;
 import com.droidshop.model.Product;
 import com.droidshop.ui.core.ItemGridFragment;
 import com.droidshop.util.ThrowableLoader;
@@ -30,7 +31,7 @@ public class HomeProductsFragment extends ItemGridFragment<Product> {
 	@Inject
 	protected LogoutService logoutService;
 
-	protected BootstrapApi api;
+	protected BootstrapApi<AbstractEntity> api;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class HomeProductsFragment extends ItemGridFragment<Product> {
 					List<Product> latest = null;
 
 					if (getSherlockActivity() != null)
-						latest = api.getProductApi().getProducts();
+						latest = api.getProductApi().getAll(20);
 
 					if (latest != null)
 						return latest;

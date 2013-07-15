@@ -17,6 +17,7 @@ import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
+import com.droidshop.model.AbstractEntity;
 import com.droidshop.model.Order;
 import com.droidshop.ui.category.OrderListAdapter;
 import com.droidshop.ui.core.ItemListFragment;
@@ -31,7 +32,7 @@ public class OrderListFragment extends ItemListFragment<Order>
 	@Inject
 	protected LogoutService logoutService;
 
-	protected BootstrapApi api;
+	protected BootstrapApi<AbstractEntity> api;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -53,9 +54,6 @@ public class OrderListFragment extends ItemListFragment<Order>
 
 		listView.setFastScrollEnabled(true);
 		listView.setDividerHeight(0);
-
-		// getListAdapter().addHeader(activity.getLayoutInflater().inflate(R.layout.checkins_list_item_labels,
-		// null));
 	}
 
 	@Override
@@ -90,7 +88,7 @@ public class OrderListFragment extends ItemListFragment<Order>
 					List<Order> loaded = null;
 
 					if (getSherlockActivity() != null)
-						loaded = api.getOrderApi().getOrders();
+						loaded = api.getOrderApi().getAll();
 
 					if (loaded != null)
 						return loaded;
@@ -117,6 +115,6 @@ public class OrderListFragment extends ItemListFragment<Order>
 	@Override
 	protected int getErrorMessage(Exception exception)
 	{
-		return R.string.error_loading_reservation;
+		return R.string.error_loading_order;
 	}
 }

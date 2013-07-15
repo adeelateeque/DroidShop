@@ -21,13 +21,14 @@ public class OrderListAdapter extends AlternatingColorListAdapter<Order> {
 
 	@Override
 	protected int[] getChildViewIds() {
-		return new int[] { R.id.toptext, R.id.bottomtext };
+		return new int[] { R.id.toptext, R.id.status };
 	}
 
 	@Override
 	protected void update(int position, Order item) {
 		super.update(position, item);
-		setText(0, item.getPrice().toString());
+		setText(0, item.getPrice().getCurrency().getCurrencyCode() + " " + item.getPrice().getValue());
+		setText(1, item.getStatus().toString());
 	}
 
 }

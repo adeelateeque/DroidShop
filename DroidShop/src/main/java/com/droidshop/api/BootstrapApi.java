@@ -3,7 +3,9 @@ package com.droidshop.api;
 import static com.droidshop.core.Constants.Http.APP_ID;
 import static com.droidshop.core.Constants.Http.HEADER_APP_ID;
 import static com.droidshop.core.Constants.Http.HEADER_REST_API_KEY;
+import static com.droidshop.core.Constants.Http.NO_CONTENT_RESPONSE;
 import static com.droidshop.core.Constants.Http.REST_API_KEY;
+import static com.droidshop.core.Constants.Http.URL_PRODUCTS;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,9 +17,14 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import com.droidshop.api.ProductApi.ProductConverter;
+import com.droidshop.api.UserApi.UserConverter;
 import com.droidshop.core.Constants;
 import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.AbstractEntity;
+import com.droidshop.model.Product;
+import com.droidshop.model.User;
+import com.droidshop.util.Ln;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.analytics.tracking.android.Log;
 import com.google.gson.Gson;
@@ -33,29 +40,23 @@ import com.google.gson.JsonSerializer;
 /**
  * Bootstrap API service
  */
-public class BootstrapApi
+public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 {
 	private final String apiKey;
 	private String username;
 	private String password;
 
 	private UserAgentProvider userAgentProvider;
+	private String endpoint;
+	private Class<? extends BaseWrapper<T>> wrapperClass;
 
 	/**
 	 * GSON instance to use for all request with date format set up for proper parsing.
 	 */
-	public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd").registerTypeAdapter(Currency.class, new CurrencyConverter()).registerTypeAdapter(DateTime.class, new DateTimeConverter()).create();
-
-	/**
-	 * You can also configure GSON with different naming policies for your API. Maybe your api is
-	 * Rails
-	 * api and all json values are lower case with an underscore, like this "first_name" instead of
-	 * "firstName".
-	 * You can configure GSON as such below.
-	 * public static final Gson GSON = new
-	 * GsonBuilder().setDateFormat("yyyy-MM-dd").setFieldNamingPolicy
-	 * (LOWER_CASE_WITH_UNDERSCORES).create();
-	 */
+	public static final Gson GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd")
+			.registerTypeAdapter(Currency.class, new CurrencyConverter())
+			.registerTypeAdapter(Product.class, new ProductConverter()).registerTypeAdapter(User.class, new UserConverter())
+			.registerTypeAdapter(DateTime.class, new DateTimeConverter()).create();
 
 	/**
 	 * Read and connect timeout in milliseconds
@@ -95,14 +96,22 @@ public class BootstrapApi
 	/**
 	 * Create DroidShop API
 	 *
-	 * @param userAgentProvider
 	 * @param apiKey
+	 * @param userAgentProvider
+	 * @param endpoint
 	 */
-	protected BootstrapApi(final String apiKey, final UserAgentProvider userAgentProvider)
+	protected BootstrapApi(final String apiKey, final UserAgentProvider userAgentProvider, String endpoint,
+			Class<? extends BaseWrapper<T>> wrapperClass)
 	{
 		this.userAgentProvider = userAgentProvider;
-		this.username = null;
-		this.password = null;
+		this.apiKey = apiKey;
+		this.endpoint = endpoint;
+		this.wrapperClass = wrapperClass;
+	}
+
+	public BootstrapApi(String apiKey, UserAgentProvider userAgentProvider)
+	{
+		this.userAgentProvider = userAgentProvider;
 		this.apiKey = apiKey;
 	}
 
@@ -110,21 +119,22 @@ public class BootstrapApi
 	 * Execute request
 	 *
 	 * @param request
+	 * @param isJson
 	 * @return request
 	 * @throws IOException
 	 */
-	protected HttpRequest execute(HttpRequest request) throws IOException
+	protected HttpRequest execute(HttpRequest request, Boolean isJson) throws IOException
 	{
-		if (!configure(request).ok())
+		if (!configure(request, isJson).ok())
 			throw new IOException("Unexpected response code: " + request.code());
 		return request;
 	}
 
-	private HttpRequest configure(final HttpRequest request)
+	private HttpRequest configure(final HttpRequest request, Boolean isJson)
 	{
 		request.connectTimeout(TIMEOUT).readTimeout(TIMEOUT).userAgent(userAgentProvider.get());
 
-		if (isPostOrPut(request))
+		if (isPostOrPut(request) && isJson)
 			request.contentType(Constants.Http.CONTENT_TYPE_JSON);
 		return addCredentialsTo(request);
 	}
@@ -138,26 +148,8 @@ public class BootstrapApi
 
 	private HttpRequest addCredentialsTo(HttpRequest request)
 	{
-		// Required params for
 		request.header(HEADER_REST_API_KEY, REST_API_KEY);
 		request.header(HEADER_APP_ID, APP_ID);
-
-		/**
-		 * NOTE: This may be where you want to add a header for the api token that was saved when
-		 * you
-		 * logged in. In the bootstrap sample this is where we are saving the session id as the
-		 * token.
-		 * If you actually had received a token you'd take the "apiKey" (aka: token) and add it to
-		 * the
-		 * header or form values before you make your requests.
-		 */
-
-		/**
-		 * Add the user name and password to the request here if your service needs username or
-		 * password for each
-		 * request. You can do this like this:
-		 * request.basic("myusername", "mypassword");
-		 */
 
 		Log.d(request.toString());
 		return request;
@@ -212,18 +204,18 @@ public class BootstrapApi
 		this.password = password;
 	}
 
-	public abstract class BaseWrapper<T extends AbstractEntity>
+	public abstract class BaseWrapper<P extends AbstractEntity>
 	{
 		private ArrayList<Link> links;
 		private Page page;
-		private ArrayList<T> content;
-		private T entity;
+		private ArrayList<P> content;
+		private P entity;
 
-		protected List<T> getContent()
+		protected List<P> getContent()
 		{
 			if (entity != null)
 			{
-				List<T> asList = new ArrayList<T>();
+				List<P> asList = new ArrayList<P>();
 				asList.add(entity);
 				return asList;
 			}
@@ -245,81 +237,6 @@ public class BootstrapApi
 		}
 	}
 
-	public class Link
-	{
-		private String rel;
-		private String href;
-
-		public String getRel()
-		{
-			return rel;
-		}
-
-		public void setRel(String rel)
-		{
-			this.rel = rel;
-		}
-
-		public String getHref()
-		{
-			return href;
-		}
-
-		public void setHref(String href)
-		{
-			this.href = href;
-		}
-	}
-
-	public class Page
-	{
-		private int size;
-		private int totalElements;
-		private int totalPages;
-		private int number;
-
-		public int getSize()
-		{
-			return size;
-		}
-
-		public void setSize(int size)
-		{
-			this.size = size;
-		}
-
-		public int getTotalElements()
-		{
-			return totalElements;
-		}
-
-		public void setTotalElements(int totalElements)
-		{
-			this.totalElements = totalElements;
-		}
-
-		public int getTotalPages()
-		{
-			return totalPages;
-		}
-
-		public void setTotalPages(int totalPages)
-		{
-			this.totalPages = totalPages;
-		}
-
-		public int getNumber()
-		{
-			return number;
-		}
-
-		public void setNumber(int number)
-		{
-			this.number = number;
-		}
-	}
-
-	// All available APIs
 	public UserApi getUserApi()
 	{
 		UserApi userApi = new UserApi(apiKey, userAgentProvider);
@@ -359,6 +276,139 @@ public class BootstrapApi
 		categoryApi.setPassword(password);
 		return categoryApi;
 	}
+
+	@Override
+	public long save(T entity)
+	{
+		HttpRequest request;
+		try
+		{
+			request = execute(HttpRequest.post(endpoint).send(GSON.toJson(entity)), true);
+			if (request.created())
+			{
+				return parseIdFromUrl(request.header(HttpRequest.HEADER_LOCATION), endpoint);
+			}
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+		}
+		catch (NumberFormatException e)
+		{
+		}
+		return 0;
+	}
+
+	public boolean update(T entity)
+	{
+		HttpRequest request;
+		try
+		{
+			request = execute(HttpRequest.put(URL_PRODUCTS + "/" + entity.getId()).send(GSON.toJson(entity)), true);
+			if (request.getConnection().getResponseCode() == NO_CONTENT_RESPONSE)
+			{
+				return true;
+			}
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean delete(T entity)
+	{
+		Long id = verifyAndGetId(entity);
+		if (id != 0)
+		{
+			HttpRequest request;
+			try
+			{
+				request = execute(HttpRequest.delete(endpoint + "/" + id), true);
+				if (request.ok())
+				{
+					return true;
+				}
+			}
+			catch (IOException e)
+			{
+				Ln.e(e);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public T findById(Long id)
+	{
+		HttpRequest request;
+		try
+		{
+			request = execute(HttpRequest.get(endpoint + "/" + id), true);
+			BaseWrapper<T> response = fromJson(request, wrapperClass);
+			if (response != null && !response.getContent().isEmpty())
+			{
+				return response.getContent().get(0);
+			}
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+		}
+		return null;
+	}
+
+	@Override
+	public List<T> getAll()
+	{
+		return getAll(0);
+	}
+
+	@Override
+	public List<T> getAll(int count)
+	{
+		try
+		{
+			HttpRequest request = execute(HttpRequest.get(endpoint + "?size=" + count), true);
+			BaseWrapper<T> response = fromJson(request, wrapperClass);
+			if (response != null)
+			{
+				return response.getContent();
+			}
+		}
+		catch (IOException e)
+		{
+			Ln.e(e);
+		}
+
+		return Collections.emptyList();
+	}
+
+	protected long verifyAndGetId(T entity)
+	{
+		long id = 0;
+		AbstractEntity item = (AbstractEntity) entity;
+		if (item.getId() == 0 || item.getId() == null)
+		{
+			String selfRel = item.findLink("rel").getHref();
+			try
+			{
+				id = parseIdFromUrl(selfRel, endpoint);
+			}
+			catch (NumberFormatException e)
+			{
+				return 0;
+			}
+		}
+		return id;
+	}
+
+	protected long parseIdFromUrl(String url, String rootPath)
+	{
+		return Long.parseLong(url.substring(url.lastIndexOf(rootPath + "/"), +1));
+	}
 }
 
 class DateTimeConverter implements JsonSerializer<DateTime>, JsonDeserializer<DateTime>
@@ -372,7 +422,7 @@ class DateTimeConverter implements JsonSerializer<DateTime>, JsonDeserializer<Da
 	@Override
 	public DateTime deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException
 	{
-		//return new DateTime(json.getAsString());
+		// return new DateTime(json.getAsString());
 		return new DateTime();
 	}
 }

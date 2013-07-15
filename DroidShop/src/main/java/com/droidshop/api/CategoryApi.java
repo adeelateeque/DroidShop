@@ -10,14 +10,14 @@ import com.droidshop.core.UserAgentProvider;
 import com.droidshop.model.Category;
 import com.github.kevinsawicki.http.HttpRequest;
 
-public class CategoryApi extends BootstrapApi {
+public class CategoryApi extends BootstrapApi<Category> {
 
 	protected CategoryApi(String username, String password) {
 		super(username, password);
 	}
 
 	protected CategoryApi(String apiKey, UserAgentProvider userAgentProvider) {
-		super(apiKey, userAgentProvider);
+		super(apiKey, userAgentProvider, URL_CATEGORY, CategoryWrapper.class);
 	}
 
 	private class CategoryWrapper extends BaseWrapper<Category> {
@@ -26,7 +26,7 @@ public class CategoryApi extends BootstrapApi {
 	public List<Category> getCategories() {
 		try {
 			HttpRequest request = execute(HttpRequest.get(URL_CATEGORY
-					+ "?size=0"));
+					+ "?size=0"), true);
 			CategoryWrapper response = fromJson(request, CategoryWrapper.class);
 			if (response != null) {
 				return response.getContent();
@@ -36,5 +36,4 @@ public class CategoryApi extends BootstrapApi {
 
 		return Collections.emptyList();
 	}
-
 }

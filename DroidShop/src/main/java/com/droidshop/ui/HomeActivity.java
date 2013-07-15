@@ -28,6 +28,7 @@ import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.droidshop.R;
 import com.droidshop.R.id;
+import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.authenticator.LogoutService;
 import com.droidshop.core.Constants;
 import com.droidshop.ui.category.CategoryListFragment;
@@ -236,6 +237,9 @@ public class HomeActivity extends BootstrapFragmentActivity
 					@Override
 					public void run()
 					{
+						Intent intent = new Intent(getApplicationContext(), BootstrapAuthenticatorActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivity(intent);
 						finish();
 					}
 				});

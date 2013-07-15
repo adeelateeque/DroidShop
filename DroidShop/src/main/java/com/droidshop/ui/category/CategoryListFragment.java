@@ -18,10 +18,10 @@ import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
+import com.droidshop.model.AbstractEntity;
 import com.droidshop.model.Category;
 import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.ui.product.ProductListActivity;
-import com.droidshop.ui.product.ProductListFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 
@@ -34,7 +34,7 @@ public class CategoryListFragment extends ItemListFragment<Category>
 	@Inject
 	protected LogoutService logoutService;
 
-	protected BootstrapApi api;
+	protected BootstrapApi<AbstractEntity> api;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
