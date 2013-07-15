@@ -9,12 +9,12 @@ import android.widget.ScrollView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.droidshop.R;
 
-public class CreateProductFragment extends SherlockFragment {
+public class ProductManagerFragment extends SherlockFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		ScrollView view = (ScrollView) inflater.inflate(R.layout.fragment_create_product, null);
+		ScrollView view = (ScrollView) inflater.inflate(R.layout.fragment_product_manager, null);
 
 		return view;
 	}

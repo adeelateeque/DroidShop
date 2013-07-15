@@ -146,11 +146,9 @@ public class HomeActivity extends BootstrapFragmentActivity
 		}
 		else if (isAdmin == true)
 		{
-			mActionBar.setDisplayHomeAsUpEnabled(false);
-			mActionBar.setHomeButtonEnabled(false);
-			mDrawerToggle.setDrawerIndicatorEnabled(false);
-			mDrawerLayout.setEnabled(true);
-			mDrawerList.setVisibility(View.GONE);
+			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+			getSupportActionBar().setHomeButtonEnabled(false);
+			mDrawerLayout.setEnabled(false);
 		}
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 	}

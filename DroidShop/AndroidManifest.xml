@@ -114,6 +114,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.droidshop.ui.CarouselActivity" />
         </activity>
+<<<<<<< HEAD
         <activity
             android:name="com.droidshop.ui.product.ProductDescriptionFragment"
             android:parentActivityName="com.droidshop.ui.HomeActivity" >
@@ -128,6 +129,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.droidshop.ui.CarouselActivity" />
         </activity>
+=======
+>>>>>>> ff7830850857a5ebf03acc67ce9a9d943abab33e
     </application>
 
 </manifest>
