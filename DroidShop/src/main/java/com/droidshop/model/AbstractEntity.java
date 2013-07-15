@@ -34,4 +34,16 @@ public class AbstractEntity{
 	{
 		this.links = links;
 	}
+
+	public Link findLink(String rel)
+	{
+		for(Link link : links)
+		{
+			if(link.getRel().equals(rel))
+			{
+				return link;
+			}
+		}
+		return null;
+	}
 }
