@@ -6,6 +6,12 @@
         android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/search_action"/>
     
+    <item
+        android:id="@+id/add_product"
+        android:icon="@drawable/add"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/page_create_product"/>
+    
      <item
         android:id="@+id/logout"
         android:showAsAction="never"
