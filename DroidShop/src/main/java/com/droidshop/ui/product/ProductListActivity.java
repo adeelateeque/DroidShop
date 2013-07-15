@@ -9,7 +9,7 @@ import com.droidshop.ui.core.BootstrapFragmentActivity;
 
 public class ProductListActivity extends BootstrapFragmentActivity {
 
-	protected static Long categoryId;
+	protected Long categoryId;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

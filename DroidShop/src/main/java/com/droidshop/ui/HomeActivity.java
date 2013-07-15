@@ -238,6 +238,9 @@ public class HomeActivity extends BootstrapFragmentActivity
 					}
 				});
 				return true;
+			case id.add_product:
+				Toast.makeText(getApplicationContext(), "Add product", Toast.LENGTH_SHORT).show();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}

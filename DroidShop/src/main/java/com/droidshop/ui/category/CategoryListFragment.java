@@ -118,9 +118,10 @@ public class CategoryListFragment extends ItemListFragment<Category>
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
 		Category catgory = (Category) l.getItemAtPosition(position);
-		// Category category = ((Category) l.getItemAtPosition(position));
+		String url = catgory.findLink("self").getHref();
+		url = url.substring(url.lastIndexOf("/") + 1);
 		Intent intent = new Intent(getActivity(), ProductListActivity.class);
-		intent.putExtra(KEY_CATEGORY_ID, catgory.getId());
+		intent.putExtra(KEY_CATEGORY_ID, Long.parseLong(url));
 		startActivity(intent);
 	}
 

@@ -10,9 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,11 +19,11 @@ import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
+import com.droidshop.model.Category;
 import com.droidshop.model.Product;
 import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.google.ads.a;
 
 public class ProductListFragment extends ItemListFragment<Product>
 {
@@ -96,7 +94,7 @@ public class ProductListFragment extends ItemListFragment<Product>
 					if (getSherlockActivity() != null){
 						ProductListActivity activity = (ProductListActivity) getSherlockActivity();
 						Long categoryId = activity.categoryId;
-						latest = api.getProductApi().getProducts();
+						latest = api.getProductApi().getProductsForCategory(new Category(categoryId));
 					}
 
 					if (latest != null)
