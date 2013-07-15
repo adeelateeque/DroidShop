@@ -15,7 +15,7 @@ public class ProductListActivity extends BootstrapFragmentActivity {
 
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		ProductListFragment mFragment = new ProductListFragment();
-		ft.add(R.id.itemListLayout, mFragment);
+		ft.add(R.id.productListLayout, mFragment);
 		ft.commit();
 	}
 

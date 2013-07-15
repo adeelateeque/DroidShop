@@ -2,6 +2,7 @@ package com.droidshop.ui.product;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -11,24 +12,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.droidshop.R;
-import com.droidshop.ui.cart.Cart;
+import com.droidshop.ui.core.BootstrapFragmentActivity;
+import com.droidshop.ui.reservation.ReservationListFragment;
 
-public class ProductDescriptionActivity extends Activity {
+public class ProductDescriptionActivity extends BootstrapFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_product_description);
+
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ReservationListFragment mFragment = new ReservationListFragment();
+		ft.add(R.id.productDescriptionLayout, mFragment);
+		ft.commit();
+	}
+
+	/*protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_product_description);
 
 
-		final int selectedProduct = getIntent().getExtras().getInt("position");
+		//final int selectedProduct = getIntent().getExtras().getInt("position");
 
 		// Set the proper image and text
 		ImageView productImageView = (ImageView) findViewById(R.id.ImageViewProduct);
 		productImageView.setImageDrawable(getResources().getDrawable(R.drawable.icon));
 		TextView productTitleTextView = (TextView) findViewById(R.id.TextViewProductTitle);
-		productTitleTextView.setText("Product " + selectedProduct);
+		productTitleTextView.setText("Product 1 ");
 		TextView productDetailsTextView = (TextView) findViewById(R.id.TextViewProductDetails);
 		productDetailsTextView.setText("Description of products here!");
 		TextView productPriceTextView = (TextView) findViewById(R.id.TextViewProductPrice);
@@ -73,8 +85,7 @@ public class ProductDescriptionActivity extends Activity {
 			}
 		});
 
-	}
+	}*/
 
-	//public Product
 
 }

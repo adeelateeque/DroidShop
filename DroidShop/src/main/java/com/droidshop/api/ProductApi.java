@@ -12,20 +12,16 @@ import com.droidshop.model.Category;
 import com.droidshop.model.Product;
 import com.github.kevinsawicki.http.HttpRequest;
 
-public class ProductApi extends BootstrapApi
-{
-	protected ProductApi(String username, String password)
-	{
+public class ProductApi extends BootstrapApi {
+	protected ProductApi(String username, String password) {
 		super(username, password);
 	}
 
-	protected ProductApi(String apiKey, UserAgentProvider userAgentProvider)
-	{
+	protected ProductApi(String apiKey, UserAgentProvider userAgentProvider) {
 		super(apiKey, userAgentProvider);
 	}
 
-	private class ProductWrapper extends BaseWrapper<Product>
-	{
+	private class ProductWrapper extends BaseWrapper<Product> {
 	}
 
 	public List<Product> getProducts()
@@ -41,11 +37,24 @@ public class ProductApi extends BootstrapApi
 			ProductWrapper response = fromJson(request, ProductWrapper.class);
 			if (response != null)
 			{
+			if (response != null) {
 				return response.getContent();
 			}
+		} catch (IOException e) {
 		}
-		catch (IOException e)
-		{
+
+		return Collections.emptyList();
+	}
+
+	public List<Product> getProductsList(Integer i) {
+		try {
+			HttpRequest request = execute(HttpRequest.get(URL_CATEGORY + "/"
+					+ i + "products"));
+			ProductWrapper response = fromJson(request, ProductWrapper.class);
+			if (response != null) {
+				return response.getContent();
+			}
+		} catch (IOException e) {
 		}
 
 		return Collections.emptyList();
