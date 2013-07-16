@@ -32,6 +32,7 @@
     <string name="price">Price</string>
     <string name="description">Description</string>
     <string name="quantity">Quantity</string>
+    <string name="next">Next</string>
     <string name="create">Create</string>
     <string name="update">Update</string>
     <string name="clear">Clear</string>
@@ -80,5 +81,13 @@
     <string name="error_loading_order">Failed to load ordesr</string>
     <string name="error_loading_product">Failed to load products</string>
     <string name="error_loading_category">Failed to load categories</string>
+    
+    <string-array name="testing">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 
 </resources>

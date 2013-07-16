@@ -35,7 +35,7 @@ public class HomeProductsAdapter extends SingleTypeAdapter<Product> {
 			url = product.getImages().get(0);
 		}
 		Picasso.with(BootstrapApplication.getInstance()).load(url).placeholder(R.drawable.no_image).error(R.drawable.no_image).fit().into(view);
-		setText(1, String.format("%1$s %2$s", product.getName(), product.getPrice().getValue()));
+		setText(1, String.format("%1$s %2$s", product.getName(), "$" + product.getPrice().getValue()));
 	}
 
 }

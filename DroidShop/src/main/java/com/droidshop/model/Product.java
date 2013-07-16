@@ -49,6 +49,10 @@ public class Product extends AbstractEntity {
 		this.categories = new ArrayList<Category>();
 	}
 
+	public Product(Long id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -132,5 +136,15 @@ public class Product extends AbstractEntity {
 	public enum Status {
 		INSTOCK, OUTOFSTOCK;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
 
 }
