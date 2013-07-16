@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.actionbarsherlock.view.Menu;
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
@@ -93,11 +94,6 @@ public class HomeProductsFragment extends ItemGridFragment<Product> {
 	}
 
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		// Product product = ((Product) l.getItemAtPosition(position));
-
-		// startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW,
-		// Uri.parse(uri)),
-		// getString(R.string.choose)));
 		Intent intent = new Intent(getActivity(),
 				ProductDescriptionActivity.class);
 		intent.putExtra("position", position);
@@ -107,5 +103,11 @@ public class HomeProductsFragment extends ItemGridFragment<Product> {
 	@Override
 	protected int getErrorMessage(Exception exception) {
 		return R.string.error_loading_product;
+	}
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu)
+	{
+		super.onPrepareOptionsMenu(menu);
 	}
 }

@@ -2,7 +2,6 @@ package com.droidshop;
 
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.ui.HomeActivity;
-import com.droidshop.ui.MainFragment;
 import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.order.OrderActivity;
 import com.droidshop.ui.order.OrderListFragment;
@@ -36,7 +35,6 @@ import dagger.Module;
             BootstrapApplication.class,
             BootstrapAuthenticatorActivity.class,
             HomeActivity.class,
-            MainFragment.class,
             CategoryListFragment.class,
             OrderListFragment.class,
             ProductManagerFragment.class,

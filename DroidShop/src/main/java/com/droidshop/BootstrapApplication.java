@@ -19,8 +19,6 @@ import dagger.ObjectGraph;
 public class BootstrapApplication extends Application
 {
 	private static BootstrapApplication instance;
-	public static boolean isAdmin = false;
-	public static boolean isUser = true;
 	public static final String ADMIN_EMAIL = "admin@droidshop.com";
 	ObjectGraph objectGraph;
 
@@ -55,17 +53,22 @@ public class BootstrapApplication extends Application
 		objectGraph = ObjectGraph.create(getRootModule());
 		objectGraph.inject(this);
 		objectGraph.injectStatics();
-		checkUserType();
 	}
 
-	private void checkUserType()
+	public boolean isAdmin()
 	{
 		AccountManager accountManager = AccountManager.get(this);
 		Account[] accounts = accountManager.getAccountsByType(Constants.Auth.DROIDSHOP_ACCOUNT_TYPE);
 		if (accounts.length != 0)
 		{
-			isUser = !(isAdmin = accounts[0].name.equals(ADMIN_EMAIL));
+			return accounts[0].name.equals(ADMIN_EMAIL);
 		}
+		return false;
+	}
+
+	public boolean isUser()
+	{
+		return !isAdmin();
 	}
 
 	private Object getRootModule()

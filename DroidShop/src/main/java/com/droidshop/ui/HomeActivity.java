@@ -32,9 +32,11 @@ import com.droidshop.authenticator.LogoutService;
 import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.order.OrderActivity;
+import com.droidshop.ui.order.OrderListFragment;
 import com.droidshop.ui.product.HomeProductsFragment;
 import com.droidshop.ui.product.ProductManagerFragment;
 import com.droidshop.ui.reservation.ReservationActivity;
+import com.droidshop.ui.reservation.ReservationListFragment;
 import com.droidshop.ui.user.UserProfileActivity;
 import com.github.kevinsawicki.wishlist.Toaster;
 import com.google.android.gms.common.ConnectionResult;
@@ -118,7 +120,7 @@ public class HomeActivity extends BootstrapFragmentActivity
 		// set up the drawer's list view with items and click listener
 		mAdapter = new MergeAdapter();
 
-		if (BootstrapApplication.isUser == true)
+		if (BootstrapApplication.getInstance().isUser() == true)
 		{
 			// enable ActionBar app icon to behave as action to toggle nav drawer
 			mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -128,7 +130,7 @@ public class HomeActivity extends BootstrapFragmentActivity
 			mAdapter.addAdapter(aAdapter);
 			mDrawerList.setAdapter(mAdapter);
 		}
-		else if (BootstrapApplication.isAdmin == true)
+		else if (BootstrapApplication.getInstance().isAdmin() == true)
 		{
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			getSupportActionBar().setHomeButtonEnabled(false);
@@ -157,12 +159,26 @@ public class HomeActivity extends BootstrapFragmentActivity
 		ActionBar.Tab categoryTab = mActionBar.newTab().setText(R.string.page_category)
 				.setTabListener(new TabListener<CategoryListFragment>(this, "category", CategoryListFragment.class));
 		mActionBar.addTab(categoryTab);
+
+		if (BootstrapApplication.getInstance().isAdmin())
+		{
+			ActionBar.Tab ordersTab = mActionBar.newTab().setText(R.string.page_orders)
+					.setTabListener(new TabListener<OrderListFragment>(this, "order", OrderListFragment.class));
+			mActionBar.addTab(ordersTab);
+
+			ActionBar.Tab reservationsTab = mActionBar
+					.newTab()
+					.setText(R.string.page_reservations)
+					.setTabListener(
+							new TabListener<ReservationListFragment>(this, "reservation", ReservationListFragment.class));
+			mActionBar.addTab(reservationsTab);
+		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		if (BootstrapApplication.isAdmin)
+		if (BootstrapApplication.getInstance().isAdmin())
 		{
 			getSupportMenuInflater().inflate(R.menu.admin, menu);
 		}
