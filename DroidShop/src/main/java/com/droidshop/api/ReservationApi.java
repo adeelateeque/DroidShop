@@ -11,12 +11,6 @@ import static com.droidshop.core.Constants.Http.URL_RESERVATION;
 
 public class ReservationApi extends BootstrapApi<Reservation>
 {
-
-	protected ReservationApi(String username, String password)
-	{
-		super(username, password);
-	}
-
 	protected ReservationApi(String apiKey, UserAgentProvider userAgentProvider)
 	{
 		super(apiKey, userAgentProvider, URL_RESERVATION, ReservationWrapper.class);

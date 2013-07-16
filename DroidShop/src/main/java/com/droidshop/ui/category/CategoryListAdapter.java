@@ -26,7 +26,7 @@ public class CategoryListAdapter extends AlternatingColorListAdapter<Category>
 	@Override
 	protected int[] getChildViewIds()
 	{
-		return new int[] { R.id.image, R.id.category_name };
+		return new int[] { R.id.image, R.id.category_name};
 	}
 
 	@Override

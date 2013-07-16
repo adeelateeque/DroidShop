@@ -18,6 +18,7 @@ import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
+import com.droidshop.model.AbstractEntity;
 import com.droidshop.model.Reservation;
 import com.droidshop.ui.core.ItemListFragment;
 import com.droidshop.util.ThrowableLoader;
@@ -32,7 +33,7 @@ public class ReservationListFragment extends ItemListFragment<Reservation>
 	@Inject
 	protected LogoutService logoutService;
 
-	protected BootstrapApi api;
+	protected BootstrapApi<AbstractEntity> api;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)

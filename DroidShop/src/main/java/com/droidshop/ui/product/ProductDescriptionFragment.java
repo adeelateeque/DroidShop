@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
 import com.droidshop.authenticator.LogoutService;
+import com.droidshop.model.Category;
 import com.droidshop.model.AbstractEntity;
 import com.droidshop.model.Product;
 import com.droidshop.ui.core.ItemListFragment;
@@ -36,6 +38,8 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		BootstrapApplication.getInstance().inject(this);
+		ProductDescriptionActivity activity = (ProductDescriptionActivity) getSherlockActivity();
+
 	}
 
 	@Override
@@ -49,9 +53,6 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 
 		listView.setFastScrollEnabled(true);
 		listView.setDividerHeight(0);
-
-		// getListAdapter().addHeader(activity.getLayoutInflater().inflate(R.layout.checkins_list_item_labels,
-		// null));
 	}
 
 	@Override
@@ -68,6 +69,8 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 
 	public Loader<List<Product>> onCreateLoader(int id, Bundle args) {
 		final List<Product> initialItems = items;
+		Toast.makeText(getSherlockActivity(), Integer.toString(items.size()),
+				Toast.LENGTH_LONG).show();
 		return new ThrowableLoader<List<Product>>(getSherlockActivity(), items) {
 			@Override
 			public List<Product> loadData() throws Exception {
@@ -75,11 +78,13 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 					if (api == null) {
 						api = apiProvider.getApi(getSherlockActivity());
 					}
-
 					List<Product> latest = null;
 
-					if (getSherlockActivity() != null)
-						latest = api.getProductApi().getAll(20);
+					if (getSherlockActivity() != null){
+						ProductListActivity activity = (ProductListActivity) getSherlockActivity();
+						Long categoryId = activity.categoryId;
+						latest = (List<Product>) api.getProductApi().findById(categoryId);
+					}
 
 					if (latest != null)
 						return latest;
@@ -102,8 +107,8 @@ public class ProductDescriptionFragment extends ItemListFragment<Product> {
 	}
 
 	public void onListItemClick(ListView l, View v, int position, long id) {
-//		Intent intent = new Intent(getActivity(), ProductListFragment.class);
-//		startActivity(intent);
+		// Intent intent = new Intent(getActivity(), ProductListFragment.class);
+		// startActivity(intent);
 	}
 
 	@Override

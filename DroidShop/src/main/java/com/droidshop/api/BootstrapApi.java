@@ -83,19 +83,6 @@ public class BootstrapApi<T extends AbstractEntity> implements CrudApi<T>
 	/**
 	 * Create DroidShop API
 	 *
-	 * @param username
-	 * @param password
-	 */
-	protected BootstrapApi(final String username, final String password)
-	{
-		this.username = username;
-		this.password = password;
-		this.apiKey = null;
-	}
-
-	/**
-	 * Create DroidShop API
-	 *
 	 * @param apiKey
 	 * @param userAgentProvider
 	 * @param endpoint

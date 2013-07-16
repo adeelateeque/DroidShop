@@ -2,11 +2,13 @@ package com.droidshop;
 
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.ui.HomeActivity;
-import com.droidshop.ui.MainFragment;
 import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.order.OrderActivity;
 import com.droidshop.ui.order.OrderListFragment;
 import com.droidshop.ui.product.HomeProductsFragment;
+import com.droidshop.ui.product.ProductDescriptionActivity;
+import com.droidshop.ui.product.ProductDescriptionAdapter;
+import com.droidshop.ui.product.ProductDescriptionFragment;
 import com.droidshop.ui.product.ProductListActivity;
 import com.droidshop.ui.product.ProductListAdapter;
 import com.droidshop.ui.product.ProductListFragment;
@@ -33,7 +35,6 @@ import dagger.Module;
             BootstrapApplication.class,
             BootstrapAuthenticatorActivity.class,
             HomeActivity.class,
-            MainFragment.class,
             CategoryListFragment.class,
             OrderListFragment.class,
             ProductManagerFragment.class,
@@ -46,6 +47,9 @@ import dagger.Module;
             ProductListAdapter.class,
             ProductListFragment.class,
             HomeProductsFragment.class,
+            ProductDescriptionActivity.class,
+            ProductDescriptionFragment.class,
+            ProductDescriptionAdapter.class
     }
 )
 public class RootModule {

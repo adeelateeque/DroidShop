@@ -2,8 +2,6 @@ package com.droidshop.ui;
 
 import javax.inject.Inject;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -26,17 +24,19 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
+import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.R.id;
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.authenticator.LogoutService;
-import com.droidshop.core.Constants;
 import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.order.OrderActivity;
+import com.droidshop.ui.order.OrderListFragment;
 import com.droidshop.ui.product.HomeProductsFragment;
 import com.droidshop.ui.product.ProductManagerFragment;
 import com.droidshop.ui.reservation.ReservationActivity;
+import com.droidshop.ui.reservation.ReservationListFragment;
 import com.droidshop.ui.user.UserProfileActivity;
 import com.github.kevinsawicki.wishlist.Toaster;
 import com.google.android.gms.common.ConnectionResult;
@@ -57,9 +57,6 @@ public class HomeActivity extends BootstrapFragmentActivity
 	private MergeAdapter mAdapter;
 	private ArrayAdapter<String> aAdapter;
 
-	private static boolean isAdmin = false;
-	private static boolean isUser = true;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -76,23 +73,9 @@ public class HomeActivity extends BootstrapFragmentActivity
 	protected void onResume()
 	{
 		super.onResume();
-		checkUserType();
-		if(getSupportFragmentManager().beginTransaction().commit() == 1){
+		if (getSupportFragmentManager().beginTransaction().commit() == 1)
+		{
 			getSupportFragmentManager().findFragmentByTag("product manager").onDestroy();
-		}
-	}
-
-	private void checkUserType()
-	{
-		AccountManager accountManager = AccountManager.get(this);
-		Account[] accounts = accountManager.getAccountsByType(Constants.Auth.DROIDSHOP_ACCOUNT_TYPE);
-		if (accounts.length == 0)
-		{
-			accountManager.addAccount(Constants.Auth.DROIDSHOP_ACCOUNT_TYPE, null, null, null, this, null, null);
-		}
-		else
-		{
-			isUser = !(isAdmin = accounts[0].name.equals("admin@droidshop.com"));
 		}
 	}
 
@@ -137,7 +120,7 @@ public class HomeActivity extends BootstrapFragmentActivity
 		// set up the drawer's list view with items and click listener
 		mAdapter = new MergeAdapter();
 
-		if (isUser == true)
+		if (BootstrapApplication.getInstance().isUser() == true)
 		{
 			// enable ActionBar app icon to behave as action to toggle nav drawer
 			mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -147,7 +130,7 @@ public class HomeActivity extends BootstrapFragmentActivity
 			mAdapter.addAdapter(aAdapter);
 			mDrawerList.setAdapter(mAdapter);
 		}
-		else if (isAdmin == true)
+		else if (BootstrapApplication.getInstance().isAdmin() == true)
 		{
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			getSupportActionBar().setHomeButtonEnabled(false);
@@ -176,12 +159,26 @@ public class HomeActivity extends BootstrapFragmentActivity
 		ActionBar.Tab categoryTab = mActionBar.newTab().setText(R.string.page_category)
 				.setTabListener(new TabListener<CategoryListFragment>(this, "category", CategoryListFragment.class));
 		mActionBar.addTab(categoryTab);
+
+		if (BootstrapApplication.getInstance().isAdmin())
+		{
+			ActionBar.Tab ordersTab = mActionBar.newTab().setText(R.string.page_orders)
+					.setTabListener(new TabListener<OrderListFragment>(this, "order", OrderListFragment.class));
+			mActionBar.addTab(ordersTab);
+
+			ActionBar.Tab reservationsTab = mActionBar
+					.newTab()
+					.setText(R.string.page_reservations)
+					.setTabListener(
+							new TabListener<ReservationListFragment>(this, "reservation", ReservationListFragment.class));
+			mActionBar.addTab(reservationsTab);
+		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		if (isAdmin)
+		if (BootstrapApplication.getInstance().isAdmin())
 		{
 			getSupportMenuInflater().inflate(R.menu.admin, menu);
 		}
@@ -339,6 +336,9 @@ public class HomeActivity extends BootstrapFragmentActivity
 						@Override
 						public void run()
 						{
+							Intent intent = new Intent(getApplicationContext(), BootstrapAuthenticatorActivity.class);
+							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(intent);
 							finish();
 						}
 					});

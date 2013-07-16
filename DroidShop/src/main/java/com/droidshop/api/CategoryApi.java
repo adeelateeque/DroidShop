@@ -12,10 +12,6 @@ import com.github.kevinsawicki.http.HttpRequest;
 
 public class CategoryApi extends BootstrapApi<Category> {
 
-	protected CategoryApi(String username, String password) {
-		super(username, password);
-	}
-
 	protected CategoryApi(String apiKey, UserAgentProvider userAgentProvider) {
 		super(apiKey, userAgentProvider, URL_CATEGORY, CategoryWrapper.class);
 	}

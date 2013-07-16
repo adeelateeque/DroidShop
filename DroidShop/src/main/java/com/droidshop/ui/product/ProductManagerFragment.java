@@ -31,7 +31,8 @@ import com.droidshop.R;
 import com.droidshop.model.MonetaryAmount;
 import com.droidshop.model.Product;
 
-public class ProductManagerFragment extends SherlockFragment {
+public class ProductManagerFragment extends SherlockFragment
+{
 
 	private EditText name, price, quantity, desc;
 	private RadioGroup status;
@@ -43,48 +44,61 @@ public class ProductManagerFragment extends SherlockFragment {
 	private static int RESULT_LOAD_IMAGE = 1;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
 		final List c = new ArrayList();
 		final ScrollView view = (ScrollView) inflater.inflate(R.layout.fragment_product_manager, null);
 		image = (ImageButton) view.findViewById(R.id.ibPImage);
 		next = (Button) view.findViewById(R.id.btnNext);
-		image.setOnClickListener(new OnClickListener() {
+		image.setOnClickListener(new OnClickListener()
+		{
 
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+				startActivityForResult(i, RESULT_LOAD_IMAGE);
 			}
 
-        });
-		next.setOnClickListener(new OnClickListener() {
+		});
+		next.setOnClickListener(new OnClickListener()
+		{
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(getSherlockActivity());
-				builder.setTitle("Select Category(s)").setMultiChoiceItems(R.array.testing, null, new DialogInterface.OnMultiChoiceClickListener() {
-		               @Override
-		               public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-		                   if (isChecked) {
-		                       // If the user checked the item, add it to the selected items
-		                	   c.add(which);
-		                   } else if (c.contains(which)) {
-		                	   // Else, if the item is already in the array, remove it
-		                	   c.remove(Integer.valueOf(which));
-		                   }
-		               }
-		        })
-		        .setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
-		        	@Override
-		        	public void onClick(DialogInterface dialog, int id) {
-		        		Product p = createProduct(view, c);
-		   			}
-		        })
-		        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-		        	@Override
-		        	public void onClick(DialogInterface dialog, int id) {
+				builder.setTitle("Select Category(s)")
+						.setMultiChoiceItems(R.array.testing, null, new DialogInterface.OnMultiChoiceClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialog, int which, boolean isChecked)
+							{
+								if (isChecked)
+								{
+									// If the user checked the item, add it to the selected items
+									c.add(which);
+								}
+								else if (c.contains(which))
+								{
+									// Else, if the item is already in the array, remove it
+									c.remove(Integer.valueOf(which));
+								}
+							}
+						}).setPositiveButton(R.string.create, new DialogInterface.OnClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialog, int id)
+							{
+								Product p = createProduct(view, c);
+							}
+						}).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialog, int id)
+							{
 
-		        	}
-		        });
+							}
+						});
 				AlertDialog dialog = builder.create();
 				dialog.show();
 			}
@@ -93,24 +107,28 @@ public class ProductManagerFragment extends SherlockFragment {
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == getSherlockActivity().RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            Cursor cursor = getSherlockActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            Bitmap b = BitmapFactory.decodeFile(picturePath);
-            image.setImageBitmap(Bitmap.createScaledBitmap(b, image.getWidth(), image.getHeight(), false));
-            images = new ArrayList<String>();
-            images.add(BitMapToString(b));
-        }
-    }
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == RESULT_LOAD_IMAGE && resultCode == getSherlockActivity().RESULT_OK && null != data)
+		{
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+			Cursor cursor = getSherlockActivity().getContentResolver()
+					.query(selectedImage, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String picturePath = cursor.getString(columnIndex);
+			cursor.close();
+			Bitmap b = BitmapFactory.decodeFile(picturePath);
+			image.setImageBitmap(Bitmap.createScaledBitmap(b, image.getWidth(), image.getHeight(), false));
+			images = new ArrayList<String>();
+			images.add(BitMapToString(b));
+		}
+	}
 
-	public Product createProduct(View v, List category){
+	public Product createProduct(View v, List category)
+	{
 		name = (EditText) v.findViewById(R.id.etPName);
 		price = (EditText) v.findViewById(R.id.etPPrice);
 		quantity = (EditText) v.findViewById(R.id.etPQuantity);
@@ -139,11 +157,12 @@ public class ProductManagerFragment extends SherlockFragment {
 		return p;
 	}
 
-	public String BitMapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
-        byte [] b=baos.toByteArray();
-        String temp=Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
+	public String BitMapToString(Bitmap bitmap)
+	{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+		byte[] b = baos.toByteArray();
+		String temp = Base64.encodeToString(b, Base64.DEFAULT);
+		return temp;
 	}
 }

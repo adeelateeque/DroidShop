@@ -30,17 +30,15 @@ public class ProductDescriptionAdapter extends SingleTypeAdapter<Product>
 	protected void update(int position, Product product)
 	{
 		ImageView view = imageView(0);
-		if (view == null)
-		{
+		if (view == null) {
 			view = new ImageView(BootstrapApplication.getInstance());
 		}
-		String url = "";
+		String url = null;
 
-		if(!product.getImages().isEmpty())
-		{
+		if (!product.getImages().isEmpty()) {
 			url = product.getImages().get(0);
 		}
-		Picasso.with(BootstrapApplication.getInstance()).load(url).placeholder(R.drawable.no_image).error(R.drawable.no_image).into(view);
+		Picasso.with(BootstrapApplication.getInstance()).load(url).placeholder(R.drawable.no_image).error(R.drawable.no_image).resize(R.dimen.list_item_image, R.dimen.list_item_image).centerInside().into(view);
 		setText(1, String.format("%1$s %2$s", product.getName(), "$" + product.getPrice().getValue()));
 	}
 }

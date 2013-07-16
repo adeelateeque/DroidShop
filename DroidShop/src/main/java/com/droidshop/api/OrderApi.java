@@ -7,12 +7,6 @@ import com.droidshop.model.Order;
 
 public class OrderApi extends BootstrapApi<Order>
 {
-
-	protected OrderApi(String username, String password)
-	{
-		super(username, password);
-	}
-
 	protected OrderApi(String apiKey, UserAgentProvider userAgentProvider)
 	{
 		super(apiKey, userAgentProvider, URL_ORDER, OrderWrapper.class);

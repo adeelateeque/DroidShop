@@ -33,12 +33,4 @@ public class ApiProvider
 	{
 		return new BootstrapApi<AbstractEntity>(keyProvider.getAuthKey(activity), userAgentProvider);
 	}
-
-	/**
-	 * Requires the API to use basic authentication
-	 * */
-	public BootstrapApi<AbstractEntity> getApi(String username, String password)
-	{
-		return new BootstrapApi<AbstractEntity>(username, password);
-	}
 }

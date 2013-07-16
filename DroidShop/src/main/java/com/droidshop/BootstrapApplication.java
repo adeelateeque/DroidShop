@@ -2,10 +2,13 @@ package com.droidshop;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.FROYO;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Application;
 import android.app.Instrumentation;
 import android.content.Context;
 
+import com.droidshop.core.Constants;
 import com.github.kevinsawicki.http.HttpRequest;
 
 import dagger.ObjectGraph;
@@ -16,6 +19,7 @@ import dagger.ObjectGraph;
 public class BootstrapApplication extends Application
 {
 	private static BootstrapApplication instance;
+	public static final String ADMIN_EMAIL = "admin@droidshop.com";
 	ObjectGraph objectGraph;
 
 	/**
@@ -49,6 +53,22 @@ public class BootstrapApplication extends Application
 		objectGraph = ObjectGraph.create(getRootModule());
 		objectGraph.inject(this);
 		objectGraph.injectStatics();
+	}
+
+	public boolean isAdmin()
+	{
+		AccountManager accountManager = AccountManager.get(this);
+		Account[] accounts = accountManager.getAccountsByType(Constants.Auth.DROIDSHOP_ACCOUNT_TYPE);
+		if (accounts.length != 0)
+		{
+			return accounts[0].name.equals(ADMIN_EMAIL);
+		}
+		return false;
+	}
+
+	public boolean isUser()
+	{
+		return !isAdmin();
 	}
 
 	private Object getRootModule()

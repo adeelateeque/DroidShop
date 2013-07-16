@@ -22,11 +22,6 @@ import com.google.gson.JsonSerializer;
 
 public class ProductApi extends BootstrapApi<Product>
 {
-	protected ProductApi(String username, String password)
-	{
-		super(username, password);
-	}
-
 	protected ProductApi(String apiKey, UserAgentProvider userAgentProvider)
 	{
 		super(apiKey, userAgentProvider, URL_PRODUCTS, ProductWrapper.class);
