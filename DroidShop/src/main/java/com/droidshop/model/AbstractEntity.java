@@ -4,13 +4,15 @@ import java.util.ArrayList;
 
 import com.droidshop.api.Link;
 
-public class AbstractEntity{
+public class AbstractEntity
+{
 
 	protected Long id;
 
 	protected ArrayList<Link> links;
 
-	protected AbstractEntity() {
+	protected AbstractEntity()
+	{
 		this.id = null;
 
 	}
@@ -37,13 +39,19 @@ public class AbstractEntity{
 
 	public Link findLink(String rel)
 	{
-		for(Link link : links)
+		for (Link link : links)
 		{
-			if(link.getRel().equals(rel))
+			if (link.getRel().equals(rel))
 			{
 				return link;
 			}
 		}
 		return null;
+	}
+
+	public String getSelfHref()
+	{
+		Link self = findLink("self");
+		return (self != null) ? self.getHref() : null;
 	}
 }

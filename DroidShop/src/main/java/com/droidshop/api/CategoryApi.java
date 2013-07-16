@@ -26,7 +26,7 @@ public class CategoryApi extends BootstrapApi<Category> {
 	public List<Category> getCategories() {
 		try {
 			HttpRequest request = execute(HttpRequest.get(URL_CATEGORY
-					+ "?size=0"));
+					+ "?size=0"), true);
 			CategoryWrapper response = fromJson(request, CategoryWrapper.class);
 			if (response != null) {
 				return response.getContent();

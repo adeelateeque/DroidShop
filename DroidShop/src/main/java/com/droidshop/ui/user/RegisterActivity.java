@@ -27,9 +27,11 @@ import com.actionbarsherlock.view.MenuItem;
 import com.droidshop.R;
 import com.droidshop.api.ApiProvider;
 import com.droidshop.api.BootstrapApi;
+import com.droidshop.api.UserApi;
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.model.AbstractEntity;
 import com.droidshop.model.User;
+import com.droidshop.model.User.Gender;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.core.DatePickerFragment;
 import com.droidshop.util.SafeAsyncTask;
@@ -67,8 +69,6 @@ public class RegisterActivity extends BootstrapFragmentActivity
 	TextView tv_dateofbirth;
 	@InjectView(R.id.sp_country)
 	Spinner spCountry;
-	@InjectView(R.id.sp_city)
-	Spinner spCity;
 
 	private SafeAsyncTask<Boolean> registrationTask;
 
@@ -207,7 +207,6 @@ public class RegisterActivity extends BootstrapFragmentActivity
 		rgGender.clearCheck();
 		tv_dateofbirth.setText(R.string.dateofbirth);
 		spCountry.setSelection(0);
-		spCity.setSelection(0);
 	}
 
 	public void registerUser(View view)
@@ -225,19 +224,32 @@ public class RegisterActivity extends BootstrapFragmentActivity
 		newUser.setAddress(etAddress.getText().toString());
 		newUser.setSecretQuestion(etSecretQuestion.getText().toString());
 		newUser.setSecretAnswer(etSecretAnswer.getText().toString());
-		newUser.setCountry(spCountry.getSelectedItem().toString());
-		newUser.setCity(spCity.getSelectedItem().toString());
-
+		newUser.setCountry(countries.get(spCountry.getSelectedItemPosition()));
+		int id = rgGender.getCheckedRadioButtonId();
+		if (id == -1)
+		{
+			// nothing selected
+		}
+		else
+		{
+			if (id == R.id.rb_male)
+			{
+				newUser.setGender(Gender.MALE);
+			}
+			else if (id == R.id.rb_female)
+			{
+				newUser.setGender(Gender.FEMALE);
+			}
+			else
+			{
+				newUser.setGender(Gender.MALE);
+			}
+		}
 		registrationTask = new SafeAsyncTask<Boolean>()
 		{
 			public Boolean call() throws Exception
 			{
-				if (api == null)
-				{
-					api = apiProvider.getApi(RegisterActivity.this);
-				}
-
-				return api.getUserApi().registerUser(newUser);
+				return UserApi.registerUser(newUser);
 			}
 
 			@Override
@@ -253,7 +265,8 @@ public class RegisterActivity extends BootstrapFragmentActivity
 			@Override
 			public void onSuccess(Boolean authSuccess)
 			{
-				registrationSuccessful();
+				if (authSuccess)
+					registrationSuccessful();
 			}
 
 			@Override

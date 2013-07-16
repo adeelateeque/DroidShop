@@ -4,7 +4,8 @@ import java.util.List;
 
 public interface CrudApi<T>
 {
-	boolean save(T entity);
+	long save(T entity);
+	boolean update(T entity);
 	boolean delete(T entity);
 	T findById(Long id);
 	List<T> getAll();
