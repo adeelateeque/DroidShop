@@ -35,6 +35,7 @@ import butterknife.Views;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.R.id;
 import com.droidshop.R.layout;
@@ -46,6 +47,7 @@ import com.droidshop.core.Constants.Auth;
 import com.droidshop.core.Constants.Http;
 import com.droidshop.model.AbstractEntity;
 import com.droidshop.model.User;
+import com.droidshop.ui.HomeActivity;
 import com.droidshop.ui.core.TextWatcherAdapter;
 import com.droidshop.ui.user.RegisterActivity;
 import com.droidshop.util.Ln;
@@ -342,6 +344,12 @@ public class BootstrapAuthenticatorActivity extends SherlockAccountAuthenticator
 			intent.putExtra(KEY_AUTHTOKEN, authToken);
 		setAccountAuthenticatorResult(intent.getExtras());
 		setResult(RESULT_OK, intent);
+		if (email.equals(BootstrapApplication.ADMIN_EMAIL))
+		{
+			Intent intentHome = new Intent(getApplicationContext(), HomeActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intentHome);
+		}
 		finish();
 	}
 

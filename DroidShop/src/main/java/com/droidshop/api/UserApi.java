@@ -20,11 +20,6 @@ import com.google.gson.JsonSerializer;
 
 public class UserApi extends BootstrapApi<User>
 {
-	protected UserApi(String username, String password)
-	{
-		super(username, password);
-	}
-
 	protected UserApi(String apiKey, UserAgentProvider userAgentProvider)
 	{
 		super(apiKey, userAgentProvider, URL_CUSTOMER, UsersWrapper.class);

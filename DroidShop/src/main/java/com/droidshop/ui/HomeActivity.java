@@ -2,8 +2,6 @@ package com.droidshop.ui;
 
 import javax.inject.Inject;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -26,11 +24,11 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
+import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
 import com.droidshop.R.id;
 import com.droidshop.authenticator.BootstrapAuthenticatorActivity;
 import com.droidshop.authenticator.LogoutService;
-import com.droidshop.core.Constants;
 import com.droidshop.ui.category.CategoryListFragment;
 import com.droidshop.ui.core.BootstrapFragmentActivity;
 import com.droidshop.ui.order.OrderActivity;
@@ -56,9 +54,6 @@ public class HomeActivity extends BootstrapFragmentActivity
 	private MergeAdapter mAdapter;
 	private ArrayAdapter<String> aAdapter;
 
-	private static boolean isAdmin = false;
-	private static boolean isUser = true;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -75,22 +70,6 @@ public class HomeActivity extends BootstrapFragmentActivity
 	protected void onResume()
 	{
 		super.onResume();
-
-		checkUserType();
-	}
-
-	private void checkUserType()
-	{
-		AccountManager accountManager = AccountManager.get(this);
-		Account[] accounts = accountManager.getAccountsByType(Constants.Auth.DROIDSHOP_ACCOUNT_TYPE);
-		if (accounts.length == 0)
-		{
-			accountManager.addAccount(Constants.Auth.DROIDSHOP_ACCOUNT_TYPE, null, null, null, this, null, null);
-		}
-		else
-		{
-			isUser = !(isAdmin = accounts[0].name.equals("admin@droidshop.com"));
-		}
 	}
 
 	@Override
@@ -134,7 +113,7 @@ public class HomeActivity extends BootstrapFragmentActivity
 		// set up the drawer's list view with items and click listener
 		mAdapter = new MergeAdapter();
 
-		if (isUser == true)
+		if (BootstrapApplication.isUser == true)
 		{
 			// enable ActionBar app icon to behave as action to toggle nav drawer
 			mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -144,7 +123,7 @@ public class HomeActivity extends BootstrapFragmentActivity
 			mAdapter.addAdapter(aAdapter);
 			mDrawerList.setAdapter(mAdapter);
 		}
-		else if (isAdmin == true)
+		else if (BootstrapApplication.isAdmin == true)
 		{
 			getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 			getSupportActionBar().setHomeButtonEnabled(false);
@@ -178,7 +157,7 @@ public class HomeActivity extends BootstrapFragmentActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		if (isAdmin)
+		if (BootstrapApplication.isAdmin)
 		{
 			getSupportMenuInflater().inflate(R.menu.admin, menu);
 		}
@@ -333,6 +312,9 @@ public class HomeActivity extends BootstrapFragmentActivity
 						@Override
 						public void run()
 						{
+							Intent intent = new Intent(getApplicationContext(), BootstrapAuthenticatorActivity.class);
+							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(intent);
 							finish();
 						}
 					});
