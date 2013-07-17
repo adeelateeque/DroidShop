@@ -440,11 +440,15 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements
 		CharSequence name = p.getName();
 		CharSequence price = p.getPrice().toString();
 		CharSequence img = p.images.toString();
+		CharSequence description = p.getDescription();
+		CharSequence quantity = String.valueOf(p.getQuantity());
 
 		Bundle b = new Bundle();
 		b.putCharSequence("name", name);
 		b.putCharSequence("price", price);
 		b.putCharSequence("img", img);
+		b.putCharSequence("description", description);
+		b.putCharSequence("quantity", quantity);
 		intent.putExtras(b);
 		startActivity(intent);
 	}

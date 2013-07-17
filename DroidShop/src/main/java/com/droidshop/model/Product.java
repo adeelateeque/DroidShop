@@ -49,6 +49,8 @@ public class Product extends AbstractEntity {
 		this.categories = new ArrayList<Category>();
 	}
 
+
+
 	public Product(Long id) {
 		this.id = id;
 	}

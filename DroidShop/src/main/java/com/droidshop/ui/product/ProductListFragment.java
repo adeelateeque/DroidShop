@@ -61,8 +61,8 @@ public class ProductListFragment extends ItemListFragment<Product> {
 			public void onClick(View v) {
 				final int position = getListView().getPositionForView(v);
 		        if (position != ListView.INVALID_POSITION) {
-		            Intent intent = new Intent(getActivity(), receipt.class);
-		            startActivity(intent);
+//		            Intent intent = new Intent(getActivity(), receipt.class);
+//		            startActivity(intent);
 		        }
 			}
 

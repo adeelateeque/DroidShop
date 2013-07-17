@@ -28,6 +28,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.OperationCanceledException;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,8 +56,10 @@ public class ProductDetailsActivity extends Activity {
 		final CharSequence name = bundle.getCharSequence("name");
 		final CharSequence price = bundle.getCharSequence("price");
 		final CharSequence img = bundle.getCharSequence("img");
+		final CharSequence description = bundle.getCharSequence("description");
+		final CharSequence quantity = bundle.getCharSequence("quantity");
 		String url = img.toString();
-		url = url.substring(1, url.length()-1);
+		url = url.substring(1, url.length() - 1);
 
 		new DisplayImageFromURL((ImageView) findViewById(R.id.ImageViewProduct))
 				.execute(url);
@@ -65,23 +68,42 @@ public class ProductDetailsActivity extends Activity {
 		TextView productTitleTextView = (TextView) findViewById(R.id.TextViewProductTitle);
 		productTitleTextView.setText(name);
 		TextView productPriceTextView = (TextView) findViewById(R.id.TextViewProductPrice);
-		productPriceTextView.setText(price.toString());
+		TextView productDescriptionTextView = (TextView) findViewById(R.id.TextViewProductDescription);
+		productDescriptionTextView.setText(description.toString());
 
 		Button addToCartButton = (Button) findViewById(R.id.ButtonBuyNow);
-		addToCartButton.setOnClickListener(new OnClickListener() {
+		if (quantity.equals("0")) {
+			addToCartButton.setText("Reserve Now");
+			String next = "<font color='#EE0000'>OUT OF STOCK</font>";
+			productPriceTextView.setText(Html.fromHtml(next));
 
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(ProductDetailsActivity.this,
-						receipt.class);
-				Bundle b = new Bundle();
-				b.putCharSequence("name", name);
-				b.putCharSequence("price", price);
-				intent.putExtras(b);
-				startActivity(intent);
-			}
-		});
+			addToCartButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					Toast.makeText(ProductDetailsActivity.this, "Item reserved.", Toast.LENGTH_SHORT).show();
+				}
+			});
+		} else {
+
+			productPriceTextView.setText(price.toString());
+
+			addToCartButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(ProductDetailsActivity.this,
+							receipt.class);
+					Bundle b = new Bundle();
+					b.putCharSequence("name", name);
+					b.putCharSequence("price", price);
+					intent.putExtras(b);
+					startActivity(intent);
+				}
+			});
+		}
 	}
 
 	private class DisplayImageFromURL extends AsyncTask<String, Void, Bitmap> {
