@@ -11,7 +11,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.droidshop.BootstrapApplication;
@@ -93,11 +95,13 @@ public class HomeProductsFragment extends ItemGridFragment<Product> {
 				getSherlockActivity().getLayoutInflater(), items);
 	}
 
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		Intent intent = new Intent(getActivity(),
-				ProductDescriptionActivity.class);
-		intent.putExtra("position", position);
-		startActivity(intent);
+	public void onListItemClick(GridView l, View v, int position, long id) {
+//		Intent intent = new Intent(getActivity(),
+//				ProductDescriptionActivity.class);
+//		intent.putExtra("position", position);
+//		startActivity(intent);
+		String text = Integer.toString(position);
+		Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

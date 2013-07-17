@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.droidshop.BootstrapApplication;
 import com.droidshop.R;
@@ -107,6 +108,7 @@ public class CategoryListFragment extends ItemListFragment<Category>
 				}
 			}
 		};
+
 	}
 
 	@Override

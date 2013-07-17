@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -26,6 +27,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.droidshop.R;
 import com.droidshop.R.id;
 import com.droidshop.authenticator.LogoutService;
+import com.droidshop.model.*;
+import com.droidshop.ui.product.ProductDetailsActivity;
 import com.droidshop.util.ThrowableLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.Toaster;
@@ -37,10 +40,11 @@ import com.github.kevinsawicki.wishlist.ViewUtils;
  *
  * @param <E>
  */
-public abstract class ItemGridFragment<E> extends SherlockFragment implements LoaderCallbacks<List<E>>
-{
-
+public abstract class ItemGridFragment<E> extends SherlockFragment implements
+		LoaderCallbacks<List<E>> {
 	private static final String FORCE_REFRESH = "forceRefresh";
+
+	public static String KEY_PRODUCT_ID;
 
 	/**
 	 * @param args
@@ -48,8 +52,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 * @return true if the bundle indicates a requested forced refresh of the
 	 *         items
 	 */
-	protected static boolean isForceRefresh(Bundle args)
-	{
+	protected static boolean isForceRefresh(Bundle args) {
 		return args != null && args.getBoolean(FORCE_REFRESH, false);
 	}
 
@@ -79,8 +82,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	protected boolean gridShown;
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
+	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
 		if (!items.isEmpty())
@@ -90,8 +92,8 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.item_grid, null);
 	}
 
@@ -99,8 +101,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 * Detach from grid view.
 	 */
 	@Override
-	public void onDestroyView()
-	{
+	public void onDestroyView() {
 		gridShown = false;
 		emptyView = null;
 		progressBar = null;
@@ -110,17 +111,15 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState)
-	{
+	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
 		gridView = (GridView) view.findViewById(R.id.grid);
-		gridView.setOnItemClickListener(new OnItemClickListener()
-		{
+		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-			{
-				onGridItemClick((GridView) parent, view, position, id);
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				onGridItemClick((GridView) parent, view, position, id, items);
 			}
 		});
 		progressBar = (ProgressBar) view.findViewById(id.pb_loading);
@@ -136,54 +135,48 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 * @param activity
 	 * @param gridView
 	 */
-	protected void configureGrid(Activity activity, GridView gridView)
-	{
+	protected void configureGrid(Activity activity, GridView gridView) {
 		gridView.setAdapter(createAdapter());
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater)
-	{
+	public void onCreateOptionsMenu(Menu optionsMenu, MenuInflater inflater) {
 		inflater.inflate(R.menu.bootstrap, optionsMenu);
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		if (!isUsable())
 			return false;
-		switch (item.getItemId())
-		{
-			case id.refresh:
-				forceRefresh();
-				return true;
-			case R.id.logout:
-				logout();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
+		case id.refresh:
+			forceRefresh();
+			return true;
+		case R.id.logout:
+			logout();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
 	protected abstract LogoutService getLogoutService();
 
-	private void logout()
-	{
-		getLogoutService().logout(new Runnable()
-		{
+	private void logout() {
+		getLogoutService().logout(new Runnable() {
 			@Override
-			public void run()
-			{
-				// Calling a refresh will force the service to look for a logged in user
-				// and when it finds none the user will be requested to log in again.
+			public void run() {
+				// Calling a refresh will force the service to look for a logged
+				// in user
+				// and when it finds none the user will be requested to log in
+				// again.
 				forceRefresh();
 			}
 		});
@@ -192,8 +185,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	/**
 	 * Force a refresh of the items displayed ignoring any cached items
 	 */
-	protected void forceRefresh()
-	{
+	protected void forceRefresh() {
 		Bundle bundle = new Bundle();
 		bundle.putBoolean(FORCE_REFRESH, true);
 		refresh(bundle);
@@ -202,17 +194,16 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	/**
 	 * Refresh the fragment's grid
 	 */
-	public void refresh()
-	{
+	public void refresh() {
 		refresh(null);
 	}
 
-	private void refresh(final Bundle args)
-	{
+	private void refresh(final Bundle args) {
 		if (!isUsable())
 			return;
 
-		getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
+		getSherlockActivity()
+				.setSupportProgressBarIndeterminateVisibility(true);
 
 		getLoaderManager().restartLoader(0, args, this);
 	}
@@ -225,14 +216,13 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 */
 	protected abstract int getErrorMessage(Exception exception);
 
-	public void onLoadFinished(Loader<List<E>> loader, List<E> items)
-	{
+	public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
 
-		getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
+		getSherlockActivity().setSupportProgressBarIndeterminateVisibility(
+				false);
 
 		Exception exception = getException(loader);
-		if (exception != null)
-		{
+		if (exception != null) {
 			showError(getErrorMessage(exception));
 			showGrid();
 			return;
@@ -241,6 +231,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 		this.items = items;
 		getGridAdapter().setItems(items.toArray());
 		showGrid();
+
 	}
 
 	/**
@@ -248,8 +239,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 *
 	 * @return adapter
 	 */
-	protected SingleTypeAdapter<E> createAdapter()
-	{
+	protected SingleTypeAdapter<E> createAdapter() {
 		return createAdapter(items);
 	}
 
@@ -264,14 +254,12 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	/**
 	 * Set the grid to be shown
 	 */
-	protected void showGrid()
-	{
+	protected void showGrid() {
 		setGridShown(true, isResumed());
 	}
 
 	@Override
-	public void onLoaderReset(Loader<List<E>> loader)
-	{
+	public void onLoaderReset(Loader<List<E>> loader) {
 		// Intentionally left blank
 	}
 
@@ -280,19 +268,18 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 *
 	 * @param message
 	 */
-	protected void showError(final int message)
-	{
+	protected void showError(final int message) {
 		Toaster.showLong(getSherlockActivity(), message);
 	}
 
 	/**
-	 * Get exception from loader if it provides one by being a {@link ThrowableLoader}
+	 * Get exception from loader if it provides one by being a
+	 * {@link ThrowableLoader}
 	 *
 	 * @param loader
 	 * @return exception or null if none provided
 	 */
-	protected Exception getException(final Loader<List<E>> loader)
-	{
+	protected Exception getException(final Loader<List<E>> loader) {
 		if (loader instanceof ThrowableLoader)
 			return ((ThrowableLoader<List<E>>) loader).clearException();
 		else
@@ -302,8 +289,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	/**
 	 * Refresh the grid with the progress bar showing
 	 */
-	protected void refreshWithProgress()
-	{
+	protected void refreshWithProgress() {
 		items.clear();
 		setGridShown(false);
 		refresh();
@@ -314,8 +300,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 *
 	 * @return gridView
 	 */
-	public GridView getGridView()
-	{
+	public GridView getGridView() {
 		return gridView;
 	}
 
@@ -325,8 +310,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 * @return grid adapter
 	 */
 	@SuppressWarnings("unchecked")
-	protected SingleTypeAdapter<E> getGridAdapter()
-	{
+	protected SingleTypeAdapter<E> getGridAdapter() {
 		if (gridView != null)
 			return (SingleTypeAdapter<E>) gridView.getAdapter();
 		else
@@ -339,31 +323,28 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 * @param adapter
 	 * @return this fragment
 	 */
-	protected ItemGridFragment<E> setGridAdapter(final ListAdapter adapter)
-	{
+	protected ItemGridFragment<E> setGridAdapter(final ListAdapter adapter) {
 		if (gridView != null)
 			gridView.setAdapter(adapter);
 		return this;
 	}
 
-	private ItemGridFragment<E> fadeIn(final View view, final boolean animate)
-	{
+	private ItemGridFragment<E> fadeIn(final View view, final boolean animate) {
 		if (view != null)
 			if (animate)
-				view.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
+				view.startAnimation(AnimationUtils.loadAnimation(getActivity(),
+						android.R.anim.fade_in));
 			else
 				view.clearAnimation();
 		return this;
 	}
 
-	private ItemGridFragment<E> show(final View view)
-	{
+	private ItemGridFragment<E> show(final View view) {
 		ViewUtils.setGone(view, false);
 		return this;
 	}
 
-	private ItemGridFragment<E> hide(final View view)
-	{
+	private ItemGridFragment<E> hide(final View view) {
 		ViewUtils.setGone(view, true);
 		return this;
 	}
@@ -374,8 +355,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 * @param shown
 	 * @return this fragment
 	 */
-	public ItemGridFragment<E> setGridShown(final boolean shown)
-	{
+	public ItemGridFragment<E> setGridShown(final boolean shown) {
 		return setGridShown(shown, true);
 	}
 
@@ -386,13 +366,12 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 * @param animate
 	 * @return this fragment
 	 */
-	public ItemGridFragment<E> setGridShown(final boolean shown, final boolean animate)
-	{
+	public ItemGridFragment<E> setGridShown(final boolean shown,
+			final boolean animate) {
 		if (!isUsable())
 			return this;
 
-		if (shown == gridShown)
-		{
+		if (shown == gridShown) {
 			if (shown)
 				// Grid has already been shown so hide/show the empty view with
 				// no fade effect
@@ -407,11 +386,14 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 
 		if (shown)
 			if (!items.isEmpty())
-				hide(progressBar).hide(emptyView).fadeIn(gridView, animate).show(gridView);
+				hide(progressBar).hide(emptyView).fadeIn(gridView, animate)
+						.show(gridView);
 			else
-				hide(progressBar).hide(gridView).fadeIn(emptyView, animate).show(emptyView);
+				hide(progressBar).hide(gridView).fadeIn(emptyView, animate)
+						.show(emptyView);
 		else
-			hide(gridView).hide(emptyView).fadeIn(progressBar, animate).show(progressBar);
+			hide(gridView).hide(emptyView).fadeIn(progressBar, animate)
+					.show(progressBar);
 
 		return this;
 	}
@@ -422,8 +404,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 * @param message
 	 * @return this fragment
 	 */
-	protected ItemGridFragment<E> setEmptyText(final String message)
-	{
+	protected ItemGridFragment<E> setEmptyText(final String message) {
 		if (emptyView != null)
 			emptyView.setText(message);
 		return this;
@@ -435,8 +416,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 * @param resId
 	 * @return this fragment
 	 */
-	protected ItemGridFragment<E> setEmptyText(final int resId)
-	{
+	protected ItemGridFragment<E> setEmptyText(final int resId) {
 		if (emptyView != null)
 			emptyView.setText(resId);
 		return this;
@@ -449,10 +429,24 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 * @param v
 	 * @param position
 	 * @param id
+	 * @param items
 	 */
-	public void onGridItemClick(GridView l, View v, int position, long id)
-	{
-		Toast.makeText(getSherlockActivity(), "123", Toast.LENGTH_SHORT).show();
+	public void onGridItemClick(GridView l, View v, int position, long id,
+			List<E> items) {
+		Intent intent = new Intent(getActivity(), ProductDetailsActivity.class);
+		KEY_PRODUCT_ID = Integer.toString(position);
+
+		Product p = (Product) items.get(position);
+		CharSequence name = p.getName();
+		CharSequence price = p.getPrice().toString();
+		CharSequence img = p.images.toString();
+
+		Bundle b = new Bundle();
+		b.putCharSequence("name", name);
+		b.putCharSequence("price", price);
+		b.putCharSequence("img", img);
+		intent.putExtras(b);
+		startActivity(intent);
 	}
 
 	/**
@@ -460,8 +454,7 @@ public abstract class ItemGridFragment<E> extends SherlockFragment implements Lo
 	 *
 	 * @return true if usable on the UI-thread, false otherwise
 	 */
-	protected boolean isUsable()
-	{
+	protected boolean isUsable() {
 		return getActivity() != null;
 	}
 }

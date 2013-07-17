@@ -137,13 +137,7 @@ public class ProductListFragment extends ItemListFragment<Product> {
 	}
 
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Product prod = (Product) l.getItemAtPosition(position);
-		String url = prod.findLink("self").getHref();
-		url = url.substring(url.lastIndexOf("/") + 1);
-		Intent intent = new Intent(getActivity(),
-				ProductDescriptionActivity.class);
-		intent.putExtra(KEY_PRODUCT_ID, Long.parseLong(url));
-		startActivity(intent);
+
 	}
 
 	@Override
