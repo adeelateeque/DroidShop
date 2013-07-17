@@ -19,6 +19,10 @@
             android:layout_gravity="center"
             android:layout_margin="5dip"
             android:adjustViewBounds="true"
+<<<<<<< HEAD
+=======
+            android:layout_gravity="center_horizontal"
+>>>>>>> 4b9a69ad1d8cb7523b2e4281ee49b60e309aa934
             android:src="@drawable/ic_launcher" >
         </ImageView>
     </LinearLayout>
